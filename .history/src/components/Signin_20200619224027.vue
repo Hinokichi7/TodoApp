@@ -53,18 +53,18 @@ export default class Signin extends Vue {
   actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
-    url: 'https://www.example.com/finishSignUp?cartId=1234',
+  url: 'https://www.example.com/finishSignUp?cartId=1234',
     // This must be true.
     handleCodeInApp: true,
     iOS: {
-      bundleId: 'com.example.ios',
+      bundleId: 'com.example.ios'
     },
     android: {
       packageName: 'com.example.android',
       installApp: true,
-      minimumVersion: '12',
+      minimumVersion: '12'
     },
-    dynamicLinkDomain: 'example.page.link',
+    dynamicLinkDomain: 'example.page.link'
   };
 
   login() {
@@ -82,7 +82,7 @@ export default class Signin extends Vue {
       console.log('error===>', error);
     });
   }
-
+  
   // login() {
   //   axios.post(
   //     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',

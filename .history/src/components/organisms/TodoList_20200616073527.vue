@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" sm="8" offset-sm="2">
-        <v-toolbar prominent src="../../assets/414652_l.jpg" dark>
+        <v-toolbar prominent src="../images/414652_l.jpg" dark>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
             <v-toolbar-title>Todo List</v-toolbar-title>
               <v-spacer/>

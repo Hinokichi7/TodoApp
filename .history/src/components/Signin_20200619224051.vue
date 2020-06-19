@@ -62,9 +62,9 @@ export default class Signin extends Vue {
     android: {
       packageName: 'com.example.android',
       installApp: true,
-      minimumVersion: '12',
+      minimumVersion: '12'
     },
-    dynamicLinkDomain: 'example.page.link',
+    dynamicLinkDomain: 'example.page.link'
   };
 
   login() {
@@ -82,7 +82,7 @@ export default class Signin extends Vue {
       console.log('error===>', error);
     });
   }
-
+  
   // login() {
   //   axios.post(
   //     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
