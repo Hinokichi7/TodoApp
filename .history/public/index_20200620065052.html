@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.png">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg",
+        authDomain: "todoapp-8da1b.firebaseapp.com",
+        databaseURL: "https://todoapp-8da1b.firebaseio.com",
+        projectId: "todoapp-8da1b",
+        storageBucket: "todoapp-8da1b.appspot.com",
+        messagingSenderId: "617927059044",
+        appId: "1:617927059044:web:4391c7671b0fca6fd62171"
+      };
+      // Initialize Firebase
+    actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: 'todoapp-8da1b.firebaseapp.com',
+      // This must be true.
+      handleCodeInApp: false,
+      iOS: {
+        bundleId: 'com.example.ios',
+      },
+      android: {
+        packageName: 'com.example.android',
+        installApp: true,
+        minimumVersion: '12',
+      },
+      dynamicLinkDomain: 'example.page.link',
+    };
+
+      firebase.initializeApp(firebaseConfig);
+
+      firebase.auth().sendSignInLinkToEmail(email, actionCodeSettings)
+        .then(function() {
+          // The link was successfully sent. Inform the user.
+          // Save the email locally so you don't need to ask the user for it again
+          // if they open the link on the same device.
+          window.localStorage.setItem('emailForSignIn', email);
+        })
+        .catch(function(error) {
+          // Some error occurred, you can inspect the code: error.code
+      });
+    </script>
+  </body>
+</html>
