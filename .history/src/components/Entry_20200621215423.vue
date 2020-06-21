@@ -41,7 +41,7 @@ import axios from 'axios';
 
 @Component({})
 export default class Entry extends Vue {
-  oobCode = ''
+  // oobCode = ''
   email = ''
   idToken = ''
   tetaneId = ''
@@ -54,7 +54,7 @@ export default class Entry extends Vue {
     axios.post(
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithEmailLink?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
       {
-        oobCode: this.oobCode,
+        // oobCode: this.oobCode,
         email: this.email,
         idToken: this.idToken,
         tenantId: this.tetaneId,
