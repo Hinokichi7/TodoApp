@@ -38,7 +38,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import firebase from 'firebase';
 
-// import axios from 'axios';
+import axios from 'axios';
 
 @Component({})
 export default class Signup extends Vue {

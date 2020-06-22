@@ -24,6 +24,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="success" @click="create">Create Account</v-btn>
+              <v-btn color="success" @click="sendmail">sendEmail</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -38,41 +39,35 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import firebase from 'firebase';
 
-// import axios from 'axios';
+import axios from 'axios';
 
 @Component({})
 export default class Signup extends Vue {
   email = ''
   password = ''
 
-  actionCodeSettings = {
-    url: 'https://todoapp-8da1b.firebaseapp.com',
-    handleCodeInApp: true,
-  };
-
   create() {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then((responce) => {
         console.log(responce.user);
-        // this.sendmail();
-        const user = firebase.auth().currentUser;
-        if (user !== null) {
-          user.sendEmailVerification(this.actionCodeSettings)
-            .then(() => {
-              window.alert('sendmail');
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        if (firebase.auth().currentUser?.getIdToken) {
+          this.sendmail
         }
       })
-      .catch((error) => {
+      .catch(function(error) {
         // Handle Errors here.
         console.log(error);
       });
   }
-
-
+  sendmail() {
+    firebase.auth().currentUser?.sendEmailVerification()
+      .then(() => {
+        window.alert('sendmail');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   // submit() {
   //   axios.post(
   //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
@@ -89,24 +84,24 @@ export default class Signup extends Vue {
   //     console.log(error3);
   //   });
   // }
-  //  sendVerifiedmail() {// eslint-disable-line
-  //     const user = firebase.auth().currentUser;
-  //     if (user !== null) {
-  //       user.sendEmailVerification()
-  //         .then(() => {
-  //           window.alert('Email was sended');
-  //         }).catch((error) => {
-  //           // An error happened.
-  //           window.alert('Email address is not correct.');
-  //           user.delete()
-  //             .then(() => {
-  //               console.log('user deleted');
-  //             }).catch((error2) => {
-  //               console.log('delete', error2);
-  //             });
-  //         });
-  //     }
-  //   }
+//  sendVerifiedmail() {// eslint-disable-line
+//     const user = firebase.auth().currentUser;
+//     if (user !== null) {
+//       user.sendEmailVerification()
+//         .then(() => {
+//           window.alert('Email was sended');
+//         }).catch((error) => {
+//           // An error happened.
+//           window.alert('Email address is not correct.');
+//           user.delete()
+//             .then(() => {
+//               console.log('user deleted');
+//             }).catch((error2) => {
+//               console.log('delete', error2);
+//             });
+//         });
+//     }
+//   }
 
   // sendMail() {
   //   firebase.auth().sendSignInLinkToEmail(this.email, this.actionCodeSettings)

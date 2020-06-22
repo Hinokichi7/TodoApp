@@ -24,6 +24,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="success" @click="create">Create Account</v-btn>
+              <v-btn color="success" @click="sendmail">sendEmail</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -38,7 +39,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import firebase from 'firebase';
 
-// import axios from 'axios';
+import axios from 'axios';
 
 @Component({})
 export default class Signup extends Vue {
@@ -54,16 +55,8 @@ export default class Signup extends Vue {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then((responce) => {
         console.log(responce.user);
-        // this.sendmail();
-        const user = firebase.auth().currentUser;
-        if (user !== null) {
-          user.sendEmailVerification(this.actionCodeSettings)
-            .then(() => {
-              window.alert('sendmail');
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        if (firebase.auth().currentUser?.email !== null) {// eslint-disable-line
+          this.sendmail();
         }
       })
       .catch((error) => {
@@ -71,8 +64,15 @@ export default class Signup extends Vue {
         console.log(error);
       });
   }
-
-
+  sendmail() {// eslint-disable-line
+    firebase.auth().currentUser?.sendEmailVerification(this.actionCodeSettings)
+      .then(() => {
+        window.alert('sendmail');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   // submit() {
   //   axios.post(
   //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',

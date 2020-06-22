@@ -24,6 +24,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="success" @click="create">Create Account</v-btn>
+              <v-btn color="success" @click="sendmail">sendEmail</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -38,7 +39,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import firebase from 'firebase';
 
-// import axios from 'axios';
+import axios from 'axios';
 
 @Component({})
 export default class Signup extends Vue {
@@ -72,7 +73,17 @@ export default class Signup extends Vue {
       });
   }
 
-
+  // sendmail() {// eslint-disable-line
+  //   if (firebase.auth().currentUser !== null) {
+  //     firebase.auth().currentUser?.sendEmailVerification(this.actionCodeSettings)
+  //       .then(() => {
+  //         window.alert('sendmail');
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }
   // submit() {
   //   axios.post(
   //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',

@@ -4,8 +4,8 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
-            <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar color="success" dark flat>
+              <v-toolbar-title>Sign up form</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -23,16 +23,9 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="signin">Login</v-btn>
+              <v-btn color="success" @click="submit">Create Account</v-btn>
             </v-card-actions>
           </v-card>
-          <v-container>
-          <router-link to="/Signin/Signup" class="font-weight-medium">
-              <!-- <v-btn color="success"> -->
-                Create new Account
-              <!-- </v-btn> -->
-            </router-link>
-          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -48,13 +41,20 @@ import firebase from 'firebase';
 import axios from 'axios';
 
 @Component({})
-export default class Signin extends Vue {
+export default class Signup extends Vue {
   email = ''
   password = ''
+  actionCodeSettings = {
+    // URL you want to redirect back to. The domain (www.example.com) for this
+    // URL must be whitelisted in the Firebase Console.
+    url: 'https://todoapp-8da1b.firebaseapp.com',
+    // This must be true.
+    handleCodeInApp: true,
+  };
 
-  signin() {
-    axios.post(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
+submit() {
+  axios.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
       {
         email: this.email,
         password: this.password,
@@ -64,9 +64,24 @@ export default class Signin extends Vue {
       this.$store.commit('idToken', responce.data.idToken);
       this.$router.push('/Home');
     }).catch((error) => {
-      window.alert('メールアドレスかパスワードが正しくありません');
+      window.alert('メールアドレスかパスワードが正しくありません')
       console.log('未登録？', error);
     });
-  }
+}
+  // sendMail() {
+  //   firebase.auth().sendSignInLinkToEmail(this.email, this.actionCodeSettings)
+  //     .then((responce) => {
+  //     // The link was successfully sent. Inform the user.
+  //     // Save the email locally so you don't need to ask the user for it again
+  //     // if they open the link on the same device.
+  //       console.log('responce', responce);
+  //       window.localStorage.setItem('emailForSignIn', this.email);
+  //       window.alert('SendMail');
+  //     })
+  //     .catch((error) => {
+  //       console.log('SendingMaiError', error);
+  //     // Some error occurred, you can inspect the code: error.code
+  //     });
+  // }
 }
 </script>

@@ -23,7 +23,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" @click="create">Create Account</v-btn>
+              <v-btn color="success" @click="submit">Create Account</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -38,76 +38,64 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import firebase from 'firebase';
 
-// import axios from 'axios';
+import axios from 'axios';
 
 @Component({})
 export default class Signup extends Vue {
   email = ''
   password = ''
 
-  actionCodeSettings = {
-    url: 'https://todoapp-8da1b.firebaseapp.com',
-    handleCodeInApp: true,
-  };
-
-  create() {
-    firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-      .then((responce) => {
-        console.log(responce.user);
-        // this.sendmail();
-        const user = firebase.auth().currentUser;
+  // sendVerification() {
+  //   const user = firebase.auth().currentUser;
+  //   if (user !== null) {
+  //     user.sendEmailVerification().then(() => {
+  //       window.alert('Email was sended');
+  //     }).catch((error) => {
+  //       // An error happened.
+  //       window.alert('Email address is not correct.');
+  //       if (user !== null) {
+  //         user.delete()
+  //           .then(() => {
+  //             console.log('user deleted');
+  //           }).catch((error2) => {
+  //             console.log('delete', error2);
+  //           });
+  //       }
+  //     });
+  //   }
+  }
+  submit() {
+    axios.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
+      {
+        email: this.email,
+        password: this.password,
+        returnSercureToken: true,
+      },
+    ).then((responce) => {
+      this.$store.commit('idToken', responce.data.idToken);
+      const user = firebase.auth().currentUser;
+      if (user !== null) {
+        user.sendEmailVerification()
+          .then(() => {
+            window.alert('Email was sended');
+          }).catch((error) => {
+          // An error happened.
+          window.alert('Email address is not correct.');
         if (user !== null) {
-          user.sendEmailVerification(this.actionCodeSettings)
+          user.delete()
             .then(() => {
-              window.alert('sendmail');
-            })
-            .catch((error) => {
-              console.log(error);
+              console.log('user deleted');
+            }).catch((error2) => {
+              console.log('delete', error2);
             });
         }
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        console.log(error);
       });
+    }
+    }).catch((error3) => {
+      console.log(error3);
+    });
   }
-
-
-  // submit() {
-  //   axios.post(
-  //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
-  //     {
-  //       email: this.email,
-  //       password: this.password,
-  //       returnSercureToken: true,
-  //     },
-  //   ).then((responce) => {
-  //     this.$store.commit('idToken', responce.data.idToken);
-  //     this.sendVerifiedmail();
-  //     console.log('get idToken', responce.data.idToken);
-  //   }).catch((error3) => {
-  //     console.log(error3);
-  //   });
-  // }
-  //  sendVerifiedmail() {// eslint-disable-line
-  //     const user = firebase.auth().currentUser;
-  //     if (user !== null) {
-  //       user.sendEmailVerification()
-  //         .then(() => {
-  //           window.alert('Email was sended');
-  //         }).catch((error) => {
-  //           // An error happened.
-  //           window.alert('Email address is not correct.');
-  //           user.delete()
-  //             .then(() => {
-  //               console.log('user deleted');
-  //             }).catch((error2) => {
-  //               console.log('delete', error2);
-  //             });
-  //         });
-  //     }
-  //   }
-
   // sendMail() {
   //   firebase.auth().sendSignInLinkToEmail(this.email, this.actionCodeSettings)
   //     .then((responce) => {

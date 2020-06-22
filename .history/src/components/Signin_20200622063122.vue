@@ -43,9 +43,9 @@
 
 import { Component, Vue } from 'vue-property-decorator';
 
-import firebase from 'firebase';
-
 import axios from 'axios';
+
+import firebase from 'firebase';
 
 @Component({})
 export default class Signin extends Vue {
@@ -64,7 +64,7 @@ export default class Signin extends Vue {
       this.$store.commit('idToken', responce.data.idToken);
       this.$router.push('/Home');
     }).catch((error) => {
-      window.alert('メールアドレスかパスワードが正しくありません');
+      window.alert('メールアドレスかパスワードが正しくありません')
       console.log('未登録？', error);
     });
   }

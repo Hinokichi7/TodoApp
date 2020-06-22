@@ -1,11 +1,11 @@
 <template>
-  <v-app id="inspire">
+<v-app id="inspire">
     <v-container class="fill-height" fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <v-card class="elevation-12">
-            <v-toolbar color="primary" dark flat>
-              <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar color="success" dark flat>
+              <v-toolbar-title>Please enter your email address.</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
@@ -18,21 +18,13 @@
             <v-card-text>
               <v-form>
                 <v-text-field label="e-mail" prepend-icon="mdi-mail" v-model="email"></v-text-field>
-                <v-text-field label="Password"  prepend-icon="mdi-lock" v-model="password"></v-text-field>
               </v-form>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click="signin">Login</v-btn>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="success" @click="submitEmail">Submit</v-btn>
             </v-card-actions>
           </v-card>
-          <v-container>
-          <router-link to="/Signin/Signup" class="font-weight-medium">
-              <!-- <v-btn color="success"> -->
-                Create new Account
-              <!-- </v-btn> -->
-            </router-link>
-          </v-container>
         </v-col>
       </v-row>
     </v-container>
@@ -48,24 +40,39 @@ import firebase from 'firebase';
 import axios from 'axios';
 
 @Component({})
-export default class Signin extends Vue {
+export default class Entry extends Vue {
+  oobCode = ''
   email = ''
-  password = ''
+  idToken = ''
+  tetaneId = ''
+  actionCodeSettings = {
+    url: 'https://todoapp-8da1b.firebaseapp.com',
+    handleCodeInApp: true,
+  };
 
-  signin() {
+  submitEmail() {
     axios.post(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithEmailLink?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
       {
+        oobCode: this.oobCode,
         email: this.email,
-        password: this.password,
-        returnSercureToken: true,
+        idToken: this.idToken,
+        tenantId: this.tetaneId,
       },
     ).then((responce) => {
       this.$store.commit('idToken', responce.data.idToken);
-      this.$router.push('/Home');
+      this.$router.push('/');
     }).catch((error) => {
-      window.alert('メールアドレスかパスワードが正しくありません');
-      console.log('未登録？', error);
+      console.log('未登録===>', error);
+      firebase.auth().sendSignInLinkToEmail(this.email, this.actionCodeSettings)
+        .then((responce) => {
+          console.log('responce', responce);
+          window.localStorage.setItem('emailForSignIn', this.email);
+          window.alert('SendMail');
+        })
+        .catch((error2) => {
+          console.log('SendingMaiError', error2);
+        });
     });
   }
 }

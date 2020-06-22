@@ -2,7 +2,7 @@ import firebase from 'firebase';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
-// import Entry from '../components/Entry.vue';
+import Entry from '../components/Entry.vue';
 import Signin from '../components/Signin.vue';
 import Signup from '../components/Signup.vue';
 import store from '../store/index';
@@ -22,7 +22,7 @@ const routes: Array<RouteConfig> = [
   //   component: Entry,
   // },
   {
-    path: '/Signin',
+    path: '/',
     name: 'Signin',
     component: Signin,
   },
@@ -38,10 +38,17 @@ const router = new VueRouter({
 });
 
 
+  // const user = firebase.auth().currentUser;
+  // let emailVerified;
+  // if (user !== null) {
+  //   emailVerified = user.emailVerified;
+  // }
+const defaultAuth = firebase.auth();
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     console.log('ID TOKEN ===>', store.getters.idToken);
-    if (firebase.auth().currentUser?.emailVerified === true) {
+    if (defaultAuth !== null && defaultAuth.currentUser?.emailVerified) {
       next();
       console.log('user is verified');
     } else {
@@ -100,22 +107,6 @@ router.beforeEach((to, from, next) => {
 //     }
 //   } else {
 //     console.log('PATTERN 5');
-//     next();
-//   }
-// });
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     console.log('ID TOKEN ===>', store.getters.idToken);
-//     const user = firebase.auth().currentUser;
-//     if (user !== null && user.emailVerified) {
-//       next();
-//       console.log('user is verified');
-//     } else {
-//       next('/Signin');
-//       console.log('user is not verified');
-//     }
-//   } else {
 //     next();
 //   }
 // });

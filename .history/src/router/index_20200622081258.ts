@@ -41,7 +41,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     console.log('ID TOKEN ===>', store.getters.idToken);
-    if (firebase.auth().currentUser?.emailVerified === true) {
+    if (firebase.auth().currentUser !== null && firebase.auth().currentUser?.emailVerified) {
       next();
       console.log('user is verified');
     } else {
@@ -100,22 +100,6 @@ router.beforeEach((to, from, next) => {
 //     }
 //   } else {
 //     console.log('PATTERN 5');
-//     next();
-//   }
-// });
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     console.log('ID TOKEN ===>', store.getters.idToken);
-//     const user = firebase.auth().currentUser;
-//     if (user !== null && user.emailVerified) {
-//       next();
-//       console.log('user is verified');
-//     } else {
-//       next('/Signin');
-//       console.log('user is not verified');
-//     }
-//   } else {
 //     next();
 //   }
 // });
