@@ -23,8 +23,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" @click="create">Create Account</v-btn>
               <v-btn color="success" @click="signin">Sign in</v-btn>
+              <v-btn color="success" @click="create">Create Account</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        if (user.emailVerified) {
+        if(user.emailVerified) {
           next();
           console.log(user.emailVerified);
         } else {

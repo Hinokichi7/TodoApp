@@ -23,8 +23,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" @click="create">Create Account</v-btn>
               <v-btn color="success" @click="signin">Sign in</v-btn>
+              <v-btn color="success" @click="create">Create Account</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -74,15 +74,17 @@ export default class Signup extends Vue {
   }
 
   signin() {
-    firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-      .then(() => {
-        const user = firebase.auth().currentUser;
-        console.log(user?.uid);
-      })
-      .catch((error) => {
-        window.alert('wrong email/password');
-        console.log(error);
-      });
+    const user = firebase.auth().currentUser;
+    if (user !== null && user.emailVerified) {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(() => {
+          console.log(user.uid);
+        })
+        .catch((error) => {
+          window.alert('wrong email/password')
+          console.log(error);
+        });
+    }
   }
   // submit() {
   //   axios.post(
