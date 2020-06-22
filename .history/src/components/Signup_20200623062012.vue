@@ -58,9 +58,7 @@ export default class Signup extends Vue {
         if (user !== null) {
           user.sendEmailVerification(this.actionCodeSettings)
             .then(() => {
-              window.alert('Please sign in again at the URL in the confirmation email');
-              console.log(user.uid);
-              this.$store.commit('idToken', user.uid);
+              window.alert('mail was sended');
             })
             .catch((error) => {
               window.alert('mail is not correct');

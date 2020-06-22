@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     console.log('ID TOKEN ===>', store.getters.idToken);
     const user = firebase.auth().currentUser;
-    if (user !== null && user.emailVerified === true) {
+    if (user !== null && user.emailVerified) {
       next();
       console.log('user is verified');
     } else {
