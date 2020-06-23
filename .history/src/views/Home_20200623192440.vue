@@ -22,7 +22,7 @@ import TodoList from '../components/organisms/TodoList.vue';
   },
 })
 export default class Home extends Vue {
-  logout() { // eslint-disable-line
+  logout() {
     firebase.auth().signOut()
       .then(() => {
         window.alert('sign out');
@@ -31,10 +31,6 @@ export default class Home extends Vue {
         console.log(error);
       });
   }
-//   logout() {
-//     this.$store.commit('idToken', null);
-//     this.$router.push({ path: '/' });
-//   }
-// }
+
 }
 </script>

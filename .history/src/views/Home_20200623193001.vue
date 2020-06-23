@@ -26,6 +26,7 @@ export default class Home extends Vue {
     firebase.auth().signOut()
       .then(() => {
         window.alert('sign out');
+        this.$router.push({ path: '/' });
       })
       .catch((error) => {
         console.log(error);

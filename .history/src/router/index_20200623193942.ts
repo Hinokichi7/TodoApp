@@ -3,7 +3,7 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 // import Signin from '../components/Signin.vue';
-import Auth from '../components/Auth.vue';
+import Signup from '../components/Signup.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);
@@ -15,10 +15,16 @@ const routes: Array<RouteConfig> = [
     component: Home,
     meta: { requiresAuth: true },
   },
+
+  // {
+  //   path: '/Signin',
+  //   name: 'Signin',
+  //   component: Signin,
+  // },
   {
-    path: '/Auth',
-    name: 'Auth',
-    component: Auth,
+    path: '/Signup',
+    name: 'Signup',
+    component: Signup,
   },
 ];
 
@@ -36,12 +42,12 @@ router.beforeEach((to, from, next) => {
           next();
           console.log(user.emailVerified);
         } else {
-          next('/Auth');
+          next('/Signup');
           console.log(user?.emailVerified);
         }
       } else {
         // No user is signed in.
-        next('/Auth');
+        next('/Signup');
       }
     });
   } else {

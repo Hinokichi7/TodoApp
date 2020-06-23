@@ -63,7 +63,10 @@ export default class Signup extends Vue {
             })
             .catch((error) => {
               window.alert('mail is not correct');
-              console.log(error);
+              user.delete()
+                .then(() => {
+                  console.log(user.uid);
+                });
             });
         }
       })

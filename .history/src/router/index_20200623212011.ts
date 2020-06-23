@@ -15,6 +15,12 @@ const routes: Array<RouteConfig> = [
     component: Home,
     meta: { requiresAuth: true },
   },
+
+  // {
+  //   path: '/Signin',
+  //   name: 'Signin',
+  //   component: Signin,
+  // },
   {
     path: '/Auth',
     name: 'Auth',

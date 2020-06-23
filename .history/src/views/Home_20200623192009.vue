@@ -22,19 +22,19 @@ import TodoList from '../components/organisms/TodoList.vue';
   },
 })
 export default class Home extends Vue {
-  logout() { // eslint-disable-line
-    firebase.auth().signOut()
+  }
+    logout() {
+      firebase.auth().signOut()
       .then(() => {
         window.alert('sign out');
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+    }
 //   logout() {
 //     this.$store.commit('idToken', null);
 //     this.$router.push({ path: '/' });
 //   }
 // }
-}
 </script>
