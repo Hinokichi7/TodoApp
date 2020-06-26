@@ -56,7 +56,7 @@ export default class Auth extends Vue {
   create() {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then(() => {
-        // const credential = firebase.auth.EmailAuthProvider.credential(this.email, this.password);
+        const credential = firebase.auth.EmailAuthProvider.credential(this.email, this.password);
         // this.sendmail();
         const user = firebase.auth().currentUser;
         if (user !== null) {
@@ -82,11 +82,9 @@ export default class Auth extends Vue {
 
   signin() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-      .then(async () => {
+      .then(() => {
         const user = firebase.auth().currentUser;
         console.log(user?.uid);
-        const responce = await firebase.firestore().collection('users').doc(user!.uid).set({});
-        console.log('res===>', responce);
         this.$router.push('/');
       })
       .catch((error) => {
@@ -97,30 +95,68 @@ export default class Auth extends Vue {
 
   twitter() { // eslint-disable-line
     const provider = new firebase.auth.TwitterAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-      .then((respoce) => {
-        const user = firebase.auth().currentUser;
-        if (user !== null) {
-          user.sendEmailVerification(this.actionCodeSettings)
-            .then(() => {
-              window.alert('Please sign in again at the URL in the confirmation email');
-              console.log(user.uid);
-            })
-            .catch((error) => {
-              // user.providerData.forEach((profile) => {
-              //   user.email = profile?.email;
-              // });
-              window.alert('mail is not correct');
-              user.delete()
-                .then(() => {
-                  console.log(user.uid);
-                });
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      // // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+      // // You can use these server side with your app's credentials to access the Twitter API.
+      // const token = result.credential?.accessToken;
+      // const secret = result.credential?.secret;
+      // // The signed-in user info.
+      const credential = result.credential;// eslint-disable-line
+      // const user = result.user;// eslint-disable-line
+      // const user = firebase.auth().currentUser;
+      // if (user != null) {
+      //   user.providerData.forEach((profile) => {
+      //     console.log('Sign-in provider: ', profile?.providerId);
+      //     console.log('  Provider-specific UID: ', profile?.uid);
+      //     console.log('  Name: ', profile?.displayName);
+      //     console.log('  Email: ', profile?.email);
+      //     console.log('  Photo URL: ', profile?.photoURL);
+      //   });
+      // }
+
+      // // ...
+    }).catch((error) => {
+      // // Handle Errors here.
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // // The email of the user's account used.
+      // const email = error.email;
+      // // The firebase.auth.AuthCredential type that was used.
+      // const credential = error.credential;
+      // // ...
+    });
   }
+  // submit() {
+  //   axios.post(
+  //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyArv15xOLXoq3FWhlh_-l6ae2KaHC8HUKg',
+  //     {
+  //       email: this.email,
+  //       password: this.password,
+  //       returnSercureToken: true,
+  //     },
+  //   ).then((responce) => {
+  //     this.$store.commit('idToken', responce.data.idToken);
+  //     this.sendVerifiedmail();
+  //     console.log('get idToken', responce.data.idToken);
+  //   }).catch((error3) => {
+  //     console.log(error3);
+  //   });
+  // }
+
+  // sendMail() {
+  //   firebase.auth().sendSignInLinkToEmail(this.email, this.actionCodeSettings)
+  //     .then((responce) => {
+  //     // The link was successfully sent. Inform the user.
+  //     // Save the email locally so you don't need to ask the user for it again
+  //     // if they open the link on the same device.
+  //       console.log('responce', responce);
+  //       window.localStorage.setItem('emailForSignIn', this.email);
+  //       window.alert('SendMail');
+  //     })
+  //     .catch((error) => {
+  //       console.log('SendingMaiError', error);
+  //     // Some error occurred, you can inspect the code: error.code
+  //     });
+  // }
 }
 </script>

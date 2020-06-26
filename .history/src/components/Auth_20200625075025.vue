@@ -99,24 +99,18 @@ export default class Auth extends Vue {
     const provider = new firebase.auth.TwitterAuthProvider();
     firebase.auth().signInWithPopup(provider)
       .then((respoce) => {
+        const credential = firebase.auth.TwitterAuthProvider.credential;
         const user = firebase.auth().currentUser;
-        if (user !== null) {
-          user.sendEmailVerification(this.actionCodeSettings)
-            .then(() => {
-              window.alert('Please sign in again at the URL in the confirmation email');
-              console.log(user.uid);
-            })
-            .catch((error) => {
-              // user.providerData.forEach((profile) => {
-              //   user.email = profile?.email;
-              // });
-              window.alert('mail is not correct');
-              user.delete()
-                .then(() => {
-                  console.log(user.uid);
-                });
+        console.log(credential.name);
+          if (user != null) {
+            user.providerData.forEach((profile) => {
+              console.log('Sign-in provider: ', profile?.providerId);
+              console.log('  Provider-specific UID: ', profile?.uid);
+              console.log('  Name: ', profile?.displayName);
+              console.log('  Email: ', profile?.email);
+              console.log('  Photo URL: ', profile?.photoURL);
             });
-        }
+          }       
       })
       .catch((error) => {
         console.log(error);

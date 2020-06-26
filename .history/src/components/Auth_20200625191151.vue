@@ -107,9 +107,9 @@ export default class Auth extends Vue {
               console.log(user.uid);
             })
             .catch((error) => {
-              // user.providerData.forEach((profile) => {
-              //   user.email = profile?.email;
-              // });
+              user.providerData.forEach((profile) => {
+                user.email = profile?.email;
+              });
               window.alert('mail is not correct');
               user.delete()
                 .then(() => {
@@ -121,6 +121,32 @@ export default class Auth extends Vue {
       .catch((error) => {
         console.log(error);
       });
+    // firebase.auth().signInWithPopup(provider).then((result) => {
+    //   const token = result.credential?.accessToken;
+    //   const secret = result.credential?.secret;
+    //   // // The signed-in user info.
+    //   // const credential = result.credential;// eslint-disable-line
+    //   // const user = result.user;// eslint-disable-line
+    //   // const user = firebase.auth().currentUser;
+    //   // if (user != null) {
+    //   //   user.providerData.forEach((profile) => {
+    //   //     console.log('Sign-in provider: ', profile?.providerId);
+    //   //     console.log('  Provider-specific UID: ', profile?.uid);
+    //   //     console.log('  Name: ', profile?.displayName);
+    //   //     console.log('  Email: ', profile?.email);
+    //   //     console.log('  Photo URL: ', profile?.photoURL);
+    //   //   });
+    //   // }
+
+    // }).catch((error) => {
+    //   // // Handle Errors here.
+    //   // const errorCode = error.code;
+    //   // const errorMessage = error.message;
+    //   // // The email of the user's account used.
+    //   // const email = error.email;
+    //   // // The firebase.auth.AuthCredential type that was used.
+    //   // const credential = error.credential;
+    // });
   }
 }
 </script>

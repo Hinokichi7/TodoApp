@@ -4,27 +4,21 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 // import Signin from '../components/Signin.vue';
 import Auth from '../components/Auth.vue';
-import Database from '../components/database.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  //   meta: { requiresAuth: true },
-  // },
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    meta: { requiresAuth: true },
+  },
   {
     path: '/Auth',
     name: 'Auth',
     component: Auth,
-  },
-  {
-    path: '/',
-    name: 'Database',
-    component: Database,
   },
 ];
 
