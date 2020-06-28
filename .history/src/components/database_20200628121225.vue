@@ -33,7 +33,7 @@
                 <h3>Get Document by ID</h3>
             </v-col>
             <v-col cols="4">
-                <v-text-field v-model="getId"/>
+                <v-text-field v-model="mail"/>
             </v-col>
             <v-col cols="4">
                 <v-btn color="primary" @click="getDocumentById">get</v-btn>
@@ -60,13 +60,12 @@
 
             <v-col cols="12">
             <h1>Documant operations</h1>
-            </v-col>
-
+            </v-col>         
             <v-col cols="8">
                 <h3>Get data by Query</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="getDocumentByQuery">get arrayContain todo3</v-btn>
+                <v-btn color="primary" @click="getDocumentByQuery">取得</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -81,7 +80,6 @@ import todoItem from '../store/todoItem';
 @Component({})
 export default class Datavbase extends Vue {
 mail = ''
-getId = ''
 updateId = ''
 deleteId = ''
 todo: string[] = ['todo1', 'todo2']
@@ -100,7 +98,7 @@ todo2: string[] = ['todo1', 'todo2', 'todo3', 'todo4']
 }
 
 async getDocumentById() {// eslint-disable-line
-  const snapShot = await firebase.firestore().collection('users').doc(this.getId).get();
+  const snapShot = await firebase.firestore().collection('users').doc(this.mail).get();
   //   const snapShot = await docRef;d
   console.log(snapShot.data());
 }
@@ -113,7 +111,7 @@ async deleteDocumentByRandomId() {// eslint-disable-line
 }
 
 async getDocumentByQuery() {// eslint-disable-line
-  const querySnapshot = await firebase.firestore().collection('users').where('value', 'array-contains', 'todo3').get();
+  const querySnapshot = await firebase.firestore().collection('list').where('name', '==', 'priority').get();
   querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
   console.log(querySnapshot);
 }

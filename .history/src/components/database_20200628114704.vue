@@ -1,72 +1,57 @@
 <template>
     <v-container>
         <v-row>
-            <v-col cols="12">
-            <h1>Documant operations</h1>
+            <v-col cols="8">
+                <h3>Document create by RandomID:part1</h3>
+            </v-col>
+            <v-col cols="4">
+                <v-btn color="primary" @click="createDocumentByRandomId">create</v-btn>
             </v-col>
 
             <v-col cols="8">
-                <h3>Create Document by RandomID:part1</h3>
+                <h3>Document create by RandomID:part2</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="createDocumentByRandomId">add</v-btn>
-            </v-col>
-
-            <v-col cols="8">
-                <h3>Create Document by RandomID:part2</h3>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="createDocumentByRandomId_2">set</v-btn>
+                <v-btn color="primary" @click="createDocumentByRandomId_2">作成</v-btn>
             </v-col>
 
             <v-col cols="4">
-                <h3>Create Document by ID</h3>
+                <h3>Document create by ID</h3>
             </v-col>
             <v-col cols="4">
                 <v-text-field v-model="mail"/>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="createDocumentById">set</v-btn>
+                <v-btn color="primary" @click="createDocumentById">作成</v-btn>
             </v-col>
 
             <v-col cols="4">
-                <h3>Get Document by ID</h3>
+                <h3>Document create by ID</h3>
             </v-col>
             <v-col cols="4">
-                <v-text-field v-model="getId"/>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="getDocumentById">get</v-btn>
+                <v-btn color="primary" @click="getDocumentById">取得</v-btn>
             </v-col>
 
             <v-col cols="4">
-                <h3>Update Document by ID</h3>
+                <h3>Document update by ID</h3>
             </v-col>
             <v-col cols="4">
                 <v-text-field v-model="updateId"/>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="updateDocumentById">update</v-btn>
+                <v-btn color="primary" @click="updateDocumentByRandomId_4">更新</v-btn>
             </v-col>
-            <v-col cols="4">
-                <h3>Delete Document by ID</h3>
-            </v-col>
-            <v-col cols="4">
-                <v-text-field v-model="deleteId"/>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="deleteDocumentByRandomId">delete</v-btn>
-            </v-col>
-
-            <v-col cols="12">
-            <h1>Documant operations</h1>
-            </v-col>
-
             <v-col cols="8">
-                <h3>Get data by Query</h3>
+                <h3>ドキュメンの削除</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="getDocumentByQuery">get arrayContain todo3</v-btn>
+                <v-btn color="primary" @click="deleteDocumentByRandomId">削除</v-btn>
+            </v-col>
+            <v-col cols="8">
+                <h3>クエリの操作</h3>
+            </v-col>
+            <v-col cols="4">
+                <v-btn color="primary" @click="getDocumentByQuery">取得</v-btn>
             </v-col>
         </v-row>
     </v-container>
@@ -81,11 +66,8 @@ import todoItem from '../store/todoItem';
 @Component({})
 export default class Datavbase extends Vue {
 mail = ''
-getId = ''
 updateId = ''
-deleteId = ''
 todo: string[] = ['todo1', 'todo2']
-todo2: string[] = ['todo1', 'todo2', 'todo3', 'todo4']
   async createDocumentByRandomId() {// eslint-disable-line
   const responce = await firebase.firestore().collection('users').add({ name: 'user', value: this.todo });
   console.log(responce);
@@ -100,20 +82,20 @@ todo2: string[] = ['todo1', 'todo2', 'todo3', 'todo4']
 }
 
 async getDocumentById() {// eslint-disable-line
-  const snapShot = await firebase.firestore().collection('users').doc(this.getId).get();
-  //   const snapShot = await docRef;d
+  const snapShot = await firebase.firestore().collection('users').doc(this.mail).get();
+  //   const snapShot = await docRef;
   console.log(snapShot.data());
 }
 
-async updateDocumentById() {// eslint-disable-line
-  firebase.firestore().doc(`users/${this.updateId}`).update({value: this.todo2});// eslint-disable-line
+async updateDocumentByRandomId_4() {// eslint-disable-line
+  firebase.firestore().doc(`list/${this.updateId}`).update({ name: 'title', value: 4, value_2: 45});// eslint-disable-line
 }
 async deleteDocumentByRandomId() {// eslint-disable-line
-  firebase.firestore().doc(`users/${this.deleteId}`).delete();
+  firebase.firestore().doc(`list/${'this.updateId'}`).delete();
 }
 
 async getDocumentByQuery() {// eslint-disable-line
-  const querySnapshot = await firebase.firestore().collection('users').where('value', 'array-contains', 'todo3').get();
+  const querySnapshot = await firebase.firestore().collection('list').where('name', '==', 'priority').get();
   querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
   console.log(querySnapshot);
 }

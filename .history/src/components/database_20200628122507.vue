@@ -66,7 +66,7 @@
                 <h3>Get data by Query</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="getDocumentByQuery">get arrayContain todo3</v-btn>
+                <v-btn color="primary" @click="getDocumentByQuery">get</v-btn>
             </v-col>
         </v-row>
     </v-container>
