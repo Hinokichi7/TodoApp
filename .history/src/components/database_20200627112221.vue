@@ -77,10 +77,8 @@ async deleteDocumentByRandomId() {// eslint-disable-line
   firebase.firestore().doc(`list/${'this.updateId'}`).delete();
 }
 
-async getDocumentByQuery() {// eslint-disable-line
-  const querySnapshot = await firebase.firestore().collection('list').where('name', '==', 'priority').get();
-  querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
-  console.log(querySnapshot);
+async getDocumentByQuery() {
+  firebase.firestore().collection('list').get()
 }
 }
 </script>

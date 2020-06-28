@@ -74,13 +74,7 @@ async updateDocumentByRandomId_4() {// eslint-disable-line
   firebase.firestore().doc(`list/${this.updateId}`).update({ name: 'title', value: 4, value_2: 45});// eslint-disable-line
 }
 async deleteDocumentByRandomId() {// eslint-disable-line
-  firebase.firestore().doc(`list/${'this.updateId'}`).delete();
-}
-
-async getDocumentByQuery() {// eslint-disable-line
-  const querySnapshot = await firebase.firestore().collection('list').where('name', '==', 'priority').get();
-  querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
-  console.log(querySnapshot);
+  firebase.firestore().doc(`list/${'nandemo'}`).delete();
 }
 }
 </script>

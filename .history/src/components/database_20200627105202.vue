@@ -27,18 +27,6 @@
             <v-col cols="4">
                 <v-btn color="primary" @click="updateDocumentByRandomId_4">更新</v-btn>
             </v-col>
-            <v-col cols="8">
-                <h1>ドキュメンの削除</h1>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="deleteDocumentByRandomId">削除</v-btn>
-            </v-col>
-            <v-col cols="8">
-                <h1>クエリの操作</h1>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="getDocumentByQuery">取得</v-btn>
-            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -71,16 +59,7 @@ async getDocumentByRandomId_3() {// eslint-disable-line
   console.log(snapShot.data());
 }
 async updateDocumentByRandomId_4() {// eslint-disable-line
-  firebase.firestore().doc(`list/${this.updateId}`).update({ name: 'title', value: 4, value_2: 45});// eslint-disable-line
-}
-async deleteDocumentByRandomId() {// eslint-disable-line
-  firebase.firestore().doc(`list/${'this.updateId'}`).delete();
-}
-
-async getDocumentByQuery() {// eslint-disable-line
-  const querySnapshot = await firebase.firestore().collection('list').where('name', '==', 'priority').get();
-  querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
-  console.log(querySnapshot);
+  firebase.firestore().doc(`list/${this.updateId}`).update({ name: 'title', value: 4, value_2: 45});
 }
 }
 </script>
