@@ -27,10 +27,9 @@
               <v-btn color="primary" @click="create">Create Account</v-btn>
             </v-card-actions>
           </v-card>
+          <h5>アカウント作成には確認メールのURLからのログインが必要です</h>
           <v-container>
-          <h5>アカウント作成には確認メールのURLからのログインが必要です</h5>
-          <!-- <p class="text-right">Twitterアカウントからの認証は一部機能が利用できません。</p>
-              <v-btn color="cyan" fab small dark @click="twitter"><v-icon>mdi-twitter</v-icon></v-btn> -->
+              <v-btn color="cyan" fab small dark @click="twitter"><v-icon>mdi-twitter</v-icon></v-btn>
           </v-container>
         </v-col>
       </v-row>
@@ -97,32 +96,32 @@ export default class Auth extends Vue {
       });
   }
 
-  // twitter() { // eslint-disable-line
-  //   const provider = new firebase.auth.TwitterAuthProvider();
-  //   firebase.auth().signInWithPopup(provider)
-  //     .then((respoce) => {
-  //       const user = firebase.auth().currentUser;
-  //       if (user !== null) {
-  //         user.sendEmailVerification(this.actionCodeSettings)
-  //           .then(() => {
-  //             window.alert('sendig mail');
-  //             console.log(user.uid);
-  //           })
-  //           .catch((error) => {
-  //             // user.providerData.forEach((profile) => {
-  //             //   user.email = profile?.email;
-  //             // });
-  //             window.alert('mail is not correct');
-  //             user.delete()
-  //               .then(() => {
-  //                 console.log(user.uid);
-  //               });
-  //           });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
+  twitter() { // eslint-disable-line
+    const provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+      .then((respoce) => {
+        const user = firebase.auth().currentUser;
+        if (user !== null) {
+          user.sendEmailVerification(this.actionCodeSettings)
+            .then(() => {
+              window.alert('sendig mail');
+              console.log(user.uid);
+            })
+            .catch((error) => {
+              // user.providerData.forEach((profile) => {
+              //   user.email = profile?.email;
+              // });
+              window.alert('mail is not correct');
+              user.delete()
+                .then(() => {
+                  console.log(user.uid);
+                });
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 </script>

@@ -66,23 +66,15 @@
                 <h3>Get data by Query</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="getdataByQuery">arrayContain todo3</v-btn>
+                <v-btn color="primary" @click="getDocumentByQuery">arrayContain todo3</v-btn>
             </v-col>
 
             <v-col cols="8">
                 <h3>Get data order by Query and pagenation</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="orderByDatatByQuery">orderby fieldPath and pagenation 3</v-btn>
+                <v-btn color="primary" @click="getDocumentByQuery">orderby updateat and pagenation 3</v-btn>
             </v-col>
-
-            <v-col cols="8">
-                <h4>Get data next page</h4>
-            </v-col>
-            <v-col cols="4">
-                <v-btn color="primary" @click="getDataNextPage">next page</v-btn>
-            </v-col>
-
         </v-row>
     </v-container>
 </template>
@@ -127,34 +119,10 @@ async deleteDocumentByRandomId() {// eslint-disable-line
   firebase.firestore().doc(`users/${this.deleteId}`).delete();
 }
 
-async getdataByQuery() {// eslint-disable-line
+async getDocumentByQuery() {// eslint-disable-line
   const querySnapshot = await firebase.firestore().collection('users').where('value', 'array-contains', 'todo3').get();
   querySnapshot.forEach((dSnapshot) => console.log(dSnapshot.data()));
   console.log(querySnapshot);
-}
-
-async orderByDatatByQuery() {// eslint-disable-line
-  const currentPage = await firebase.firestore()
-    .collection('users')
-    .orderBy('name')
-    .limit(3)
-    .get();
-  currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
-}
-
-async getDataNextPage() {// eslint-disable-line
-  let currentPage = await firebase.firestore()
-    .collection('users')
-    .orderBy('name')
-    .limit(3)
-    .get();
-  const nextPage = await firebase.firestore()
-    .collection('users')
-    .orderBy('name')
-    .startAfter(currentPage.docs[currentPage.size - 1])
-    .limit(3)
-    .get();
-  nextPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
 }
 }
 </script>

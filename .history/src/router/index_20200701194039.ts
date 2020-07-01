@@ -4,7 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 // import Signin from '../components/Signin.vue';
 import Auth from '../components/Auth.vue';
-// import Database from '../components/database.vue';
+import Database from '../components/database.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);

@@ -155,6 +155,7 @@ async getDataNextPage() {// eslint-disable-line
     .limit(3)
     .get();
   nextPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
+  currentPage = nextPage
 }
 }
 </script>

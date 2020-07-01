@@ -73,16 +73,15 @@
                 <h3>Get data order by Query and pagenation</h3>
             </v-col>
             <v-col cols="4">
-                <v-btn color="primary" @click="orderByDatatByQuery">orderby fieldPath and pagenation 3</v-btn>
+                <v-btn color="primary" @click="orderByDatatByQuery">orderby updateat and pagenation 3</v-btn>
             </v-col>
 
-            <v-col cols="8">
+            <!-- <v-col cols="8">
                 <h4>Get data next page</h4>
             </v-col>
             <v-col cols="4">
                 <v-btn color="primary" @click="getDataNextPage">next page</v-btn>
-            </v-col>
-
+            </v-col> -->
         </v-row>
     </v-container>
 </template>
@@ -136,25 +135,20 @@ async getdataByQuery() {// eslint-disable-line
 async orderByDatatByQuery() {// eslint-disable-line
   const currentPage = await firebase.firestore()
     .collection('users')
-    .orderBy('name')
+    .orderBy('value')
     .limit(3)
     .get();
   currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
-}
 
-async getDataNextPage() {// eslint-disable-line
-  let currentPage = await firebase.firestore()
-    .collection('users')
-    .orderBy('name')
-    .limit(3)
-    .get();
   const nextPage = await firebase.firestore()
     .collection('users')
-    .orderBy('name')
+    .orderBy('value')
     .startAfter(currentPage.docs[currentPage.size - 1])
     .limit(3)
     .get();
-  nextPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
+  console.log(currentPage);
 }
+// async getDataNextPage() {
+// }
 }
 </script>

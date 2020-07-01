@@ -97,32 +97,32 @@ export default class Auth extends Vue {
       });
   }
 
-  // twitter() { // eslint-disable-line
-  //   const provider = new firebase.auth.TwitterAuthProvider();
-  //   firebase.auth().signInWithPopup(provider)
-  //     .then((respoce) => {
-  //       const user = firebase.auth().currentUser;
-  //       if (user !== null) {
-  //         user.sendEmailVerification(this.actionCodeSettings)
-  //           .then(() => {
-  //             window.alert('sendig mail');
-  //             console.log(user.uid);
-  //           })
-  //           .catch((error) => {
-  //             // user.providerData.forEach((profile) => {
-  //             //   user.email = profile?.email;
-  //             // });
-  //             window.alert('mail is not correct');
-  //             user.delete()
-  //               .then(() => {
-  //                 console.log(user.uid);
-  //               });
-  //           });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
+  twitter() { // eslint-disable-line
+    const provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+      .then((respoce) => {
+        const user = firebase.auth().currentUser;
+        if (user !== null) {
+          user.sendEmailVerification(this.actionCodeSettings)
+            .then(() => {
+              window.alert('sendig mail');
+              console.log(user.uid);
+            })
+            .catch((error) => {
+              // user.providerData.forEach((profile) => {
+              //   user.email = profile?.email;
+              // });
+              window.alert('mail is not correct');
+              user.delete()
+                .then(() => {
+                  console.log(user.uid);
+                });
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }
 </script>

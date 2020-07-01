@@ -148,7 +148,7 @@ async getDataNextPage() {// eslint-disable-line
     .orderBy('name')
     .limit(3)
     .get();
-  const nextPage = await firebase.firestore()
+  let nextPage = await firebase.firestore()
     .collection('users')
     .orderBy('name')
     .startAfter(currentPage.docs[currentPage.size - 1])

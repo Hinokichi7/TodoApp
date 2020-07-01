@@ -143,7 +143,7 @@ async orderByDatatByQuery() {// eslint-disable-line
 }
 
 async getDataNextPage() {// eslint-disable-line
-  let currentPage = await firebase.firestore()
+  const currentPage = await firebase.firestore()
     .collection('users')
     .orderBy('name')
     .limit(3)

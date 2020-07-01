@@ -4,7 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 // import Signin from '../components/Signin.vue';
 import Auth from '../components/Auth.vue';
-// import Database from '../components/database.vue';
+import Database from '../components/database.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);
@@ -33,27 +33,27 @@ const router = new VueRouter({
 });
 
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in.
-        if (user.emailVerified) {
-          next();
-          console.log(user.emailVerified);
-        } else {
-          next('/Auth');
-          console.log(user?.emailVerified);
-        }
-      } else {
-        // No user is signed in.
-        next('/Auth');
-      }
-    });
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     firebase.auth().onAuthStateChanged((user) => {
+//       if (user) {
+//         // User is signed in.
+//         if (user.emailVerified) {
+//           next();
+//           console.log(user.emailVerified);
+//         } else {
+//           next('/Auth');
+//           console.log(user?.emailVerified);
+//         }
+//       } else {
+//         // No user is signed in.
+//         next('/Auth');
+//       }
+//     });
+//   } else {
+//     next();
+//   }
+// });
 
 // router.beforeEach((to, from, next) => {
 //   if (to.matched.some((record) => record.meta.requiresAuth)) {
