@@ -76,6 +76,12 @@
                 <v-btn color="primary" @click="orderByDatatByQuery">orderby fieldPath and pagenation 3</v-btn>
             </v-col>
 
+            <v-col cols="8">
+                <h4>Get data next page</h4>
+            </v-col>
+            <v-col cols="4">
+                <v-btn color="primary" @click="getDataNextPage">next page</v-btn>
+            </v-col>
 
         </v-row>
     </v-container>
@@ -93,10 +99,9 @@ mail = ''
 getId = ''
 updateId = ''
 deleteId = ''
-lastVisible: firebase.firestore.DocumentSnapshot | null = null
+currentPage = []
 todo: string[] = ['todo1', 'todo2']
 todo2: string[] = ['todo1', 'todo2', 'todo3', 'todo4']
-
   async createDocumentByRandomId() {// eslint-disable-line
   const responce = await firebase.firestore().collection('users').add({ name: 'user', value: this.todo });
   console.log(responce);
@@ -129,17 +134,29 @@ async getdataByQuery() {// eslint-disable-line
   console.log(querySnapshot);
 }
 
-
 async orderByDatatByQuery() {// eslint-disable-line
-  let currentPage = null;
-  const xxx = firebase.firestore().collection('users').orderBy('name');
-  if (this.lastVisible === null) {
-    currentPage = await xxx.limit(3).get();
-  } else {
-    currentPage = await xxx.startAfter(this.lastVisible).limit(3).get();
-  }
+  const currentPage = await firebase.firestore()
+    .collection('users')
+    .orderBy('name')
+    .limit(3)
+    .get();
   currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
-  this.lastVisible = currentPage.docs[currentPage.size - 1];
+}
+
+async getDataNextPage() {// eslint-disable-line
+  let currentPage = await firebase.firestore()
+    .collection('users')
+    .orderBy('name')
+    .limit(3)
+    .get();
+  const nextPage = await firebase.firestore()
+    .collection('users')
+    .orderBy('name')
+    .startAfter(currentPage.docs[currentPage.size - 1])
+    .limit(3)
+    .get();
+  currentPage.docs.length = nextPage.docs.length;
+  currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
 }
 }
 </script>

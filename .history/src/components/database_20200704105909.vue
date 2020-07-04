@@ -135,9 +135,21 @@ async orderByDatatByQuery() {// eslint-disable-line
   const xxx = firebase.firestore().collection('users').orderBy('name');
   if (this.lastVisible === null) {
     currentPage = await xxx.limit(3).get();
+    // currentPage = await firebase.firestore()
+    //   .collection('users')
+    //   .orderBy('name')
+    //   .limit(3)
+    //   .get();
   } else {
     currentPage = await xxx.startAfter(this.lastVisible).limit(3).get();
+    // currentPage = await firebase.firestore()
+    //   .collection('users')
+    //   .orderBy('name')
+    //   .startAfter(this.lastVisible)
+    //   .limit(3)
+    //   .get();
   }
+
   currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
   this.lastVisible = currentPage.docs[currentPage.size - 1];
 }

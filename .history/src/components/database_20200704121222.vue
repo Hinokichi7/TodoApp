@@ -138,6 +138,7 @@ async orderByDatatByQuery() {// eslint-disable-line
   } else {
     currentPage = await xxx.startAfter(this.lastVisible).limit(3).get();
   }
+
   currentPage.forEach((dSnapshot) => console.log(dSnapshot.data()));
   this.lastVisible = currentPage.docs[currentPage.size - 1];
 }
