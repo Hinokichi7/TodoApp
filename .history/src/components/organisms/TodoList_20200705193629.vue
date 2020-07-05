@@ -8,44 +8,27 @@
               <v-btn class="mx-2" fab dark color="#0288D1" small @click="showForm(true)">
               <v-icon>mdi-plus</v-icon>
               </v-btn>
+              <v-btn class="mx-2" fab dark color="#0288D1" small @click="showFilter">
+                <v-icon>mdi-filter</v-icon>
+              </v-btn>
+              <v-btn class="mx-2" fab dark color="#0288D1" small @click="showSort">
+                <v-icon>mdi-sort-bool-ascending</v-icon>
+              </v-btn>
 
               <v-dialog v-model="dialog">
                 <todo-form @close="dialogClose" :key="formCount"></todo-form>
               </v-dialog>
 
+              <v-dialog v-model="dialog2">
+                <todo-filter @close="dialogClose"></todo-filter>
+              </v-dialog>
+
+              <v-dialog v-model="dialog3">
+                <todo-sort @close="dialogClose"></todo-sort>
+              </v-dialog>
         </v-toolbar>
     </v-col>
 
-    <v-col cols="12" sm="8" offset-sm="2">
-        <v-container class="lighten-2">
-          <v-row justify="center">
-          <v-col cols="3">
-            <v-select
-              :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority"
-            ></v-select>
-          </v-col>
-          <v-col cols="4">
-            <v-select
-              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"
-            ></v-select>
-          </v-col>
-          <v-col cols="4">
-            <v-select
-              :items="sortItems" label="Choose Sortitem" v-model="sortOption"
-            ></v-select>
-          </v-col>
-          <v-col cols="4">
-            <v-btn color="#0288D1" dark small @click="queryPriprity">Pick Priority</v-btn>
-          </v-col>
-          <v-col cols="4">
-            <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
-          </v-col>
-          <v-col cols="4">
-            <v-btn color="#0288D1" dark small @click="querysort">Sort</v-btn>
-          </v-col>
-          </v-row>
-        </v-container>
-    </v-col>
     <v-col cols="12" sm="8" offset-sm="2">
         <v-card class="mx-auto">
           <v-list two-line subheader>
@@ -87,13 +70,8 @@ import TodoSort from './TodoSort.vue';
 export default class TodoList extends Vue {
   formCount = 0;
   dialog = false
-
-  priorityItems = [1, 2, 3]
-  progressItems = ['new', 'working', 'completed', 'pending', 'discontinued']
-  targetPriority: number[] = [];
-  targetProgress: string[] = [];
-  sortItems = ['createTime', 'deadline', 'priority']
-  sortOption = ''
+  dialog2 = false;
+  dialog3= false;
 
   priorityColors = {
     lv1: '#E91E63',
@@ -103,42 +81,24 @@ export default class TodoList extends Vue {
   }
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
-todos: any[] = []
-
+todos: ToDo[] = []
 created() {
   this.getData();
 }
 async getData() {
+  const todos: any[] = [];
   const qSnapshot = await this.db
     .collection('users')
     .doc(this.currentUser.email!)
     .collection('todolist')
     .get();
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-  // this.$store.commit('todos/getTodo', this.todos);
+  qSnapshot.docs.forEach((dSnapshot) => this.todos.push(dSnapshot.data()));
+  this.$store.commit('todos/getTodo', this.todos);
 }
 
-async queryPriprity() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .where('priority', 'in', this.targetPriority)
-    .get();
-  // qSnapshot.docs.map((dSnapshot) => this.todos.filter((todo: ToDo) => todo === dSnapshot.data()));
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-}
-async queryProgress() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .where('progress', 'in', this.targetProgress)
-    .get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-}
+// get todos(): ToDo[] {
+//   return this.$store.getters['todos/todos'];
+// }
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
     case 1:
@@ -159,9 +119,16 @@ showForm(reset: boolean) {
   }
   this.dialog = true;
 }
-
+showFilter() {
+  this.dialog2 = true;
+}
+showSort() {
+  this.dialog3 = true;
+}
 dialogClose() {
   this.dialog = false;
+  this.dialog2 = false;
+  this.dialog3 = false;
 }
 selected(todo: ToDo) {
   this.$store.commit('todos/selected', todo);

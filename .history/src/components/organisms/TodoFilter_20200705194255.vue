@@ -52,8 +52,8 @@ export default class TodoFilter extends Vue {
       .collection('todolist')
       .where('priority', 'array-contains', this.targetPriority)
       .get();
-    this.$store.commit('todos/targetPriority', this.targetPriority);
-    this.$store.commit('todos/targetProgress', this.targetProgress);
+    // this.$store.commit('todos/targetPriority', this.targetPriority);
+    // this.$store.commit('todos/targetProgress', this.targetProgress);
     this.$emit('close');
   }
 }

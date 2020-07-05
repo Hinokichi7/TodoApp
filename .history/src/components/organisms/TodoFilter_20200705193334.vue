@@ -41,19 +41,19 @@ export default class TodoFilter extends Vue {
 
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore();
+
   close() {
     this.$emit('close');
   }
 
-  async save() {
-    const qSnapshot = await this.db
+  save() {
+    this.db
       .collection('users')
       .doc(this.currentUser.email!)
       .collection('todolist')
-      .where('priority', 'array-contains', this.targetPriority)
-      .get();
-    this.$store.commit('todos/targetPriority', this.targetPriority);
-    this.$store.commit('todos/targetProgress', this.targetProgress);
+      .where('priority', 'array-contains', this.targetPriority);
+    // this.$store.commit('todos/targetPriority', this.targetPriority);
+    // this.$store.commit('todos/targetProgress', this.targetProgress);
     this.$emit('close');
   }
 }

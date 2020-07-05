@@ -30,28 +30,21 @@
 </template>
 
 <script lang="ts">
-import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 @Component({})
 export default class TodoFilter extends Vue {
   priorityItems = [1, 2, 3]
   progressItems = ['new', 'working', 'completed', 'pending', 'discontinued']
+
   targetPriority: number[] = [];
   targetProgress: string[] = [];
 
-  currentUser = firebase.auth().currentUser!;
-  db = firebase.firestore();
+
   close() {
     this.$emit('close');
   }
 
-  async save() {
-    const qSnapshot = await this.db
-      .collection('users')
-      .doc(this.currentUser.email!)
-      .collection('todolist')
-      .where('priority', 'array-contains', this.targetPriority)
-      .get();
+  save() {
     this.$store.commit('todos/targetPriority', this.targetPriority);
     this.$store.commit('todos/targetProgress', this.targetProgress);
     this.$emit('close');

@@ -24,23 +24,19 @@
               :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority"
             ></v-select>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-select
               :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"
             ></v-select>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-select
               :items="sortItems" label="Choose Sortitem" v-model="sortOption"
             ></v-select>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-btn color="#0288D1" dark small @click="queryPriprity">Pick Priority</v-btn>
-          </v-col>
-          <v-col cols="4">
             <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
-          </v-col>
-          <v-col cols="4">
             <v-btn color="#0288D1" dark small @click="querysort">Sort</v-btn>
           </v-col>
           </v-row>
@@ -128,16 +124,7 @@ async queryPriprity() {
   // qSnapshot.docs.map((dSnapshot) => this.todos.filter((todo: ToDo) => todo === dSnapshot.data()));
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-}
-async queryProgress() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .where('progress', 'in', this.targetProgress)
-    .get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+  console.log(this.todos);
 }
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
