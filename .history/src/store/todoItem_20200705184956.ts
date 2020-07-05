@@ -39,9 +39,6 @@ export default {
     //     overwriteToDo.id = state.selectedId;
     //   }
     // },
-    getTodo(state: any, todos: ToDo[]) {
-      state.todos = todos;
-    },
     targetPriority(state: any, targetPriority: number[]) {
       state.targetPriority = targetPriority;
     },

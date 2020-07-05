@@ -1,5 +1,5 @@
 export type ToDoItem = {
-    // id: number;
+    id: number;
     title: string;
     detail: string;
     note: string;
@@ -13,12 +13,12 @@ export class ToDo {
   /* eslint no-underscore-dangle: [error, {allowAfterThis: true, allowAfterSuper: true}] */
     protected _todoItem: ToDoItem;
 
-    // get id() {
-    //   return this._todoItem.id;
-    // }
-    // set id(val: number) {
-    //   this._todoItem.id = val;
-    // }
+    get id() {
+      return this._todoItem.id;
+    }
+    set id(val: number) {
+      this._todoItem.id = val;
+    }
 
     get title() {
       return this._todoItem.title;

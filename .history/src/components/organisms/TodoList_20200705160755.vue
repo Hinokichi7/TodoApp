@@ -81,23 +81,30 @@ export default class TodoList extends Vue {
   }
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
-todos: ToDo[] = []
-created() {
-  this.getData();
-}
-async getData() {
+
+get todos(): any[] {
   const todos: any[] = [];
-  const qSnapshot = await this.db
+  const unsubscrib = this.db
     .collection('users')
     .doc(this.currentUser.email!)
     .collection('todolist')
-    .get();
-  qSnapshot.docs.forEach((dSnapshot) => this.todos.push(dSnapshot.data()));
-  this.$store.commit('todos/getTodo', this.todos);
+    .onSnapshot({includeMetadataChanges: true}, (qSnapshot) => {
+      qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
+    });
   console.log(todos);
   return todos;
 }
-
+// todolists: any[] = []
+// async getData() {
+//   const qSnapshot = await this.db
+//     .collection('users')
+//     .doc(this.currentUser.email!)
+//     .collection('todolist')
+//     .get();
+//   const todos: any[] = [];
+//   qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
+//   return todos;
+// }
 // get todos(): ToDo[] {
 //   return this.$store.getters['todos/todos'];
 // }
@@ -133,7 +140,7 @@ dialogClose() {
   this.dialog3 = false;
 }
 selected(todo: ToDo) {
-  this.$store.commit('todos/selected', todo);
+  // this.$store.dispatch('todos/selected', todo.id);
   this.showForm(false);
 }
 

@@ -25,7 +25,7 @@ export default {
     //     state.targetProgress.length === 0 ? [n, w, c, p, d].includes(todo.progress) : state.targetProgress.includes(todo.progress));
     //   return filterTodos;
     // },
-    selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo === state.selectedToDo),
+    // selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo.id === state.selectedId),
   },
   mutations: {
     // addToDo(state: any, todo: ToDo) {
@@ -39,9 +39,6 @@ export default {
     //     overwriteToDo.id = state.selectedId;
     //   }
     // },
-    getTodo(state: any, todos: ToDo[]) {
-      state.todos = todos;
-    },
     targetPriority(state: any, targetPriority: number[]) {
       state.targetPriority = targetPriority;
     },
@@ -86,6 +83,9 @@ export default {
     addToDo(context: any, todo: ToDo) {
       context.commit('addToDo', todo);
       // context.commit('incrementId');
+    },
+    selected(context: any, id: number) {
+      context.commit('selected', id);
     },
     resetSelected(context: any) {
       context.commit('resetSelected');

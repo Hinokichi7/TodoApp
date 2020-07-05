@@ -115,7 +115,7 @@ export default class TodoForm extends Vue {
         detail: '',
         note: '',
         priority: 1,
-        deadline: new Date().toISOString().substr(0, 10),
+        deadline: '',
         createTime: new Date().toISOString().substr(0, 10),
         progress: 'new',
       };
