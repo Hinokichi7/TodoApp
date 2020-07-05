@@ -120,6 +120,7 @@ export default class TodoForm extends Vue {
         progress: 'new',
       };
       this.todo = new ToDo(todoItem);
+      this.todo.id += 1;
 
       return;
     }

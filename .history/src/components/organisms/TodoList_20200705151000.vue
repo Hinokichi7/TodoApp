@@ -89,10 +89,9 @@ get todos(): any[] {
     .doc(this.currentUser.email!)
     .collection('todolist')
     .onSnapshot((qSnapshot) => {
-      qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-    });
-  console.log(todos);
-  return todos;
+      q;Snapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
+    })
+    return todos;
 }
 // todolists: any[] = []
 // async getData() {

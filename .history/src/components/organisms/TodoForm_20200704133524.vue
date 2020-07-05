@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import firebase, { firestore } from 'firebase';
+import firebase from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDoItem, ToDo } from '../../classes/todo';
 @Component({})
@@ -102,8 +102,6 @@ export default class TodoForm extends Vue {
   progressItem = ['new', 'working', 'pending', 'discontinued'];
 
   todo: ToDo;
-  currentUser = firebase.auth().currentUser!;
-  db = firebase.firestore();
 
   created() {
     const selectedToDo = this.$store.getters['todos/selectedToDo'];
@@ -120,7 +118,6 @@ export default class TodoForm extends Vue {
         progress: 'new',
       };
       this.todo = new ToDo(todoItem);
-
       return;
     }
     this.todo = selectedToDo;
@@ -143,18 +140,12 @@ export default class TodoForm extends Vue {
   }
 
   async createSubCollections() {
-    await this.db.collection('users').doc(this.currentUser.email!)
-      .collection('todolist').doc(this.todo.title)
-      .set({
-        id: this.todo.id,
-        title: this.todo.title,
-        detail: this.todo.detail,
-        note: this.todo.note,
-        priority: this.todo.priority,
-        deadline: this.todo.deadline,
-        createTime: this.todo.createTime,
-        progress: this.todo.progress,
-      });
+    const user = firebase.auth().currentUser;
+    await firebase.firestore()
+    .collection('users')
+    .doc(`users/${user?.uid}`)
+    .collection('todolist')
+    .add(this.todo)
   }
   submit(): void {
     if (this.refs.form.validate()) {

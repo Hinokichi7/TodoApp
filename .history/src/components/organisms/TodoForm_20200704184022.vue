@@ -103,7 +103,6 @@ export default class TodoForm extends Vue {
 
   todo: ToDo;
   currentUser = firebase.auth().currentUser!;
-  db = firebase.firestore();
 
   created() {
     const selectedToDo = this.$store.getters['todos/selectedToDo'];
@@ -143,7 +142,8 @@ export default class TodoForm extends Vue {
   }
 
   async createSubCollections() {
-    await this.db.collection('users').doc(this.currentUser.email!)
+    const db = firebase.firestore();
+    await db.collection('users').doc(this.currentUser.email!)
       .collection('todolist').doc(this.todo.title)
       .set({
         id: this.todo.id,

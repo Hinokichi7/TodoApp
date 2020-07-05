@@ -91,7 +91,7 @@ get todos(): any[] {
     .onSnapshot((qSnapshot) => {
       qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
     });
-  console.log(todos);
+    console.log(todos);
   return todos;
 }
 // todolists: any[] = []

@@ -103,7 +103,6 @@ export default class TodoForm extends Vue {
 
   todo: ToDo;
   currentUser = firebase.auth().currentUser!;
-  db = firebase.firestore();
 
   created() {
     const selectedToDo = this.$store.getters['todos/selectedToDo'];
@@ -143,7 +142,9 @@ export default class TodoForm extends Vue {
   }
 
   async createSubCollections() {
-    await this.db.collection('users').doc(this.currentUser.email!)
+    const db = firebase.firestore();
+    // const currentUser = firebase.auth().currentUser!;
+    await db.collection('users').doc(this.currentUser.email!)
       .collection('todolist').doc(this.todo.title)
       .set({
         id: this.todo.id,
@@ -153,7 +154,7 @@ export default class TodoForm extends Vue {
         priority: this.todo.priority,
         deadline: this.todo.deadline,
         createTime: this.todo.createTime,
-        progress: this.todo.progress,
+        progress: this.todo.progress, 
       });
   }
   submit(): void {

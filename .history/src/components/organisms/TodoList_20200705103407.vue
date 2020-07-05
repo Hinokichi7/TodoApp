@@ -32,7 +32,23 @@
     <v-col cols="12" sm="8" offset-sm="2">
         <v-card class="mx-auto">
           <v-list two-line subheader>
-            <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo,false)">
+            <!-- <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo,false)">
+                <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo, $event)">
+                  <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
+                </v-list-item-icon> -->
+              <v-list-item-content>
+                <v-list-item-title v-text="todo.title" :style="{color: getPriorityColor(todo)}"/>
+                <v-list-item-subtitle v-text="todo.progress"/>
+                <v-list-item-subtitle class="text--primary" v-text="todo.deadline" />
+                <v-list-item-subtitle v-text="todo.detail" />
+                <v-list-item-subtitle v-text="todo.note" />
+              </v-list-item-content>
+              <v-list-item-icon color="#03A9F4" @click="deleteTodo(todo, $event)">
+                  <v-icon>mdi-delete</v-icon>
+              </v-list-item-icon>
+            <!-- </v-list-item> -->
+
+            <!-- <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo,false)">
                 <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo, $event)">
                   <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
                 </v-list-item-icon>
@@ -46,7 +62,8 @@
               <v-list-item-icon color="#03A9F4" @click="deleteTodo(todo, $event)">
                   <v-icon>mdi-delete</v-icon>
               </v-list-item-icon>
-            </v-list-item>
+            </v-list-item> -->
+
           </v-list>
         </v-card>
     </v-col>
@@ -81,30 +98,22 @@ export default class TodoList extends Vue {
   }
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
+// snapshot: firebase.firestore.QuerySnapshot
+todolist = {}
 
-get todos(): any[] {
-  const todos: any[] = [];
-  const unsubscrib = this.db
+async getDocument() {
+  const dSnapshot = await this.db
     .collection('users')
     .doc(this.currentUser.email!)
     .collection('todolist')
-    .onSnapshot((qSnapshot) => {
-      qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-    });
-  console.log(todos);
-  return todos;
+    .doc('kaimono')
+    .get();
+  this.todolist = dSnapshot.data;
 }
-// todolists: any[] = []
-// async getData() {
-//   const qSnapshot = await this.db
-//     .collection('users')
-//     .doc(this.currentUser.email!)
-//     .collection('todolist')
-//     .get();
-//   const todos: any[] = [];
-//   qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-//   return todos;
-// }
+get todo(): any {
+  console.log(this.todolist);
+  return this.todolist;
+}
 // get todos(): ToDo[] {
 //   return this.$store.getters['todos/todos'];
 // }
@@ -121,13 +130,13 @@ getPriorityColor(todo: ToDo) {
   }
 }
 
-showForm(reset: boolean) {
-  this.formCount += 1;
-  if (reset) {
-    this.$store.dispatch('todos/resetSelected');
-  }
-  this.dialog = true;
-}
+// showForm(reset: boolean) {
+//   this.formCount += 1;
+//   if (reset) {
+//     this.$store.dispatch('todos/resetSelected');
+//   }
+//   this.dialog = true;
+// }
 showFilter() {
   this.dialog2 = true;
 }
@@ -139,18 +148,18 @@ dialogClose() {
   this.dialog2 = false;
   this.dialog3 = false;
 }
-selected(todo: ToDo) {
-  this.$store.dispatch('todos/selected', todo.id);
-  this.showForm(false);
-}
+// selected(todo: ToDo) {
+//   this.$store.dispatch('todos/selected', todo.id);
+//   this.showForm(false);
+// }
 
-completed(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/completed', todo);
-}
-deleteTodo(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/deleteTodo', todo);
-}
+// completed(todo: ToDo, evt: any) {
+//   evt.stopPropagation();
+//   this.$store.commit('todos/completed', todo);
+// }
+// deleteTodo(todo: ToDo, evt: any) {
+//   evt.stopPropagation();
+//   this.$store.commit('todos/deleteTodo', todo);
+// }
 }
 </script>

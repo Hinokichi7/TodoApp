@@ -79,78 +79,61 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
+todos: [] | undefined
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
 
-get todos(): any[] {
-  const todos: any[] = [];
-  const unsubscrib = this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .onSnapshot((qSnapshot) => {
-      qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-    });
-  console.log(todos);
-  return todos;
+async leadDocument() {
+  const dSnapshot = await this.db.collection('users').doc(this.currentUser.email!).get();
+  const todo = dSnapshot.data;
+  this.todos!.push(todo!);
 }
-// todolists: any[] = []
-// async getData() {
-//   const qSnapshot = await this.db
-//     .collection('users')
-//     .doc(this.currentUser.email!)
-//     .collection('todolist')
-//     .get();
-//   const todos: any[] = [];
-//   qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-//   return todos;
-// }
-// get todos(): ToDo[] {
-//   return this.$store.getters['todos/todos'];
-// }
-getPriorityColor(todo: ToDo) {
-  switch (todo.priority) {
-    case 1:
-      return this.priorityColors.lv1;
-    case 2:
-      return this.priorityColors.lv2;
-    case 3:
-      return this.priorityColors.lv3;
-    default:
-      return this.priorityColors.other;
+  // get todos(): ToDo[] {
+  //   return this.$store.getters['todos/todos'];
+  // }
+  getPriorityColor(todo: ToDo) {
+    switch (todo.priority) {
+      case 1:
+        return this.priorityColors.lv1;
+      case 2:
+        return this.priorityColors.lv2;
+      case 3:
+        return this.priorityColors.lv3;
+      default:
+        return this.priorityColors.other;
+    }
   }
-}
 
-showForm(reset: boolean) {
-  this.formCount += 1;
-  if (reset) {
-    this.$store.dispatch('todos/resetSelected');
+  showForm(reset: boolean) {
+    this.formCount += 1;
+    if (reset) {
+      this.$store.dispatch('todos/resetSelected');
+    }
+    this.dialog = true;
   }
-  this.dialog = true;
-}
-showFilter() {
-  this.dialog2 = true;
-}
-showSort() {
-  this.dialog3 = true;
-}
-dialogClose() {
-  this.dialog = false;
-  this.dialog2 = false;
-  this.dialog3 = false;
-}
-selected(todo: ToDo) {
-  this.$store.dispatch('todos/selected', todo.id);
-  this.showForm(false);
-}
+  showFilter() {
+    this.dialog2 = true;
+  }
+  showSort() {
+    this.dialog3 = true;
+  }
+  dialogClose() {
+    this.dialog = false;
+    this.dialog2 = false;
+    this.dialog3 = false;
+  }
+  selected(todo: ToDo) {
+    this.$store.dispatch('todos/selected', todo.id);
+    this.showForm(false);
+  }
 
-completed(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/completed', todo);
-}
-deleteTodo(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/deleteTodo', todo);
-}
+  completed(todo: ToDo, evt: any) {
+    evt.stopPropagation();
+    this.$store.commit('todos/completed', todo);
+  }
+  deleteTodo(todo: ToDo, evt: any) {
+    evt.stopPropagation();
+    this.$store.commit('todos/deleteTodo', todo);
+  }
 }
 </script>

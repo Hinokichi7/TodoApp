@@ -81,33 +81,28 @@ export default class TodoList extends Vue {
   }
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
-
-get todos(): any[] {
-  const todos: any[] = [];
-  const unsubscrib = this.db
+todolists = []
+// todolists = [{
+//   id: 0,
+//   title: '',
+//   detail: '',
+//   note: '',
+//   priority: 1,
+//   deadline: '',
+//   createTime: '',
+//   progress: '',
+// }]
+async getDocument() {
+  const qSnapshot = await this.db
     .collection('users')
     .doc(this.currentUser.email!)
     .collection('todolist')
-    .onSnapshot((qSnapshot) => {
-      qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-    });
-  console.log(todos);
-  return todos;
+    .get();
+  qSnapshot.forEach((dSnapshot) => this.todolists.push(dSnapshot.data()));
 }
-// todolists: any[] = []
-// async getData() {
-//   const qSnapshot = await this.db
-//     .collection('users')
-//     .doc(this.currentUser.email!)
-//     .collection('todolist')
-//     .get();
-//   const todos: any[] = [];
-//   qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-//   return todos;
-// }
-// get todos(): ToDo[] {
-//   return this.$store.getters['todos/todos'];
-// }
+get todos(): ToDo[] {
+  return this.$store.getters['todos/todos'];
+}
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
     case 1:

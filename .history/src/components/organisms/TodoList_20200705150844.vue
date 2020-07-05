@@ -82,7 +82,7 @@ export default class TodoList extends Vue {
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
 
-get todos(): any[] {
+get todos() {
   const todos: any[] = [];
   const unsubscrib = this.db
     .collection('users')
@@ -90,9 +90,8 @@ get todos(): any[] {
     .collection('todolist')
     .onSnapshot((qSnapshot) => {
       qSnapshot.forEach((dSnapshot) => todos.push(dSnapshot.data()));
-    });
-  console.log(todos);
-  return todos;
+      return todos;  
+    })
 }
 // todolists: any[] = []
 // async getData() {
