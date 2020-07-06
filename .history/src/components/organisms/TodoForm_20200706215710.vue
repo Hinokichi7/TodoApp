@@ -118,7 +118,7 @@ export default class TodoForm extends Vue {
   submit(): void {
     if (this.refs.form.validate()) {
       this.createSubCollections();
-      // this.$store.dispatch('todos/addToDo', this.todo);
+      this.$store.dispatch('todos/addToDo', this.todo);
       this.close();
       this.$emit('getData');
     }

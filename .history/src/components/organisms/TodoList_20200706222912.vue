@@ -116,6 +116,7 @@ async getData() {
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
 
+
 selected(todo: ToDo) {
   this.selectedTodo = todo;
   this.showForm(false);
@@ -173,6 +174,7 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+
 
 dialogClose() {
   this.dialog = false;

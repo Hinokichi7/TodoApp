@@ -10,7 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose" :key="formCount" @getData="getData"></todo-form>
+                <todo-form @close="dialogClose" :key="formCount"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -21,27 +21,35 @@
           <v-row justify="center">
           <v-col cols="3">
             <v-select
-              :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority" @change="queryPriority"
+              :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority"
             ></v-select>
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress" @change="queryProgress"
+              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"
             ></v-select>
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="sortItems" label="Choose Sortitem" v-model="sortOption" @change="sort"
+              :items="sortItems" label="Choose Sortitem" v-model="sortOption"
             ></v-select>
           </v-col>
-
+          <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="queryPriority">filter</v-btn>
+          </v-col>
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
+          </v-col> -->
+          <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="sort">Sort</v-btn>
+          </v-col>
           </v-row>
         </v-container>
     </v-col>
     <v-col cols="12" sm="8" offset-sm="2">
         <v-card class="mx-auto">
           <v-list two-line subheader>
-            <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo)">
+            <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo,false)">
                 <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo, $event)">
                   <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
                 </v-list-item-icon>
@@ -79,12 +87,14 @@ import TodoSort from './TodoSort.vue';
 export default class TodoList extends Vue {
   formCount = 0;
   dialog = false
+
   priorityItems = [1, 2, 3]
   progressItems = ['new', 'working', 'completed', 'pending', 'discontinued']
   targetPriority: number[] = [];
   targetProgress: string[] = [];
   sortItems = ['createTime', 'deadline', 'priority']
   sortOption = ''
+
   priorityColors = {
     lv1: '#E91E63',
     lv2: '#F57C00',
@@ -94,15 +104,6 @@ export default class TodoList extends Vue {
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
 todos: any[] = []
-selectedTodo: ToDoItem = {
-  title: '',
-  detail: '',
-  note: '',
-  priority: 1,
-  deadline: '',
-  createTime: '',
-  progress: '',
-}
 
 created() {
   this.getData();
@@ -114,20 +115,7 @@ async getData() {
     .collection('todolist')
     .get();
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-}
-
-selected(todo: ToDo) {
-  this.selectedTodo = todo;
-  this.showForm(false);
-  this.$store.commit('todos/selected', this.selectedTodo);
-}
-
-showForm(reset: boolean) {
-  this.formCount += 1;
-  if (reset) {
-    this.$store.dispatch('todos/resetSelected');
-  }
-  this.dialog = true;
+  // this.$store.dispatch('todos/getTodo', this.todos);
 }
 
 async queryPriority() {
@@ -151,15 +139,12 @@ async queryProgress() {
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
-async sort() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .orderBy(this.sortOption)
-    .get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+filter() {
+  this.$store.dispatch('todos/targetPriority', this.targetPriority);
+  this.$store.dispatch('todos/targetProgress', this.targetProgress);
+}
+sort() {
+  this.$store.dispatch('todos/sortToDo', this.sortOption);
 }
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
@@ -173,10 +158,21 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+showForm(reset: boolean) {
+  this.formCount += 1;
+  if (reset) {
+    this.$store.dispatch('todos/resetSelected');
+  }
+  this.dialog = true;
+}
 
 dialogClose() {
   this.dialog = false;
-  this.$store.dispatch('todos/resetSelected');
+}
+selected() {
+  const selectedTodo = this.todos.find((todo: ToDo) => true);
+  this.showForm(false);
+  this.$store.commit('todos/selected', selectedTodo);
 }
 
 completed(todo: ToDo, evt: any) {

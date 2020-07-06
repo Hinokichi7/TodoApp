@@ -45,7 +45,7 @@ export default class TodoFilter extends Vue {
     this.$emit('close');
   }
 
-  save() {
+save() {
     this.$store.commit('todos/targetPriority', this.targetPriority);
     this.$store.commit('todos/targetProgress', this.targetProgress);
     this.$emit('close');

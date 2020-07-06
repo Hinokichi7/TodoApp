@@ -116,6 +116,7 @@ async getData() {
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
 
+
 selected(todo: ToDo) {
   this.selectedTodo = todo;
   this.showForm(false);

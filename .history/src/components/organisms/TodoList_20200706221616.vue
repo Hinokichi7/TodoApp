@@ -10,7 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose" :key="formCount" @getData="getData"></todo-form>
+                <todo-form @close="dialogClose" :key="formCount" :selectedTodo="selectedTodo" @getData="getData"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -26,15 +26,23 @@
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress" @change="queryProgress"
+              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"
             ></v-select>
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="sortItems" label="Choose Sortitem" v-model="sortOption" @change="sort"
+              :items="sortItems" label="Choose Sortitem" v-model="sortOption"
             ></v-select>
           </v-col>
-
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="filter">filter</v-btn>
+          </v-col> -->
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
+          </v-col> -->
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="sort">Sort</v-btn>
+          </v-col> -->
           </v-row>
         </v-container>
     </v-col>
@@ -116,6 +124,7 @@ async getData() {
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
 
+
 selected(todo: ToDo) {
   this.selectedTodo = todo;
   this.showForm(false);
@@ -151,16 +160,17 @@ async queryProgress() {
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
-async sort() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .orderBy(this.sortOption)
-    .get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+filter() {
+  if (this.targetPriority !== null) {
+    this.queryPriority();
+  }
+  if (this.targetProgress !== null) {
+    this.queryProgress();
+  }
 }
+// sort() {
+//   this.$store.dispatch('todos/sortToDo', this.sortOption);
+// }
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
     case 1:
@@ -173,6 +183,7 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+
 
 dialogClose() {
   this.dialog = false;

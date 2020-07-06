@@ -10,7 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose" :key="formCount" @getData="getData"></todo-form>
+                <todo-form @close="dialogClose" :key="formCount" :selectedTodo="selectedTodo" @getData="getData"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -34,7 +34,15 @@
               :items="sortItems" label="Choose Sortitem" v-model="sortOption" @change="sort"
             ></v-select>
           </v-col>
-
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="filter">filter</v-btn>
+          </v-col> -->
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
+          </v-col> -->
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="sort">Sort</v-btn>
+          </v-col> -->
           </v-row>
         </v-container>
     </v-col>
@@ -116,6 +124,7 @@ async getData() {
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
 
+
 selected(todo: ToDo) {
   this.selectedTodo = todo;
   this.showForm(false);
@@ -173,6 +182,7 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+
 
 dialogClose() {
   this.dialog = false;

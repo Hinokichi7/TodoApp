@@ -11,7 +11,6 @@ export default {
     completedTodo: null,
   },
   getters: {
-    // todos: (state: any) => state.todos,
     // todos(state: any) {
     //   const n = 'new';
     //   const w = 'working';
@@ -25,14 +24,13 @@ export default {
     //     state.targetProgress.length === 0 ? [n, w, c, p, d].includes(todo.progress) : state.targetProgress.includes(todo.progress));
     //   return filterTodos;
     // },
-    //   selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo === state.selectedToDo),
-    selected: (state: any) => state.selectedToDo,
+    selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo === state.selectedToDo),
   },
   mutations: {
-    // addToDo(state: any, todo: ToDo) {
-    //   const newToDo = todo;
-    //   state.todos.push(newToDo);
-    // },
+    addToDo(state: any, todo: ToDo) {
+      const newToDo = todo;
+      state.todos.push(newToDo);
+    },
     // addToDo(state: any, todo: ToDo) {
     //   if (state.selectedId === undefined) {
     //     const newToDo = todo;
@@ -44,9 +42,9 @@ export default {
     //     overwriteToDo.id = state.selectedId;
     //   }
     // },
-    // getTodo(state: any, todos: ToDo[]) {
-    //   state.todos = todos;
-    // },
+    getTodo(state: any, todos: ToDo[]) {
+      state.todos = todos;
+    },
     // targetPriority(state: any, targetPriority: number[]) {
     //   state.targetPriority = targetPriority;
     // },
@@ -60,11 +58,11 @@ export default {
     deleteTodo(state: any, deleteTodo: ToDo) {
       state.todos = state.todos.filter((todo: ToDo) => todo !== deleteTodo);
     },
-    selected(state: any, selectedTodo: ToDo) {
-      state.selectedToDo = selectedTodo;
+    selected(state: any, todo: ToDo) {
+      state.selectedToDo = todo;
     },
     resetSelected(state: any) {
-      state.selectedToDo = null;
+      state.selectedId = undefined;
     },
     // sortToDo(state: any, sortOption: string) {
     //   const defaultFunc = function (a: any, b: any, key: any) {
@@ -99,14 +97,14 @@ export default {
     resetSelected(context: any) {
       context.commit('resetSelected');
     },
-    // sortToDo(context: any, sortOption: string) {
-    //   context.commit('sortToDo', sortOption);
-    // },
-    // targetPriority(context: any, targetPriority: number[]) {
-    //   context.commit('filterTodo', targetPriority);
-    // },
-    // targetProgress(context: any, targetProgress: string[]) {
-    //   context.commit('filterTodo', targetProgress);
-    // },
+    sortToDo(context: any, sortOption: string) {
+      context.commit('sortToDo', sortOption);
+    },
+    targetPriority(context: any, targetPriority: number[]) {
+      context.commit('filterTodo', targetPriority);
+    },
+    targetProgress(context: any, targetProgress: string[]) {
+      context.commit('filterTodo', targetProgress);
+    },
   },
 };

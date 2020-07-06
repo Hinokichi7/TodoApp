@@ -11,7 +11,7 @@ export default {
     completedTodo: null,
   },
   getters: {
-    // todos: (state: any) => state.todos,
+    todos: (state: any) => state.todos,
     // todos(state: any) {
     //   const n = 'new';
     //   const w = 'working';
@@ -29,10 +29,10 @@ export default {
     selected: (state: any) => state.selectedToDo,
   },
   mutations: {
-    // addToDo(state: any, todo: ToDo) {
-    //   const newToDo = todo;
-    //   state.todos.push(newToDo);
-    // },
+    addToDo(state: any, todo: ToDo) {
+      const newToDo = todo;
+      state.todos.push(newToDo);
+    },
     // addToDo(state: any, todo: ToDo) {
     //   if (state.selectedId === undefined) {
     //     const newToDo = todo;
@@ -92,10 +92,10 @@ export default {
     // },
   },
   actions: {
-    // addToDo(context: any, todo: ToDo) {
-    //   context.commit('addToDo', todo);
-    //   // context.commit('incrementId');
-    // },
+    addToDo(context: any, todo: ToDo) {
+      context.commit('addToDo', todo);
+      // context.commit('incrementId');
+    },
     resetSelected(context: any) {
       context.commit('resetSelected');
     },

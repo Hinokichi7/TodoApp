@@ -59,7 +59,7 @@ export default class TodoForm extends Vue {
   valid = true;
   priorityItem = [1, 2, 3];
   progressItem = ['new', 'working', 'pending', 'discontinued'];
-  selectedTodo =null;
+
   todo: ToDo;
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore();
@@ -118,10 +118,19 @@ export default class TodoForm extends Vue {
   submit(): void {
     if (this.refs.form.validate()) {
       this.createSubCollections();
+      this.getData();
       // this.$store.dispatch('todos/addToDo', this.todo);
       this.close();
-      this.$emit('getData');
     }
+  }
+  async getData() {
+    const qSnapshot = await this.db
+      .collection('users')
+      .doc(this.currentUser.email!)
+      .collection('todolist')
+      .get();
+    qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+    // this.$store.dispatch('todos/getTodo', this.todos);
   }
 }
 </script>

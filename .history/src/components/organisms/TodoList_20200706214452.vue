@@ -10,7 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose" :key="formCount" @getData="getData"></todo-form>
+                <todo-form @close="dialogClose" :key="formCount" :selected="selectedTodo" @getData="getData"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -21,20 +21,28 @@
           <v-row justify="center">
           <v-col cols="3">
             <v-select
-              :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority" @change="queryPriority"
+              :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority"
             ></v-select>
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress" @change="queryProgress"
+              :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"
             ></v-select>
           </v-col>
           <v-col cols="4">
             <v-select
-              :items="sortItems" label="Choose Sortitem" v-model="sortOption" @change="sort"
+              :items="sortItems" label="Choose Sortitem" v-model="sortOption"
             ></v-select>
           </v-col>
-
+          <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="filter">filter</v-btn>
+          </v-col>
+          <!-- <v-col cols="4">
+            <v-btn color="#0288D1" dark small @click="queryProgress">Pick Progress</v-btn>
+          </v-col> -->
+          <v-col cols="4">
+            <!-- <v-btn color="#0288D1" dark small @click="sort">Sort</v-btn> -->
+          </v-col>
           </v-row>
         </v-container>
     </v-col>
@@ -94,15 +102,7 @@ export default class TodoList extends Vue {
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore();
 todos: any[] = []
-selectedTodo: ToDoItem = {
-  title: '',
-  detail: '',
-  note: '',
-  priority: 1,
-  deadline: '',
-  createTime: '',
-  progress: '',
-}
+selectedTodo: ToDo
 
 created() {
   this.getData();
@@ -116,11 +116,17 @@ async getData() {
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
 
+
 selected(todo: ToDo) {
-  this.selectedTodo = todo;
+  todo = this.selectedTodo;
   this.showForm(false);
-  this.$store.commit('todos/selected', this.selectedTodo);
+
 }
+// selected() {
+//   const selectedTodo = this.todos.find((todo: ToDo) => true);
+//   this.showForm(false);
+//   this.$store.commit('todos/selected', selectedTodo);
+// }
 
 showForm(reset: boolean) {
   this.formCount += 1;
@@ -141,6 +147,7 @@ async queryPriority() {
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
+
 async queryProgress() {
   const qSnapshot = await this.db
     .collection('users')
@@ -151,16 +158,17 @@ async queryProgress() {
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
-async sort() {
-  const qSnapshot = await this.db
-    .collection('users')
-    .doc(this.currentUser.email!)
-    .collection('todolist')
-    .orderBy(this.sortOption)
-    .get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+filter() {
+  if (this.targetPriority !== null) {
+    this.queryPriority();
+  }
+  if (this.targetProgress !== null) {
+    this.queryProgress();
+  }
 }
+// sort() {
+//   this.$store.dispatch('todos/sortToDo', this.sortOption);
+// }
 getPriorityColor(todo: ToDo) {
   switch (todo.priority) {
     case 1:
@@ -173,6 +181,7 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+
 
 dialogClose() {
   this.dialog = false;
