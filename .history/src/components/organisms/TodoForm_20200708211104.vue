@@ -63,16 +63,17 @@ export default class TodoForm extends Vue {
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
-  selectedTodo: any
+  beforeId= ''
 
   created() {
     const selectedId = this.$store.getters['todos/selectedId'];
-    // const beforeId = this.$store.getters['todos/beforeId'];
+    this.getId();
+    // let countId = this.$store.getters['todos/countId'];
     console.log('SELECTED ID===>', selectedId);
-    // console.log('BEFORE ID===>', beforeId);
+    console.log('BEFORE ID===>', this.beforeId);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
-        id: new Date(),
+        id: '',
         // selected: false,
         title: '',
         detail: '',
@@ -83,17 +84,16 @@ export default class TodoForm extends Vue {
         progress: 'new',
       };
       this.todo = new ToDo(todoItem);
-      // this.todo.id = beforeId;
+      this.todo.id = this.beforeId;
       return;
     }
-    // this.todo = this.selectedTodo;
     this.updatesSubCllection();
   }
 
   async createSubCollection() {
     await this.db.doc()
       .set({
-        id: new Date(),
+        id: this.todo.id,
         // selected: false,
         title: this.todo.title,
         detail: this.todo.detail,
@@ -104,19 +104,25 @@ export default class TodoForm extends Vue {
         progress: this.todo.progress,
       });
   }
+  async getId() {
+    const qSnapshot = await this.db
+      .orderBy('createdAt')
+      .get();
+    this.beforeId = qSnapshot.docs[qSnapshot.size - 1].id;
+  // this.$store.commit('todos/countId', maxId);
+  }
 
   async updatesSubCllection() {
     const selectedId = this.$store.getters['todos/selectedId'];
     await this.db.doc(`todolist/${selectedId}`)
       .update({
-        title: this.selectedTodo.title,
-        detail: this.selectedTodo.detail,
-        note: this.selectedTodo.note,
-        priority: this.selectedTodo.priority,
-        deadline: this.selectedTodo.deadline,
-        progress: this.selectedTodo.progress,
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        progress: this.todo.progress,
       });
-    console.log('selectedTodo', this.selectedTodo);
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',

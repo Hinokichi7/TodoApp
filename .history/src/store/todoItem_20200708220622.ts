@@ -7,7 +7,6 @@ export default {
     // nextId: 0,
     // beforeId: 'first',
     selectedId: null,
-    // selectedTodo: null,
     // targetPriority: [],
     // targetProgress: [],
     completedTodo: null,
@@ -29,7 +28,6 @@ export default {
     // },
     // selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo.id === state.selecteId),
     selectedId: (state: any) => state.selectedId,
-    // selectedTodo: (state: any) => state.selectedTodo,
     // beforeId: (state: any) => state.beforeId,
   },
   mutations: {
@@ -63,9 +61,6 @@ export default {
     selectedId(state: any, id: Date) {
       state.selectedId = id;
     },
-    // selectedTodo(state: any, selectedToDo: any) {
-    //   state.selectedTodo = selectedToDo;
-    // },
     resetSelected(state: any) {
       state.selectedId = null;
     },

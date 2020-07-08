@@ -10,7 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose()" :key="formCount" @getData="getData" v-bind="selectedTodo"></todo-form>
+                <todo-form @close="dialogClose()" :key="formCount" @getData="getData"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -96,17 +96,7 @@ currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
 todos: any[] = []
-selectedTodo: any = {
-  id: new Date(),
-  // selected: false,
-  title: '',
-  detail: '',
-  note: '',
-  priority: 1,
-  deadline: new Date().toISOString().substr(0, 10),
-  createdAt: new Date(),
-  progress: 'new',
-};
+
 created() {
   this.getData();
   // this.getBeforeId();
@@ -143,9 +133,10 @@ deleteTodo(todo: any, evt: any) {
 selected(todo: any) {
   this.showForm(false);
   this.$store.commit('todos/selectedId', todo.id);
+  console.log(todo.id);
   const selectedId = this.$store.getters['todos/selectedId'];
-  this.selectedToDo = this.todos.find((selectedTodo: any) => todo.id === selectedId);
-  console.log('SELECTED Todo===>', this.selectedToDo);
+  const selectedToDo = this.todos.find((selectedTodo: any) => todo.id === selectedId);
+  console.log('SELECTED ID===>', selectedToDo);
 }
 
 showForm(reset: boolean) {

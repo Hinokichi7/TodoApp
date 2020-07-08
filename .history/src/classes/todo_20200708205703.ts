@@ -1,5 +1,5 @@
 export type ToDoItem = {
-    id: Date;
+    id: string;
     // selected: boolean;
     title: string;
     detail: string;
@@ -17,7 +17,7 @@ export class ToDo {
     get id() {
       return this._todoItem.id;
     }
-    set id(val: Date) {
+    set id(val: string) {
       this._todoItem.id = val;
     }
 

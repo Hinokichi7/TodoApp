@@ -63,8 +63,17 @@ export default class TodoForm extends Vue {
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
-  selectedTodo: any
-
+  selectedTodo: any = {
+    id: new Date(),
+    // selected: false,
+    title: '',
+    detail: '',
+    note: '',
+    priority: 1,
+    deadline: new Date().toISOString().substr(0, 10),
+    createdAt: new Date(),
+    progress: 'new',
+  };
   created() {
     const selectedId = this.$store.getters['todos/selectedId'];
     // const beforeId = this.$store.getters['todos/beforeId'];

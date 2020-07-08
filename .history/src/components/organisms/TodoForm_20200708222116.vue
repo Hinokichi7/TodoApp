@@ -60,17 +60,17 @@ export default class TodoForm extends Vue {
   priorityItem = [1, 2, 3];
   progressItem = ['new', 'working', 'pending', 'discontinued'];
   todo: ToDo;
+  selectedTodo: ToDo;
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
-  selectedTodo: any
 
   created() {
-    const selectedId = this.$store.getters['todos/selectedId'];
+    this.selectedTodo = this.$store.getters['todos/selectedTodo'];
     // const beforeId = this.$store.getters['todos/beforeId'];
-    console.log('SELECTED ID===>', selectedId);
+    console.log('SELECTED ID===>', this.selectedTodo);
     // console.log('BEFORE ID===>', beforeId);
-    if (selectedId === null) {
+    if (this.selectedTodo === null) {
       const todoItem: ToDoItem = {
         id: new Date(),
         // selected: false,
@@ -86,7 +86,6 @@ export default class TodoForm extends Vue {
       // this.todo.id = beforeId;
       return;
     }
-    // this.todo = this.selectedTodo;
     this.updatesSubCllection();
   }
 
@@ -95,7 +94,7 @@ export default class TodoForm extends Vue {
       .set({
         id: new Date(),
         // selected: false,
-        title: this.todo.title,
+        title: this.selectedTodo.title,
         detail: this.todo.detail,
         note: this.todo.note,
         priority: this.todo.priority,
@@ -109,14 +108,13 @@ export default class TodoForm extends Vue {
     const selectedId = this.$store.getters['todos/selectedId'];
     await this.db.doc(`todolist/${selectedId}`)
       .update({
-        title: this.selectedTodo.title,
-        detail: this.selectedTodo.detail,
-        note: this.selectedTodo.note,
-        priority: this.selectedTodo.priority,
-        deadline: this.selectedTodo.deadline,
-        progress: this.selectedTodo.progress,
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        progress: this.todo.progress,
       });
-    console.log('selectedTodo', this.selectedTodo);
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',

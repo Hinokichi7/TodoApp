@@ -6,8 +6,7 @@ export default {
     todos: [],
     // nextId: 0,
     // beforeId: 'first',
-    selectedId: null,
-    // selectedTodo: null,
+    selectedId: new Date(),
     // targetPriority: [],
     // targetProgress: [],
     completedTodo: null,
@@ -27,9 +26,8 @@ export default {
     //     state.targetProgress.length === 0 ? [n, w, c, p, d].includes(todo.progress) : state.targetProgress.includes(todo.progress));
     //   return filterTodos;
     // },
-    // selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo.id === state.selecteId),
+    //   selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo === state.selectedToDo),
     selectedId: (state: any) => state.selectedId,
-    // selectedTodo: (state: any) => state.selectedTodo,
     // beforeId: (state: any) => state.beforeId,
   },
   mutations: {
@@ -63,9 +61,6 @@ export default {
     selectedId(state: any, id: Date) {
       state.selectedId = id;
     },
-    // selectedTodo(state: any, selectedToDo: any) {
-    //   state.selectedTodo = selectedToDo;
-    // },
     resetSelected(state: any) {
       state.selectedId = null;
     },

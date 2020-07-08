@@ -116,7 +116,7 @@ export default class TodoForm extends Vue {
         deadline: this.selectedTodo.deadline,
         progress: this.selectedTodo.progress,
       });
-    console.log('selectedTodo', this.selectedTodo);
+      console.log('selectedTodo', this.selectedTodo);
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',

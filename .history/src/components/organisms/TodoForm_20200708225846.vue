@@ -59,7 +59,7 @@ export default class TodoForm extends Vue {
   valid = true;
   priorityItem = [1, 2, 3];
   progressItem = ['new', 'working', 'pending', 'discontinued'];
-  todo: ToDo;
+  todo: ToDoItem;
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');

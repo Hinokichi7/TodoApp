@@ -63,7 +63,6 @@ export default class TodoForm extends Vue {
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
-  selectedTodo: any
 
   created() {
     const selectedId = this.$store.getters['todos/selectedId'];
@@ -72,7 +71,7 @@ export default class TodoForm extends Vue {
     // console.log('BEFORE ID===>', beforeId);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
-        id: new Date(),
+        id: new Date,
         // selected: false,
         title: '',
         detail: '',
@@ -86,14 +85,13 @@ export default class TodoForm extends Vue {
       // this.todo.id = beforeId;
       return;
     }
-    // this.todo = this.selectedTodo;
     this.updatesSubCllection();
   }
 
   async createSubCollection() {
     await this.db.doc()
       .set({
-        id: new Date(),
+        id: new Date,
         // selected: false,
         title: this.todo.title,
         detail: this.todo.detail,
@@ -109,14 +107,13 @@ export default class TodoForm extends Vue {
     const selectedId = this.$store.getters['todos/selectedId'];
     await this.db.doc(`todolist/${selectedId}`)
       .update({
-        title: this.selectedTodo.title,
-        detail: this.selectedTodo.detail,
-        note: this.selectedTodo.note,
-        priority: this.selectedTodo.priority,
-        deadline: this.selectedTodo.deadline,
-        progress: this.selectedTodo.progress,
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        progress: this.todo.progress,
       });
-    console.log('selectedTodo', this.selectedTodo);
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',

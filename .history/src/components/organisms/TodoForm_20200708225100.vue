@@ -86,8 +86,8 @@ export default class TodoForm extends Vue {
       // this.todo.id = beforeId;
       return;
     }
-    // this.todo = this.selectedTodo;
-    this.updatesSubCllection();
+    // this.todo.id = selectedId;
+    this.updatesSubCllection()
   }
 
   async createSubCollection() {
@@ -116,7 +116,6 @@ export default class TodoForm extends Vue {
         deadline: this.selectedTodo.deadline,
         progress: this.selectedTodo.progress,
       });
-    console.log('selectedTodo', this.selectedTodo);
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
