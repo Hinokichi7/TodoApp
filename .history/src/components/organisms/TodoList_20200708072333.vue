@@ -133,7 +133,6 @@ deleteTodo(todo: ToDo, evt: any) {
 selected(todo: ToDo) {
   this.showForm(false);
   this.$store.commit('todos/selectedId', todo.id);
-  console.log(todo.id);
 }
 
 showForm(reset: boolean) {

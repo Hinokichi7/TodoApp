@@ -66,9 +66,9 @@ export default class TodoForm extends Vue {
     .doc(this.currentUser.email!).collection('todolist');
 
   created() {
-    const selectedId = this.$store.getters['todos/selectedId'];
+    const selectedId = this.$store.getters['todos/selected'];
     let countId = this.$store.getters['todos/countId'];
-    console.log('SELECTED ID===>', selectedId);
+    console.log('SELECTED TODO===>', selectedId);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
         id: 0,
@@ -86,6 +86,7 @@ export default class TodoForm extends Vue {
       this.todo.id = countId;
       return;
     }
+    // this.todo.id = selectedId;
     this.updatesSubCllection();
   }
 

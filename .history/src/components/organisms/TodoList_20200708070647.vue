@@ -96,6 +96,7 @@ currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
 todos: any[] = []
+selectedId = 0
 
 created() {
   this.getData();
@@ -108,16 +109,15 @@ async getData() {
 }
 async getId() {
   const qSnapshot = await this.db
-    .orderBy('createdAt')
-    .get();
+  .orderBy('createdAt')
+  .get();
   const maxId = qSnapshot.docs[qSnapshot.size - 1].id;
   this.$store.commit('todos/countId', maxId);
 }
 
 async deleteDocument() {
-  const selectedId = this.$store.getters['todos/selectedId'];
   const qSnapshot = await this.db
-    .where('id', '==', selectedId)
+    .where('id', '==', this.selectedId)
     .get();
   qSnapshot.docs.map(async (dSnapshot) => {
     await dSnapshot.ref.delete();
@@ -131,9 +131,10 @@ deleteTodo(todo: ToDo, evt: any) {
 }
 
 selected(todo: ToDo) {
+  this.selectedId = todo.id;
+  console.log(this.selectedId);
   this.showForm(false);
-  this.$store.commit('todos/selectedId', todo.id);
-  console.log(todo.id);
+  this.$store.commit('todos/selected', todo);
 }
 
 showForm(reset: boolean) {

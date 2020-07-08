@@ -66,9 +66,9 @@ export default class TodoForm extends Vue {
     .doc(this.currentUser.email!).collection('todolist');
 
   created() {
-    const selectedId = this.$store.getters['todos/selectedId'];
+    const selectedId = this.$store.getters['todos/selected'];
     let countId = this.$store.getters['todos/countId'];
-    console.log('SELECTED ID===>', selectedId);
+    // console.log('SELECTED TODO===>', selectedToDo);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
         id: 0,
@@ -86,7 +86,8 @@ export default class TodoForm extends Vue {
       this.todo.id = countId;
       return;
     }
-    this.updatesSubCllection();
+    this.todo.id = selectedId;
+    // this.updatesSubCllection();
   }
 
   async createSubCollection() {
@@ -104,18 +105,10 @@ export default class TodoForm extends Vue {
       });
   }
 
-  async updatesSubCllection() {
-    const selectedId = this.$store.getters['todos/selectedId'];
-    await this.db.doc(`todolist/${selectedId}`)
-      .update({
-        title: this.todo.title,
-        detail: this.todo.detail,
-        note: this.todo.note,
-        priority: this.todo.priority,
-        deadline: this.todo.deadline,
-        progress: this.todo.progress,
-      });
-  }
+  // async updatesSubCllection() {
+  //   await this.db.doc()
+  //   .update({})
+  // }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];

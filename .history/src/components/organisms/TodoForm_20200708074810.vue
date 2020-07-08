@@ -86,6 +86,7 @@ export default class TodoForm extends Vue {
       this.todo.id = countId;
       return;
     }
+    // this.todo.id = selectedId;
     this.updatesSubCllection();
   }
 

@@ -58,8 +58,8 @@ export default {
     // deleteTodo(state: any, deleteTodo: ToDo) {
     //   state.todos = state.todos.filter((todo: ToDo) => todo !== deleteTodo);
     // },
-    selectedId(state: any, id: string) {
-      state.selectedId = id;
+    selectedId(state: any, selectedId: string) {
+      state.selectedId = selectedId;
     },
     resetSelected(state: any) {
       state.selectedToDo = null;

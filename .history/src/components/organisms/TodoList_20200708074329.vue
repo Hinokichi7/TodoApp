@@ -41,7 +41,7 @@
     <v-col cols="12" sm="8" offset-sm="2">
         <v-card class="mx-auto">
           <v-list two-line subheader>
-            <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo)">
+            <v-list-item v-for="(todo,id) in todos" :key="id" @click="selected(todo.id)">
                 <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo, $event)">
                   <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
                 </v-list-item-icon>
