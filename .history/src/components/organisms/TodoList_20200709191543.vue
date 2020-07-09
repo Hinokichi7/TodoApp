@@ -10,8 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose()" :key="formCount" @getData="getData"></todo-form>
-                <!-- <todo-form @close="dialogClose()" :key="formCount" @getData="getData" @update="updatesSubCllection"></todo-form> -->
+                <todo-form @close="dialogClose()" :key="formCount" @getData="getData" @update="updatesSubCllection"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -95,7 +94,7 @@ export default class TodoList extends Vue {
 currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
-todos: any[] = []
+todos: ToDo[] = []
 // selectedTodo: any = {
 //   id: '',
 //   title: '',

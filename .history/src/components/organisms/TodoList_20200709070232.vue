@@ -10,8 +10,7 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose()" :key="formCount" @getData="getData"></todo-form>
-                <!-- <todo-form @close="dialogClose()" :key="formCount" @getData="getData" @update="updatesSubCllection"></todo-form> -->
+                <todo-form @close="dialogClose()" :key="formCount" @getData="getData" @update="updatesSubCllection"></todo-form>
               </v-dialog>
 
         </v-toolbar>
@@ -53,6 +52,7 @@
                 <v-list-item-subtitle v-text="todo.detail" />
                 <v-list-item-subtitle v-text="todo.note" />
               </v-list-item-content>
+              <!-- <v-list-item-icon color="#03A9F4" @click="deleteDocument"> -->
               <v-list-item-icon color="#03A9F4" @click="deleteTodo(todo, $event)">
                   <v-icon>mdi-delete</v-icon>
               </v-list-item-icon>
@@ -96,25 +96,34 @@ currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
 todos: any[] = []
-// selectedTodo: any = {
-//   id: '',
-//   title: '',
-//   detail: '',
-//   note: '',
-//   priority: 1,
-//   deadline: new Date().toISOString().substr(0, 10),
-//   createdAt: new Date(),
-//   progress: 'new',
-// };
+selectedTodo: any = {
+  id: new Date(),
+  // selected: false,
+  title: '',
+  detail: '',
+  note: '',
+  priority: 1,
+  deadline: new Date().toISOString().substr(0, 10),
+  createdAt: new Date(),
+  progress: 'new',
+};
 created() {
   this.getData();
+  // this.getBeforeId();
 }
 async getData() {
   const qSnapshot = await this.db.get();
   this.todos = [];
   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
 }
-
+// async getBeforeId() {
+//   const qSnapshot = await this.db
+//     .orderBy('createdAt')
+//     .get();
+//   const beforeId = qSnapshot.docs[qSnapshot.size - 1].id;
+//   console.log(beforeId);
+//   this.$store.commit('todos/beforeId', beforeId);
+// }
 async deleteDocument() {
   const selectedId = this.$store.getters['todos/selectedId'];
   const qSnapshot = await this.db
@@ -139,20 +148,20 @@ selected(todo: any) {
   console.log('update', selectedToDo);
 }
 
-// async updatesSubCllection(todo: ToDoItem) {
-//   todo = this.selectedTodo;// eslint-disable-line
-//   const selectedId = this.$store.getters['todos/selectedId'];
-//   await this.db.doc(`todolist/${selectedId}`)
-//     .update({
-//       title: todo.title,
-//       detail: todo.detail,
-//       note: todo.note,
-//       priority: todo.priority,
-//       deadline: todo.deadline,
-//       progress: todo.progress,
-//     });
-//   console.log('selectedTodo', this.selectedTodo);
-// }
+async updatesSubCllection(todo: ToDoItem) {
+  todo = this.selectedTodo
+  const selectedId = this.$store.getters['todos/selectedId'];
+  await this.db.doc(`todolist/${selectedId}`);
+    .update({
+      title: todo.title,
+      detail: todo.detail,
+      note: todo.note,
+      priority: todo.priority,
+      deadline: todo.deadline,
+      progress: todo.progress,
+    });
+  console.log('selectedTodo', this.selectedTodo);
+}
 showForm(reset: boolean) {
   this.formCount += 1;
   if (reset) {
@@ -160,6 +169,13 @@ showForm(reset: boolean) {
   }
   this.dialog = true;
 }
+// showForm(reset: boolean) {
+//   this.formCount += 1;
+//   if (reset) {
+//     // this.$store.dispatch('todos/resetSelected');
+//   }
+//   this.dialog = true;
+// }
 
 async queryPriority() {
   const qSnapshot = await this.db
@@ -194,14 +210,15 @@ getPriorityColor(todo: ToDo) {
       return this.priorityColors.other;
   }
 }
+
 dialogClose() {
   this.dialog = false;
   this.$store.dispatch('todos/resetSelected');
 }
 
-// completed(todo: ToDo, evt: any) {
-//   evt.stopPropagation();
-//   this.$store.commit('todos/completed', todo);
-// }
+completed(todo: ToDo, evt: any) {
+  evt.stopPropagation();
+  this.$store.commit('todos/completed', todo);
+}
 }
 </script>

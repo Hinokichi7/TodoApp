@@ -59,7 +59,16 @@ export default class TodoForm extends Vue {
   valid = true;
   priorityItem = [1, 2, 3];
   progressItem = ['new', 'working', 'pending', 'discontinued'];
-  todo: ToDo;
+  todo: ToDoItem = {
+    id: new Date(),
+    title: '',
+    detail: '',
+    note: '',
+    priority: 1,
+    deadline: new Date().toISOString().substr(0, 10),
+    createdAt: new Date(),
+    progress: 'new',
+  };
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
@@ -69,7 +78,7 @@ export default class TodoForm extends Vue {
     console.log('SELECTED ID===>', selectedId);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
-        id: '',
+        id: new Date(),
         title: '',
         detail: '',
         note: '',
@@ -99,30 +108,6 @@ export default class TodoForm extends Vue {
       });
   }
 
-  async addTodo() {
-    const addTodo = await this.db.add({
-      id: this.todo.id,
-      title: this.todo.title,
-      detail: this.todo.detail,
-      note: this.todo.note,
-      priority: this.todo.priority,
-      deadline: this.todo.deadline,
-      createdAt: new Date(),
-      progress: this.todo.progress,
-    });
-
-    console.log(addTodo.id);
-
-    return addTodo.id;
-  }
-  submit(): void {
-    if (this.refs.form.validate()) {
-      // this.createSubCollection();
-      this.addTodo();
-      this.close();
-      this.$emit('getData');
-    }
-  }
   update() {
     this.$emit('uadate', this.todo);
   }
@@ -153,6 +138,13 @@ export default class TodoForm extends Vue {
 
   close() {
     this.$emit('close');
+  }
+  submit(): void {
+    if (this.refs.form.validate()) {
+      this.createSubCollection();
+      this.close();
+      this.$emit('getData');
+    }
   }
 }
 </script>

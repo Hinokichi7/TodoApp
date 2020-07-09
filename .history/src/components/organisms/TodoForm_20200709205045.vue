@@ -110,7 +110,7 @@ export default class TodoForm extends Vue {
       createdAt: new Date(),
       progress: this.todo.progress,
     });
-
+    
     console.log(addTodo.id);
 
     return addTodo.id;

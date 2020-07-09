@@ -1,5 +1,5 @@
 export type ToDoItem = {
-    id: string;
+    id: Date;
     title: string;
     detail: string;
     note: string;
@@ -16,7 +16,7 @@ export class ToDo {
     get id() {
       return this._todoItem.id;
     }
-    set id(val: string) {
+    set id(val: Date) {
       this._todoItem.id = val;
     }
 

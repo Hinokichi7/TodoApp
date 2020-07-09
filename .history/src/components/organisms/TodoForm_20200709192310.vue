@@ -101,7 +101,7 @@ export default class TodoForm extends Vue {
 
   async addTodo() {
     const addTodo = await this.db.add({
-      id: this.todo.id,
+      id: '',
       title: this.todo.title,
       detail: this.todo.detail,
       note: this.todo.note,
@@ -110,9 +110,7 @@ export default class TodoForm extends Vue {
       createdAt: new Date(),
       progress: this.todo.progress,
     });
-
     console.log(addTodo.id);
-
     return addTodo.id;
   }
   submit(): void {

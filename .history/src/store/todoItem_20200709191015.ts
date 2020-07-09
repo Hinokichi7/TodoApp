@@ -4,12 +4,14 @@ export default {
   namespaced: true,
   state: {
     selectedId: null,
+    todoId: null,
     // selectedTodo: null,
     // completedTodo: null,
   },
   getters: {
     // selectedToDo: (state: any) => state.todos.find((todo: ToDo) => todo.id === state.selecteId),
     selectedId: (state: any) => state.selectedId,
+    todoId: (state: any) => state.todoId,
     // selectedTodo: (state: any) => state.selectedTodo,
   },
   mutations: {
@@ -22,6 +24,9 @@ export default {
     // },
     selectedId(state: any, id: Date) {
       state.selectedId = id;
+    },
+    addTodoId(state: any, todoId: string) {
+      state.todoId = todoId;
     },
     // selectedTodo(state: any, selectedToDo: any) {
     //   state.selectedTodo = selectedToDo;
