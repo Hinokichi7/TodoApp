@@ -96,7 +96,16 @@ currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
 todos: any[] = []
-
+// selectedTodo: any = {
+//   id: '',
+//   title: '',
+//   detail: '',
+//   note: '',
+//   priority: 1,
+//   deadline: new Date().toISOString().substr(0, 10),
+//   createdAt: new Date(),
+//   progress: 'new',
+// };
 created() {
   this.getData();
 }
@@ -130,6 +139,20 @@ selected(todo: any) {
   console.log('update', selectedToDo);
 }
 
+// async updatesSubCllection(todo: ToDoItem) {
+//   todo = this.selectedTodo;// eslint-disable-line
+//   const selectedId = this.$store.getters['todos/selectedId'];
+//   await this.db.doc(`todolist/${selectedId}`)
+//     .update({
+//       title: todo.title,
+//       detail: todo.detail,
+//       note: todo.note,
+//       priority: todo.priority,
+//       deadline: todo.deadline,
+//       progress: todo.progress,
+//     });
+//   console.log('selectedTodo', this.selectedTodo);
+// }
 showForm(reset: boolean) {
   this.formCount += 1;
   if (reset) {

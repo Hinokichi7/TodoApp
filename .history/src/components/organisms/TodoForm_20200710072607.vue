@@ -100,6 +100,20 @@ export default class TodoForm extends Vue {
       });
   }
 
+  // async addTodo() {
+  //   const addTodo = await this.db.add({
+  //     id: this.todo.id,
+  //     title: this.todo.title,
+  //     detail: this.todo.detail,
+  //     note: this.todo.note,
+  //     priority: this.todo.priority,
+  //     deadline: this.todo.deadline,
+  //     createdAt: new Date(),
+  //     progress: this.todo.progress,
+  //   });
+  //   console.log(addTodo.id);
+  //   return addTodo.id;
+  // }
   submit(): void {
     if (this.refs.form.validate()) {
       this.createSubCollection();
