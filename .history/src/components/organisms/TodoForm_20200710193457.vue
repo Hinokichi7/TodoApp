@@ -63,13 +63,12 @@ export default class TodoForm extends Vue {
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
+  selectedId = ''
 
   created() {
-    const selectedId = this.$store.getters['todos/selectedId'];
-    const selectedTodo = this.$store.getters['todos/selectedTodo'];
-    console.log('SELECTED ID===>', selectedId);
-    console.log('SELECTED TODO===>', selectedTodo);
-    if (selectedId === null) {
+    this.selectedId = this.$store.getters['todos/selectedId'];
+    console.log('SELECTED ID===>', this.selectedId);
+    if (this.selectedId === null) {
       const todoItem: ToDoItem = {
         id: '',
         title: '',
@@ -83,7 +82,8 @@ export default class TodoForm extends Vue {
       this.todo = new ToDo(todoItem);
       return;
     }
-    this.todo = selectedTodo;
+    // this.todo.id = selectedId;
+    this.updateTodo();
   }
 
   async createTodo() {
@@ -105,7 +105,7 @@ export default class TodoForm extends Vue {
   submit(): void {
     if (this.refs.form.validate()) {
       this.createTodo();
-      this.updateTodo();
+      // this.addTodo();
       this.close();
       this.$emit('getTodo');
     }
@@ -114,6 +114,7 @@ export default class TodoForm extends Vue {
   //   this.$emit('uadate', this.todo);
   // }
   async updateTodo() {
+    this.todo.id = this.selectedId;
     await this.db.doc(`todolist/${this.todo.id}`)
       .update({
         title: this.todo.title,

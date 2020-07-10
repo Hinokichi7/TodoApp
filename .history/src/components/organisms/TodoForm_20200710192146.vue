@@ -66,9 +66,7 @@ export default class TodoForm extends Vue {
 
   created() {
     const selectedId = this.$store.getters['todos/selectedId'];
-    const selectedTodo = this.$store.getters['todos/selectedTodo'];
     console.log('SELECTED ID===>', selectedId);
-    console.log('SELECTED TODO===>', selectedTodo);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
         id: '',
@@ -83,7 +81,8 @@ export default class TodoForm extends Vue {
       this.todo = new ToDo(todoItem);
       return;
     }
-    this.todo = selectedTodo;
+    this.todo.id = selectedId;
+    this.update();
   }
 
   async createTodo() {
@@ -105,25 +104,27 @@ export default class TodoForm extends Vue {
   submit(): void {
     if (this.refs.form.validate()) {
       this.createTodo();
-      this.updateTodo();
+      // this.addTodo();
       this.close();
       this.$emit('getTodo');
     }
   }
-  // async update() {
-  //   this.$emit('uadate', this.todo);
-  // }
-  async updateTodo() {
-    await this.db.doc(`todolist/${this.todo.id}`)
-      .update({
-        title: this.todo.title,
-        detail: this.todo.detail,
-        note: this.todo.note,
-        priority: this.todo.priority,
-        deadline: this.todo.deadline,
-        progress: this.todo.progress,
-      });
+  update() {
+    this.$emit('uadate', this.todo);
   }
+  // async updatesSubCllection() {
+  //   const selectedId = this.$store.getters['todos/selectedId'];
+  //   await this.db.doc(`todolist/${selectedId}`)
+  //     .update({
+  //       title: this.selectedTodo.title,
+  //       detail: this.selectedTodo.detail,
+  //       note: this.selectedTodo.note,
+  //       priority: this.selectedTodo.priority,
+  //       deadline: this.selectedTodo.deadline,
+  //       progress: this.selectedTodo.progress,
+  //     });
+  //   console.log('selectedTodo', this.selectedTodo);
+  // }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];

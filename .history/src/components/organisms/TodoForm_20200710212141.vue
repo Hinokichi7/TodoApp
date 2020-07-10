@@ -113,7 +113,7 @@ export default class TodoForm extends Vue {
   // async update() {
   //   this.$emit('uadate', this.todo);
   // }
-  async updateTodo() {
+  async updateTodo(selectedTodo: any) {
     await this.db.doc(`todolist/${this.todo.id}`)
       .update({
         title: this.todo.title,

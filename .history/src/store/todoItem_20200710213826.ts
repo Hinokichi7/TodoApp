@@ -17,7 +17,9 @@ export default {
       state.completedTodo = todo;
       state.completedTodo.progress = 'completed';
     },
-
+    // deleteTodo(state: any, deleteTodo: ToDo) {
+    //   state.todos = state.todos.filter((todo: ToDo) => todo !== deleteTodo);
+    // },
     selectedId(state: any, id: string) {
       state.selectedId = id;
     },

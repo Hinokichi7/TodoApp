@@ -10,8 +10,8 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form @close="dialogClose()" :key="formCount" @getTodo="getTodo"></todo-form>
-                <!-- <todo-form @close="dialogClose()" :key="formCount" @getTodo="getTodo" @update="updateTodo"></todo-form> -->
+                <todo-form @close="dialogClose()" :key="formCount" @getData="getData"></todo-form>
+                <!-- <todo-form @close="dialogClose()" :key="formCount" @getData="getData" @update="updatesSubCllection"></todo-form> -->
               </v-dialog>
 
         </v-toolbar>
@@ -107,38 +107,34 @@ async getTodo() {
 }
 
 
-async selected(todo: any) {
+selected(todo: any) {
   this.showForm(false);
   this.$store.commit('todos/selectedId', todo.id);
   // const selectedId = this.$store.getters['todos/selectedId'];
   // const selectedToDo = this.todos.find((selectedTodo: any) => todo.id === selectedId);
   // console.log('update', selectedToDo);
-  const qSnapshot = await this.db
+  const qSnapshot = this.db
     .where('id', '==', todo.id)
     .get();
-  const selectedTodo = qSnapshot.docs.map((dSnapshot) => dSnapshot.data());
-  this.$store.commit('todos/selectedTodo', selectedTodo);
+    console.log('selectTodo', qSnapshot);
 }
-// async deleteDocument() {
-//   const selectedId = this.$store.getters['todos/selectedId'];
-//   const qSnapshot = await this.db
-//     .where('id', '==', selectedId)
-//     .get();
-//   qSnapshot.docs.map(async (dSnapshot) => {
-//     await dSnapshot.ref.delete();
-//   });
-//   this.getTodo();
-// }
-async deleteTodo(todo: any, evt: any) {
-  evt.stopPropagation();
+async deleteDocument() {
+  const selectedId = this.$store.getters['todos/selectedId'];
   const qSnapshot = await this.db
-    .where('id', '==', todo.id)
+    .where('id', '==', selectedId)
     .get();
   qSnapshot.docs.map(async (dSnapshot) => {
     await dSnapshot.ref.delete();
   });
   this.getTodo();
 }
+deleteTodo(todo: any, evt: any) {
+  evt.stopPropagation();
+  this.deleteDocument();
+  // this.$store.commit('todos/deleteTodo', todo);
+}
+
+
 
 showForm(reset: boolean) {
   this.formCount += 1;
@@ -186,13 +182,9 @@ dialogClose() {
   this.$store.dispatch('todos/resetSelected');
 }
 
-async completed(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/completed', todo);
-  await this.db.doc(todo.id)
-    .update({
-      progress: 'completed',
-    });
-}
+// completed(todo: ToDo, evt: any) {
+//   evt.stopPropagation();
+//   this.$store.commit('todos/completed', todo);
+// }
 }
 </script>

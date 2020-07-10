@@ -132,12 +132,13 @@ async selected(todo: any) {
 async deleteTodo(todo: any, evt: any) {
   evt.stopPropagation();
   const qSnapshot = await this.db
-    .where('id', '==', todo.id)
-    .get();
+   .where('id', '==', todo.id)
+   .get();
   qSnapshot.docs.map(async (dSnapshot) => {
     await dSnapshot.ref.delete();
   });
   this.getTodo();
+  // this.$store.commit('todos/deleteTodo', todo);
 }
 
 showForm(reset: boolean) {

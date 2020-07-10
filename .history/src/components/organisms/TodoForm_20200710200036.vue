@@ -66,9 +66,8 @@ export default class TodoForm extends Vue {
 
   created() {
     const selectedId = this.$store.getters['todos/selectedId'];
-    const selectedTodo = this.$store.getters['todos/selectedTodo'];
+    const selectedTodo = this.$store.getters['todos/selectedId'];
     console.log('SELECTED ID===>', selectedId);
-    console.log('SELECTED TODO===>', selectedTodo);
     if (selectedId === null) {
       const todoItem: ToDoItem = {
         id: '',
@@ -105,7 +104,7 @@ export default class TodoForm extends Vue {
   submit(): void {
     if (this.refs.form.validate()) {
       this.createTodo();
-      this.updateTodo();
+      // this.addTodo();
       this.close();
       this.$emit('getTodo');
     }
@@ -113,7 +112,7 @@ export default class TodoForm extends Vue {
   // async update() {
   //   this.$emit('uadate', this.todo);
   // }
-  async updateTodo() {
+  async updateTodo(selectedTodo: any) {
     await this.db.doc(`todolist/${this.todo.id}`)
       .update({
         title: this.todo.title,

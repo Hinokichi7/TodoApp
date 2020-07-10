@@ -138,6 +138,7 @@ async deleteTodo(todo: any, evt: any) {
     await dSnapshot.ref.delete();
   });
   this.getTodo();
+  // this.$store.commit('todos/deleteTodo', todo);
 }
 
 showForm(reset: boolean) {

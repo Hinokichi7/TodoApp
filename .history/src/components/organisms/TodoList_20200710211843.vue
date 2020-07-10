@@ -117,27 +117,22 @@ async selected(todo: any) {
     .where('id', '==', todo.id)
     .get();
   const selectedTodo = qSnapshot.docs.map((dSnapshot) => dSnapshot.data());
-  this.$store.commit('todos/selectedTodo', selectedTodo);
+  this.$store.commit('todos/selectedTodo');
 }
-// async deleteDocument() {
-//   const selectedId = this.$store.getters['todos/selectedId'];
-//   const qSnapshot = await this.db
-//     .where('id', '==', selectedId)
-//     .get();
-//   qSnapshot.docs.map(async (dSnapshot) => {
-//     await dSnapshot.ref.delete();
-//   });
-//   this.getTodo();
-// }
-async deleteTodo(todo: any, evt: any) {
-  evt.stopPropagation();
+async deleteDocument() {
+  const selectedId = this.$store.getters['todos/selectedId'];
   const qSnapshot = await this.db
-    .where('id', '==', todo.id)
+    .where('id', '==', selectedId)
     .get();
   qSnapshot.docs.map(async (dSnapshot) => {
     await dSnapshot.ref.delete();
   });
   this.getTodo();
+}
+deleteTodo(todo: any, evt: any) {
+  evt.stopPropagation();
+  this.deleteDocument();
+  // this.$store.commit('todos/deleteTodo', todo);
 }
 
 showForm(reset: boolean) {
@@ -186,13 +181,9 @@ dialogClose() {
   this.$store.dispatch('todos/resetSelected');
 }
 
-async completed(todo: ToDo, evt: any) {
-  evt.stopPropagation();
-  this.$store.commit('todos/completed', todo);
-  await this.db.doc(todo.id)
-    .update({
-      progress: 'completed',
-    });
-}
+// completed(todo: ToDo, evt: any) {
+//   evt.stopPropagation();
+//   this.$store.commit('todos/completed', todo);
+// }
 }
 </script>
