@@ -96,16 +96,16 @@ currentUser = firebase.auth().currentUser!;
 db = firebase.firestore().collection('users')
   .doc(this.currentUser.email!).collection('todolist');
 todos: any[] = []
-todoId: any = null;
+xxx: any = null;
 
 created() {
   this.getTodo();
 }
 async getTodo() {
-  const qSnapshot = await this.db.get();
-  this.todos = [];
-  qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
-  this.todoId = qSnapshot.docs.map((dSnapshot) => dSnapshot.id);
+    const qSnapshot = await this.db.get();
+    // this.todos = [];
+    // qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+    this.xxx = qSnapshot.docs.map((dSnapshot) => dSnapshot.id);
 }
 
 
