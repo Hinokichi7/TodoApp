@@ -60,9 +60,6 @@ export default class TodoForm extends Vue {
       this.$emit('submit', this.editTodo);
     }
   }
-  close() {
-    this.$emit('close');
-  }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];
@@ -73,6 +70,10 @@ export default class TodoForm extends Vue {
   get minDate(): string {
     /* eslint class-methods-use-this: off */
     return new Date().toISOString();
+  }
+
+  close() {
+    this.$emit('close');
   }
 }
 </script>

@@ -19,9 +19,7 @@
               <v-btn  color="primary" class="ma-2" dark small @click="dialog2 = true">Open Calender</v-btn>
               <v-dialog v-model="dialog2" max-width="350px">
                 <v-card>
-                  <v-card-text>
                     <v-date-picker  no-title v-model="editTodo.deadline" :min="minDate" />
-                  </v-card-text>
                   <v-card-actions>
                     <v-btn color="primary" text @click="dialog2 = false">Close</v-btn>
                   </v-card-actions>
@@ -30,7 +28,7 @@
             <v-text-field v-model="editTodo.deadline" :rules="[v => !!v || 'Item is required']" label="Deadline" required />
               <v-container fluid>
               <v-textarea v-model="editTodo.detail" label="detail" />
-              <v-textarea v-model="editTodo.note" label="note" />
+              <v-textarea v-model="editTodo.note" label="note"></v-textarea>
             </v-container>
         </v-form>
       </v-card>
@@ -60,9 +58,6 @@ export default class TodoForm extends Vue {
       this.$emit('submit', this.editTodo);
     }
   }
-  close() {
-    this.$emit('close');
-  }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];
@@ -73,6 +68,10 @@ export default class TodoForm extends Vue {
   get minDate(): string {
     /* eslint class-methods-use-this: off */
     return new Date().toISOString();
+  }
+
+  close() {
+    this.$emit('close');
   }
 }
 </script>

@@ -14,23 +14,30 @@
           </v-toolbar>
         <v-form ref="form" v-model="valid" max-width="500" class="mx-auto">
             <v-text-field v-model="editTodo.title" :counter="20" :rules="titleRules" label="Title" required />
-              <v-select v-model="editTodo.priority" :items="priorityItem" :rules="[v => !!v || 'Item is required']" label="Priority" required />
-              <v-select v-model="editTodo.progress" :items="progressItem" label="Progress" />
-              <v-btn  color="primary" class="ma-2" dark small @click="dialog2 = true">Open Calender</v-btn>
+              <v-select
+                v-model="editTodo.priority" :items="priorityItem" :rules="[v => !!v || 'Item is required']" label="Priority" required
+              ></v-select>
+              <v-select
+                v-model="editTodo.progress" :items="progressItem" label="Progress"
+              ></v-select>
+              <v-btn
+                color="primary" class="ma-2" dark small @click="dialog2 = true">Open Calender</v-btn>
               <v-dialog v-model="dialog2" max-width="350px">
                 <v-card>
                   <v-card-text>
-                    <v-date-picker  no-title v-model="editTodo.deadline" :min="minDate" />
+                    <v-date-picker  no-title v-model="editTodo.deadline" :min="minDate"></v-date-picker>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn color="primary" text @click="dialog2 = false">Close</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-            <v-text-field v-model="editTodo.deadline" :rules="[v => !!v || 'Item is required']" label="Deadline" required />
+            <v-text-field
+              v-model="editTodo.deadline" :rules="[v => !!v || 'Item is required']" label="Deadline" required
+            ></v-text-field>
               <v-container fluid>
-              <v-textarea v-model="editTodo.detail" label="detail" />
-              <v-textarea v-model="editTodo.note" label="note" />
+              <v-textarea v-model="editTodo.detail" label="detail" ></v-textarea>
+              <v-textarea v-model="editTodo.note" label="note"></v-textarea>
             </v-container>
         </v-form>
       </v-card>
@@ -57,11 +64,8 @@ export default class TodoForm extends Vue {
 
   submit(): void {
     if (this.refs.form.validate()) {
-      this.$emit('submit', this.editTodo);
+      this.$emit('submit');
     }
-  }
-  close() {
-    this.$emit('close');
   }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
@@ -73,6 +77,10 @@ export default class TodoForm extends Vue {
   get minDate(): string {
     /* eslint class-methods-use-this: off */
     return new Date().toISOString();
+  }
+
+  close() {
+    this.$emit('close');
   }
 }
 </script>

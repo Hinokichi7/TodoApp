@@ -72,9 +72,13 @@ import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDo, ToDoItem } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
+import TodoFilter from './TodoFilter.vue';
+import TodoSort from './TodoSort.vue';
 @Component({
   components: {
     TodoForm,
+    TodoFilter,
+    TodoSort,
   },
 })
 export default class TodoList extends Vue {
@@ -125,23 +129,23 @@ export default class TodoList extends Vue {
       detail: '',
       note: '',
       priority: 1,
-      deadline: '',
-      createdAt: new Date().toISOString,
+      deadline: new Date(),
+      createdAt: new Date(),
       progress: '',
     };
   }
 
-  // async updateTodo() {
-  //   await this.db.doc(`todolist/${this.todo.id}`)
-  //     .update({
-  //       title: this.todo.title,
-  //       detail: this.todo.detail,
-  //       note: this.todo.note,
-  //       priority: this.todo.priority,
-  //       deadline: this.todo.deadline,
-  //       progress: this.todo.progress,
-  //     });
-  // }
+  async updateTodo() {
+    await this.db.doc(`todolist/${this.todo.id}`)
+      .update({
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        progress: this.todo.progress,
+      });
+  }
   async onSelect(todoId: string) {
     this.showForm(false);
     this.selectedId = todoId;
@@ -149,11 +153,10 @@ export default class TodoList extends Vue {
 
   saveTodo(todo: any) {// eslint-disable-line
     console.log('TODO===>', JSON.stringify(todo));
-    if (this.selectedId === '') {
+    if (this.selectedId === null) {
       this.createTodo(todo);
     }
-    return false;
-    // this.updateTodo();
+    this.updateTodo();
   }
 
   async createTodo(todo: any) {
@@ -228,13 +231,13 @@ export default class TodoList extends Vue {
     this.dialog = false;
   }
 
-  // async completed(todo: ToDo, evt: any) {
-  //   evt.stopPropagation();
-  //   this.$store.commit('todos/completed', todo);
-  //   await this.db.doc(todo.id)
-  //     .update({
-  //       progress: 'completed',
-  //     });
-  // }
+  async completed(todo: ToDo, evt: any) {
+    evt.stopPropagation();
+    this.$store.commit('todos/completed', todo);
+    await this.db.doc(todo.id)
+      .update({
+        progress: 'completed',
+      });
+  }
 }
 </script>

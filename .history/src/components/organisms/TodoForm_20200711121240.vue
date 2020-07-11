@@ -30,7 +30,7 @@
             <v-text-field v-model="editTodo.deadline" :rules="[v => !!v || 'Item is required']" label="Deadline" required />
               <v-container fluid>
               <v-textarea v-model="editTodo.detail" label="detail" />
-              <v-textarea v-model="editTodo.note" label="note" />
+              <v-textarea v-model="editTodo.note" label="note"></v-textarea>
             </v-container>
         </v-form>
       </v-card>
@@ -60,9 +60,6 @@ export default class TodoForm extends Vue {
       this.$emit('submit', this.editTodo);
     }
   }
-  close() {
-    this.$emit('close');
-  }
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];
@@ -73,6 +70,10 @@ export default class TodoForm extends Vue {
   get minDate(): string {
     /* eslint class-methods-use-this: off */
     return new Date().toISOString();
+  }
+
+  close() {
+    this.$emit('close');
   }
 }
 </script>

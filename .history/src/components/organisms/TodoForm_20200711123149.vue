@@ -74,5 +74,6 @@ export default class TodoForm extends Vue {
     /* eslint class-methods-use-this: off */
     return new Date().toISOString();
   }
+
 }
 </script>

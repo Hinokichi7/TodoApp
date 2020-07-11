@@ -126,7 +126,7 @@ export default class TodoList extends Vue {
       note: '',
       priority: 1,
       deadline: '',
-      createdAt: new Date().toISOString,
+      createdAt: new Date(),
       progress: '',
     };
   }

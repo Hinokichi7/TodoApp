@@ -9,14 +9,15 @@
               <v-icon>mdi-plus</v-icon>
               </v-btn>
 
-              <v-dialog v-model="dialog">
+              <!-- <v-dialog v-model="dialog">
                 <todo-form
-                  :todo="selectedTodo"
+                  :todo="todo"
                   :key="formCount"
-                  @submit="saveTodo"
-                  @close="onDialogClose"
+                  @getTodo="getTodo"
+                  @submit="addTodo"
+                  @close="dialogClose()"
                 ></todo-form>
-              </v-dialog>
+              </v-dialog> -->
 
         </v-toolbar>
     </v-col>
@@ -72,9 +73,13 @@ import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDo, ToDoItem } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
+import TodoFilter from './TodoFilter.vue';
+import TodoSort from './TodoSort.vue';
 @Component({
   components: {
     TodoForm,
+    TodoFilter,
+    TodoSort,
   },
 })
 export default class TodoList extends Vue {
@@ -83,7 +88,8 @@ export default class TodoList extends Vue {
     .doc(this.currentUser.email!).collection('todolist');
   todo: ToDo
   allTodos: any[] = []
-  selectedId = '';
+  todoId: any = null
+  selectedId: string
   formCount = 0
   dialog = false
   priorityItems = [1, 2, 3]
@@ -112,66 +118,62 @@ export default class TodoList extends Vue {
     return this.allTodos.map((dSnapShot) => Object.assign(dSnapShot.data(), { id: dSnapShot.id }));
   }
 
-  get selectedTodo(): any {
-    if (this.selectedId === '') {
-      return this.getNewTodo();
+  addTodo() {
+    if (this.selectedId === null) {
+      this.createTodo();
     }
-    return this.todos.find((todo) => todo.id === this.selectedId);
+    this.updateTodo();
   }
-
-  getNewTodo() {// eslint-disable-line
-    return {
-      title: '',
-      detail: '',
-      note: '',
-      priority: 1,
-      deadline: '',
-      createdAt: new Date().toISOString,
-      progress: '',
-    };
+  async createTodo() {
+    const docRef: string = this.db.doc().id;
+    console.log(docRef);
+    await this.db.doc(docRef)
+      .set({
+        id: docRef,
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        createdAt: new Date(),
+        progress: this.todo.progress,
+      });
   }
-
-  // async updateTodo() {
-  //   await this.db.doc(`todolist/${this.todo.id}`)
-  //     .update({
-  //       title: this.todo.title,
-  //       detail: this.todo.detail,
-  //       note: this.todo.note,
-  //       priority: this.todo.priority,
-  //       deadline: this.todo.deadline,
-  //       progress: this.todo.progress,
-  //     });
-  // }
+  async updateTodo() {
+    await this.db.doc(`todolist/${this.todo.id}`)
+      .update({
+        title: this.todo.title,
+        detail: this.todo.detail,
+        note: this.todo.note,
+        priority: this.todo.priority,
+        deadline: this.todo.deadline,
+        progress: this.todo.progress,
+      });
+  }
   async onSelect(todoId: string) {
     this.showForm(false);
     this.selectedId = todoId;
+    console.log(this.selectedId);
+    // this.$store.commit('todos/selectedId', todo.id);
+    // const selectedId = this.$store.getters['todos/selectedId'];
+    // const selectedToDo = this.todos.find((selectedTodo: any) => todo.id === selectedId);
+    // console.log('update', selectedToDo);
+    // const qSnapshot = await this.db
+    //   .where('id', '==', todo.id)
+    //   .get();
+    // const selectedTodo = qSnapshot.docs.map((dSnapshot) => dSnapshot.data());
+    // this.$store.commit('todos/selectedTodo', selectedTodo);
   }
-
-  saveTodo(todo: any) {// eslint-disable-line
-    console.log('TODO===>', JSON.stringify(todo));
-    if (this.selectedId === '') {
-      this.createTodo(todo);
-    }
-    return false;
-    // this.updateTodo();
-  }
-
-  async createTodo(todo: any) {
-    const docRef: string = this.db.doc().id;
-    console.log(docRef);
-    await this.db.doc(docRef).set(todo);
-    // await this.db.doc(docRef)
-    //   .set({
-    //     title: this.todo.title,
-    //     detail: this.todo.detail,
-    //     note: this.todo.note,
-    //     priority: this.todo.priority,
-    //     deadline: this.todo.deadline,
-    //     createdAt: new Date(),
-    //     progress: this.todo.progress,
-    //   });
-  }
-
+  // async deleteDocument() {
+  //   const selectedId = this.$store.getters['todos/selectedId'];
+  //   const qSnapshot = await this.db
+  //     .where('id', '==', selectedId)
+  //     .get();
+  //   qSnapshot.docs.map(async (dSnapshot) => {
+  //     await dSnapshot.ref.delete();
+  //   });
+  //   this.getTodo();
+  // }
   async deleteTodo(todo: any, evt: any) {
     evt.stopPropagation();
     const qSnapshot = await this.db
@@ -224,17 +226,18 @@ export default class TodoList extends Vue {
         return this.priorityColors.other;
     }
   }
-  onDialogClose() {
+  dialogClose() {
     this.dialog = false;
+    this.$store.dispatch('todos/resetSelected');
   }
 
-  // async completed(todo: ToDo, evt: any) {
-  //   evt.stopPropagation();
-  //   this.$store.commit('todos/completed', todo);
-  //   await this.db.doc(todo.id)
-  //     .update({
-  //       progress: 'completed',
-  //     });
-  // }
+  async completed(todo: ToDo, evt: any) {
+    evt.stopPropagation();
+    this.$store.commit('todos/completed', todo);
+    await this.db.doc(todo.id)
+      .update({
+        progress: 'completed',
+      });
+  }
 }
 </script>

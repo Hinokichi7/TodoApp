@@ -72,9 +72,13 @@ import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDo, ToDoItem } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
+import TodoFilter from './TodoFilter.vue';
+import TodoSort from './TodoSort.vue';
 @Component({
   components: {
     TodoForm,
+    TodoFilter,
+    TodoSort,
   },
 })
 export default class TodoList extends Vue {
@@ -126,7 +130,7 @@ export default class TodoList extends Vue {
       note: '',
       priority: 1,
       deadline: '',
-      createdAt: new Date().toISOString,
+      createdAt: new Date(),
       progress: '',
     };
   }
@@ -228,13 +232,13 @@ export default class TodoList extends Vue {
     this.dialog = false;
   }
 
-  // async completed(todo: ToDo, evt: any) {
-  //   evt.stopPropagation();
-  //   this.$store.commit('todos/completed', todo);
-  //   await this.db.doc(todo.id)
-  //     .update({
-  //       progress: 'completed',
-  //     });
-  // }
+  async completed(todo: ToDo, evt: any) {
+    evt.stopPropagation();
+    this.$store.commit('todos/completed', todo);
+    await this.db.doc(todo.id)
+      .update({
+        progress: 'completed',
+      });
+  }
 }
 </script>
