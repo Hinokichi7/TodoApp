@@ -52,7 +52,12 @@ export default class TodoForm extends Vue {
   progressItem = ['new', 'working', 'pending', 'discontinued'];
 
   created() {
+    console.log('INIT TODO ===>', thid.editTodo);
     this.editTodo = JSON.parse(JSON.stringify(this.todo));
+  }
+
+  destroyed() {
+    console.log('FORM DESTROYED');
   }
 
   submit(): void {

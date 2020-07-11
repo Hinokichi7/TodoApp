@@ -28,16 +28,14 @@
             </v-card-actions>
           </v-card>
           <v-container>
-          <v-card>
-            <h4>TODOリスト</h4>
-            <h5>アカウント作成には確認メールのURLからのログインが必要です</h5>
-            <h5>【機能説明】</h5>
-            <h6>①ツールバー+ボタンでTODOリストを新規登録</h6>
-            <h6>②TODOリストを選択して編集・更新</h6>
-            <h6>③ツールバー下のセレクトフォームでTODOリストを抽出・ソート</h6>
-            <h6>④TODOリストの✓アイコンを選択してコンプリート、ゴミ箱アイコンで削除</h6>
-            <h6>TODOリストをデータベースで管理・LOGOUTしてもデータ保持</h6>
-          </v-card>
+          <h5>アカウント作成には確認メールのURLからのログインが必要です</h5>
+          <h5>⭐機能⭐</h5>
+          <h5>①ツールバー+ボタンでTODOリストを新規登録</h5>
+          <h5>②TODOリストを選択して編集・更新</h5>
+          <h5>③セレクトフォームでTODOリストを抽出、ソート</h5>
+          <h5>④✓でリストをコンプリート、ゴミ箱アイコンで削除</h5>
+          <!-- <p class="text-right">Twitterアカウントからの認証は一部機能が利用できません。</p>
+              <v-btn color="cyan" fab small dark @click="twitter"><v-icon>mdi-twitter</v-icon></v-btn> -->
           </v-container>
         </v-col>
       </v-row>

@@ -10,8 +10,8 @@
               </v-btn>
 
               <v-dialog v-model="dialog">
-                <todo-form v-if="dialog"
-                  :todo="getSelectedTodo()"
+                <todo-form
+                  :todo="selectedTodo"
                   :key="formCount"
                   @submit="saveTodo"
                   @close="onDialogClose"
@@ -28,10 +28,10 @@
             <v-select :items="priorityItems" label="Pick Priority" multiple v-model="targetPriority" />
           </v-col>
           <v-col cols="4">
-            <v-select :items="progressItems" label="Pick Progress" multiple v-model="targetProgress"/>
+            <v-select :items="progressItems" label="Pick Progress" multiple v-model="targetProgress" @change="filterProgress" />
           </v-col>
           <v-col cols="4">
-            <v-select :items="sortItems" label="Choose Sortitem" v-model="sortOption" />
+            <v-select :items="sortItems" label="Choose Sortitem" v-model="sortOption" @change="sortTodo" />
           </v-col>
 
           </v-row>
@@ -41,7 +41,7 @@
         <v-card class="mx-auto">
           <v-list two-line subheader>
             <v-list-item v-for="(todo) in todos" :key="todo.id" @click="onSelect(todo.id)">
-                <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo.id, $event)">
+                <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo, $event)">
                   <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
                 </v-list-item-icon>
               <v-list-item-content>
@@ -112,17 +112,15 @@ export default class TodoList extends Vue {
     }
     const sortOp = this.sortOption;
     if (sortOp !== '') {
-      if (this.sortOption === 'deadline' || 'createdAt') {
-        todos.sort((a: any, b: any) => new Date(a[sortOp]).valueOf() - new Date(b[sortOp]).valueOf());
-      } else {
-        todos.sort((a: any, b: any) => a[sortOp] - b[sortOp]);
-      }
+      todos = todos.sort((a: any, b: any) => b.sortOp - a.sortOp);
     }
     return todos;
+    // this.allTodos = this.allTodos.filter((todo: any) => this.allTodos.includes(this.targetPriority));
+    //     const sortOp = this.sortOption;
+    // this.allTodos.sort((a: any, b: any) => b.sortOp - a.sortOp);
   }
 
-  getSelectedTodo(): any {
-    console.log('GET ===>', this.selectedId);
+  get selectedTodo(): any {
     if (this.selectedId === '') {
       return this.getNewTodo();
     }
@@ -135,20 +133,12 @@ export default class TodoList extends Vue {
       detail: '',
       note: '',
       priority: 1,
-      deadline: this.getDate(),
+      deadline: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       progress: 'new',
     };
   }
-  getDate() {// eslint-disable-line
-    const dt = new Date();
-    const y = dt.getFullYear();
-    const m = `00${dt.getMonth() + 1}`.slice(-2);
-    const d = `00${dt.getDate() + 1}`.slice(-2);
-    // const d = (00' + dt.getDate()).slice(-2);
-    const result = `${y}-${m}-${d}`;
-    return result;
-  }
+
   async onSelect(todoId: string) {
     this.showForm(false);
     this.selectedId = todoId;
@@ -165,7 +155,12 @@ export default class TodoList extends Vue {
   }
 
   async createTodo(todo: any) {
+    console.log('called create');
     await this.db.doc().set(todo);
+    // this.loadTodo();
+    // const docRef: string = this.db.doc().id;
+    // console.log(docRef);
+    // await this.db.doc(docRef).set(todo);
   }
 
   async updateTodo(todo: any) {
@@ -187,9 +182,45 @@ export default class TodoList extends Vue {
   }
 
   showForm(reset: boolean) {
+    this.formCount += 1;
+    if (reset) {
+      this.$store.dispatch('todos/resetSelected');
+    }
     this.dialog = true;
   }
-
+  // filterPriority() {
+  //   this.allTodos = this.allTodos.filter((todo: any) => this.allTodos.includes(this.targetPriority));
+  //   this.allTodos = this.allTodos.filter((todo: any) => todo.priority === this.targetPriority);
+  // }
+  // filterProgress() {
+  //   this.allTodos = this.allTodos.filter((todo: any) => this.allTodos.includes(this.targetProgress));
+  //   // this.allTodos = this.allTodos.filter((todo: any) => todo.priority === this.targetProgress);
+  // }
+  // sortTodo() {
+  //   const sortOp = this.sortOption;
+  //   this.allTodos.sort((a: any, b: any) => b.sortOp - a.sortOp);
+  // }
+  // async queryPriority() {
+  //   const qSnapshot = await this.db
+  //     .where('priority', 'in', this.targetPriority)
+  //     .get();
+  //   this.allTodos = [];
+  //   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+  // }
+  // async queryProgress() {
+  //   const qSnapshot = await this.db
+  //     .where('progress', 'in', this.targetProgress)
+  //     .get();
+  //   this.allTodos = [];
+  //   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+  // }
+  // async sort() {
+  //   const qSnapshot = await this.db
+  //     .orderBy(this.sortOption)
+  //     .get();
+  //   this.allTodos = [];
+  //   qSnapshot.docs.map((dSnapshot) => this.todos.push(dSnapshot.data()));
+  // }
   getPriorityColor(todo: ToDo) {
     switch (todo.priority) {
       case 1:
@@ -204,17 +235,15 @@ export default class TodoList extends Vue {
   }
   onDialogClose() {
     this.dialog = false;
-    this.formCount += 1;
-    this.selectedId = '';
   }
 
-  async completed(todoId: string, evt: any) {
-    evt.stopPropagation();
-    await this.db.doc(todoId)
-      .update({
-        progress: 'completed',
-      });
-    this.loadTodo();
-  }
+  // async completed(todo: ToDo, evt: any) {
+  //   evt.stopPropagation();
+  //   this.$store.commit('todos/completed', todo);
+  //   await this.db.doc(todo.id)
+  //     .update({
+  //       progress: 'completed',
+  //     });
+  // }
 }
 </script>

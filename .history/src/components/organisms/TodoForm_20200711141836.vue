@@ -59,11 +59,9 @@ export default class TodoForm extends Vue {
     if (this.refs.form.validate()) {
       this.$emit('submit', this.editTodo);
     }
-    this.close();
-  }
-  close() {
     this.$emit('close');
   }
+
   titleRules: Function[] = [
     (v: any) => !!v || 'Title is required',
   ];

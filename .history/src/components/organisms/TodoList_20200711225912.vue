@@ -119,6 +119,9 @@ export default class TodoList extends Vue {
       }
     }
     return todos;
+    // this.allTodos = this.allTodos.filter((todo: any) => this.allTodos.includes(this.targetPriority));
+    //     const sortOp = this.sortOption;
+    // this.allTodos.sort((a: any, b: any) => b.sortOp - a.sortOp);
   }
 
   getSelectedTodo(): any {

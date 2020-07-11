@@ -55,6 +55,10 @@ export default class TodoForm extends Vue {
     this.editTodo = JSON.parse(JSON.stringify(this.todo));
   }
 
+  destroyed() {
+    console.log('FORM DESTROYED');
+  }
+
   submit(): void {
     if (this.refs.form.validate()) {
       this.$emit('submit', this.editTodo);

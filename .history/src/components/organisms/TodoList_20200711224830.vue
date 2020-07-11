@@ -113,12 +113,15 @@ export default class TodoList extends Vue {
     const sortOp = this.sortOption;
     if (sortOp !== '') {
       if (this.sortOption === 'deadline' || 'createdAt') {
-        todos.sort((a: any, b: any) => new Date(a[sortOp]).valueOf() - new Date(b[sortOp]).valueOf());
+        todos.sort((a: any, b: any) => new Date(a[sortOp]) - new Date(b[sortOp]));
       } else {
         todos.sort((a: any, b: any) => a[sortOp] - b[sortOp]);
       }
     }
     return todos;
+    // this.allTodos = this.allTodos.filter((todo: any) => this.allTodos.includes(this.targetPriority));
+    //     const sortOp = this.sortOption;
+    // this.allTodos.sort((a: any, b: any) => b.sortOp - a.sortOp);
   }
 
   getSelectedTodo(): any {
