@@ -224,13 +224,6 @@ export default class TodoList extends Vue {
 
   sendMail() {// eslint-disable-line
     const mailer = firebase.functions().httpsCallable('sendMail');
-    mailer(this.nearDeadlineTodo)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 }
 </script>

@@ -17,10 +17,11 @@ const firebaseConfig = {
   messagingSenderId: '617927059044',
   appId: '1:617927059044:web:4391c7671b0fca6fd62171',
 };
+const functions = firebase.functions();
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-export const functions = firebase.functions();// eslint-disable-line
+export { functions };
 
 new Vue({
   router,

@@ -33,6 +33,7 @@
           <v-col cols="4">
             <v-select :items="sortItems" label="Choose Sortitem" v-model="sortOption" />
           </v-col>
+
           </v-row>
         </v-container>
     </v-col>
@@ -56,15 +57,13 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="sendMail">sendMail</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import firebase, { firestore, functions } from 'firebase';
+import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
-// import '@firebase/functions';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
 @Component({
@@ -92,10 +91,6 @@ export default class TodoList extends Vue {
     lv2: '#F57C00',
     lv3: '#03A9F4',
     other: 'black',
-  }
-  nearDeadlineTodo = {
-    userMail: this.currentUser.email,
-    title: 'DeadTODO',
   }
 
   async created() {
@@ -220,17 +215,6 @@ export default class TodoList extends Vue {
         progress: 'completed',
       });
     this.loadTodo();
-  }
-
-  sendMail() {// eslint-disable-line
-    const mailer = firebase.functions().httpsCallable('sendMail');
-    mailer(this.nearDeadlineTodo)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 }
 </script>

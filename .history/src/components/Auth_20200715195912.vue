@@ -95,7 +95,7 @@ export default class Auth extends Vue {
       .then(async () => {
         const user = firebase.auth().currentUser;
         console.log(user?.uid);
-        this.$router.push('/');
+        this['$router'].push('/');
       })
       .catch((error) => {
         window.alert('wrong email/password');

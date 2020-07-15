@@ -227,10 +227,10 @@ export default class TodoList extends Vue {
     mailer(this.nearDeadlineTodo)
       .then(() => {
         console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    })
+      .catch(err => {
+        console.log(err)
+    });
   }
 }
 </script>

@@ -226,11 +226,11 @@ export default class TodoList extends Vue {
     const mailer = firebase.functions().httpsCallable('sendMail');
     mailer(this.nearDeadlineTodo)
       .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+      console.log('sendMail');
+    })
+      .catch(err => {
+      console.log(err)
+    });
+  } 
 }
 </script>

@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-export const functions = firebase.functions();// eslint-disable-line
+export const functions = firebase.functions();
 
 new Vue({
   router,

@@ -228,9 +228,9 @@ export default class TodoList extends Vue {
       .then(() => {
         console.log('sendMail');
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
-      });
+    });
   }
 }
 </script>

@@ -64,7 +64,7 @@
 <script lang="ts">
 import firebase, { firestore, functions } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
-// import '@firebase/functions';
+import '@firebase/functions';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
 @Component({
@@ -222,15 +222,8 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  sendMail() {// eslint-disable-line
+  sendMail() {
     const mailer = firebase.functions().httpsCallable('sendMail');
-    mailer(this.nearDeadlineTodo)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 }
 </script>

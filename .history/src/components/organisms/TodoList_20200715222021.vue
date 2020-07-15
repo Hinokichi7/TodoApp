@@ -230,7 +230,7 @@ export default class TodoList extends Vue {
       })
       .catch((err) => {
         console.log(err);
-      });
+    });
   }
 }
 </script>

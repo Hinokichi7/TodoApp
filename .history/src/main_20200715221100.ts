@@ -1,4 +1,5 @@
 import * as firebase from 'firebase/app';
+import '@firebase/functions';
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';

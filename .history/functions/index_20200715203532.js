@@ -37,13 +37,7 @@ exports.sendMail = functions.https.onCall(async (data, context) => {
     subject: `${data.title}の締切1日前です`,//todoTitle
     text: NearDeadlineTodo(data)
   };
-  try {
-    await mailTransport.sendMail(userMail);
-   } catch (e) {
-    console.error(`send failed. ${e}`);
-    throw new functions.https.HttpsError('internal', 'send failed');
-   }
-  });
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
