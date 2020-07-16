@@ -42,8 +42,8 @@ exports.sendMail = functions.https.onCall((data, context) => {
         return console.log(err)
     }
     return console.log('success')
-  })
-});
+})
+  });
 // exports.sendMail = functions.https.onCall(async (data, context) => {
 //   // メール設定userMail
 //   let userMail = {

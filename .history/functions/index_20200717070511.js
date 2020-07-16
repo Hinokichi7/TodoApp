@@ -18,7 +18,7 @@ const mailTransport = nodemailer.createTransport({
 });
 
 // 管理者用のメールテンプレート→uresMail text
-const noticeMail = data => {
+const nearDeadlineTodo = data => {
   return `${data.title}締め切り1日前です。
 
 TODO：
@@ -29,21 +29,21 @@ todoapp-8da1b.firebaseapp.com
 `;
 };
 
-exports.sendMail = functions.https.onCall((data, context) => {
+exports.sendMail = functions.https.onCall(async (data, context) => {
   // メール設定userMail
   let userMail = {
     from: gmailEmail,//hinokichi
     to: data.userMail,//userEmail
     subject: `${data.title}の締切1日前です`,//todoTitle
-    text: noticeMail(data)
+    text: nearDeadlineTodo(data)
   };
-  mailTransport.sendMail(userMail, (err, info) => {
-    if (err) {
-        return console.log(err)
-    }
-    return console.log('success')
-  })
-});
+  try {
+    await mailTransport.sendMail(userMail);
+   } catch (e) {
+    console.error(`send failed. ${e}`);
+    throw new functions.https.HttpsError('internal', 'send failed');
+   }
+  });
 // exports.sendMail = functions.https.onCall(async (data, context) => {
 //   // メール設定userMail
 //   let userMail = {
