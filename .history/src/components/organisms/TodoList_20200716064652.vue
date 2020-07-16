@@ -62,9 +62,9 @@
 </template>
 
 <script lang="ts">
-import firebase, { firestore } from 'firebase';
+import firebase, { firestore, functions } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
-import functions from '../../main';
+// import '@firebase/functions';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
 @Component({
@@ -94,7 +94,7 @@ export default class TodoList extends Vue {
     other: 'black',
   }
   nearDeadlineTodo = {
-    userMail: this.currentUser.email,
+    userMail: 'faeriepunks7610@gmail.com',
     title: 'DeadTODO',
   }
 
@@ -223,7 +223,7 @@ export default class TodoList extends Vue {
   }
 
   sendMail() {// eslint-disable-line
-    const mailer = functions.httpsCallable('sendMail');
+    const mailer = firebase.functions().httpsCallable('sendMail');
     mailer(this.nearDeadlineTodo)
       .then(() => {
         console.log('sendMail');

@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
+// export const functions = firebase.functions();// eslint-disable-line
 const functions = firebase.functions();
 export default functions;
 

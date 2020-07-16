@@ -20,9 +20,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-const functions = firebase.functions();
-export default functions;
+export const functions = firebase.functions();
 
 new Vue({
   router,

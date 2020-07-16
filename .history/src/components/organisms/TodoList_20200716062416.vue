@@ -56,15 +56,15 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="sendMail">sendMail</v-btn>
+        <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import firebase, { firestore } from 'firebase';
+import firebase, { firestore, functions } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
-import functions from '../../main';
+// import '@firebase/functions';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
 @Component({
@@ -222,15 +222,15 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  sendMail() {// eslint-disable-line
-    const mailer = functions.httpsCallable('sendMail');
-    mailer(this.nearDeadlineTodo)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // sendMail() {// eslint-disable-line
+  //   const mailer = firebase.functions().httpsCallable('sendMail');
+  //   mailer(this.nearDeadlineTodo)
+  //     .then(() => {
+  //       console.log('sendMail');
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 }
 </script>

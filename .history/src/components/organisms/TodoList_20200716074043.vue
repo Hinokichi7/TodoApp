@@ -64,7 +64,7 @@
 <script lang="ts">
 import firebase, { firestore } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
-import functions from '../../main';
+import { functions } from '../../main'
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
 @Component({

@@ -33,7 +33,7 @@ exports.sendMail = functions.https.onCall(async (data, context) => {
   // メール設定userMail
   let userMail = {
     from: gmailEmail,//hinokichi
-    to: data.userMail,//userEmail
+    to: 'faeriepunks7610@gmail.com',//userEmail
     subject: `${data.title}の締切1日前です`,//todoTitle
     text: NearDeadlineTodo(data)
   };
