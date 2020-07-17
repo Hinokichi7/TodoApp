@@ -6,6 +6,7 @@ const gmailEmail = functions.config().gmail.email;
 
 const gmailPassword = functions.config().gmail.password;
 
+// const adminEmail = functions.config().admin.email;
 
 // 送信に使用するメールサーバーの設定 環境変数 hinokichi
 const mailTransport = nodemailer.createTransport({
