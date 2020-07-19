@@ -23,8 +23,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="login">login</v-btn>
-              <v-btn color="primary" @click="signUp">Sign up</v-btn>
+              <v-btn color="primary" @click="signin">Sign in</v-btn>
+              <v-btn color="primary" @click="create">Create Account</v-btn>
             </v-card-actions>
           </v-card>
           <v-container>
@@ -41,7 +41,7 @@
             <h6>・ツールバー下のセレクトフォームでTODOリストを抽出・ソート</h6>
             <h6>・TODOリストの✓アイコンを選択してコンプリート、ゴミ箱アイコンで削除</h6>
             <h6>TODOリストをデータベースで管理・LOGOUTしてもデータ保持</h6>
-            <h6>※現在締め切り通知メール実装途中です</h6>
+            <h6>現在締め切り通知メール実装途中です</h6>
           </v-card>
           </v-container>
         </v-col>
@@ -68,7 +68,7 @@ export default class Auth extends Vue {
     handleCodeInApp: true,
   };
 
-  signUp() {
+  create() {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then(() => {
         // const credential = firebase.auth.EmailAuthProvider.credential(this.email, this.password);
@@ -95,7 +95,7 @@ export default class Auth extends Vue {
       });
   }
 
-  login() {
+  signin() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(async () => {
         const user = firebase.auth().currentUser;

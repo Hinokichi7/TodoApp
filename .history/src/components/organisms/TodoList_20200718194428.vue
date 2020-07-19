@@ -227,7 +227,7 @@ export default class TodoList extends Vue {
     console.log('AllTodos===>', xxx);
     const now = new Date();
     // const judgeLine = this.getDate();
-    const judgeLine = '2020-07-28';
+    const judgeLine = '2022-01-01';
     console.log('JUDGE LINE===>', judgeLine);
     const result = xxx.filter((x) => new Date(x.deadline) < new Date(judgeLine));
     console.log('RESULT===>', result);
@@ -240,8 +240,6 @@ export default class TodoList extends Vue {
 
   sendMail() {// eslint-disable-line
     const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    console.log(this.beforeDeadlineTodo.userMail, this.beforeDeadlineTodo.title);
     mailer(this.beforeDeadlineTodo)
       .then(() => {
         console.log('sendMail');

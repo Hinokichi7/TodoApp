@@ -23,8 +23,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="login">login</v-btn>
-              <v-btn color="primary" @click="signUp">Sign up</v-btn>
+              <!-- <v-btn color="primary" @click="login">login</v-btn>
+              <v-btn color="primary" @click="signUp">Sign up</v-btn> -->
             </v-card-actions>
           </v-card>
           <v-container>

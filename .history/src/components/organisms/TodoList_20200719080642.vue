@@ -56,8 +56,8 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getBeforeDeadlineTodo">getBeforeDeadlineTodo</v-btn>
-        <v-btn @click="sendMail">sendMail</v-btn>
+        <!-- <v-btn @click="getBeforeDeadlineTodo">getBeforeDeadlineTodo</v-btn>
+        <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
 </template>
@@ -241,7 +241,6 @@ export default class TodoList extends Vue {
   sendMail() {// eslint-disable-line
     const mailer = firebase.functions().httpsCallable('sendMail');
     console.log('mailer===>', mailer);
-    console.log(this.beforeDeadlineTodo.userMail, this.beforeDeadlineTodo.title);
     mailer(this.beforeDeadlineTodo)
       .then(() => {
         console.log('sendMail');

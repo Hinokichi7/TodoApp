@@ -39,24 +39,23 @@
     <v-col cols="12" sm="8" offset-sm="2">
         <v-card class="mx-auto">
           <v-list two-line subheader>
-            <v-list-item v-for="(targetTodo) in todos" :key="targetTodo.id" @click="onSelect(targetTodo.id)">
-                <v-list-item-icon v-if="targetTodo.progress !== 'completed'" @click="completed(targetTodo.id, $event)">
+            <v-list-item v-for="(todo) in todos" :key="todo.id" @click="onSelect(todo.id)">
+                <v-list-item-icon v-if="todo.progress !== 'completed'" @click="completed(todo.id, $event)">
                   <v-icon color="#4CAF50">mdi-check-circle-outline</v-icon>
                 </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title v-text="targetTodo.title" :style="{color: getPriorityColor(targetTodo)}"/>
-                <v-list-item-subtitle v-text="targetTodo.progress"/>
-                <v-list-item-subtitle class="text--primary" v-text="targetTodo.deadline" />
-                <v-list-item-subtitle v-text="targetTodo.detail" />
-                <v-list-item-subtitle v-text="targetTodo.note" />
+                <v-list-item-title v-text="todo.title" :style="{color: getPriorityColor(todo)}"/>
+                <v-list-item-subtitle v-text="todo.progress"/>
+                <v-list-item-subtitle class="text--primary" v-text="todo.deadline" />
+                <v-list-item-subtitle v-text="todo.detail" />
+                <v-list-item-subtitle v-text="todo.note" />
               </v-list-item-content>
-              <v-list-item-icon color="#03A9F4" @click="deleteTodo(targetTodo.id, $event)">
+              <v-list-item-icon color="#03A9F4" @click="deleteTodo(todo.id, $event)">
                   <v-icon>mdi-delete</v-icon>
               </v-list-item-icon>
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getBeforeDeadlineTodo">getBeforeDeadlineTodo</v-btn>
         <v-btn @click="sendMail">sendMail</v-btn>
     </v-col>
   </v-row>
@@ -76,7 +75,7 @@ export default class TodoList extends Vue {
   currentUser = firebase.auth().currentUser!;
   db = firebase.firestore().collection('users')
     .doc(this.currentUser.email!).collection('todolist');
-  targetTodo: ToDo
+  todo: ToDo
   allTodos: any[] = []
   selectedId = '';
   formCount = 0
@@ -110,10 +109,10 @@ export default class TodoList extends Vue {
   get todos() {
     let todos = this.allTodos.map((dSnapShot) => Object.assign(dSnapShot.data(), { id: dSnapShot.id }));
     if (this.targetPriority.length !== 0) {
-      todos = todos.filter((targetTodo: any) => this.targetPriority.includes(targetTodo.priority));
+      todos = todos.filter((todo: any) => this.targetPriority.includes(todo.priority));
     }
     if (this.targetProgress.length !== 0) {
-      todos = todos.filter((targetTodo: any) => this.targetProgress.includes(targetTodo.progress));
+      todos = todos.filter((todo: any) => this.targetProgress.includes(todo.progress));
     }
     const sortOp = this.sortOption;
     if (sortOp !== '') {
@@ -131,7 +130,7 @@ export default class TodoList extends Vue {
     if (this.selectedId === '') {
       return this.getNewTodo();
     }
-    return this.todos.find((targetTodo) => targetTodo.id === this.selectedId);
+    return this.todos.find((todo) => todo.id === this.selectedId);
   }
 
   getNewTodo() {// eslint-disable-line
@@ -149,7 +148,7 @@ export default class TodoList extends Vue {
     const dt = new Date();
     const y = dt.getFullYear();
     const m = `00${dt.getMonth() + 1}`.slice(-2);
-    const d = `00${dt.getDate()}`.slice(-2);
+    const d = `00${dt.getDate() + 1}`.slice(-2);
     // const d = (00' + dt.getDate()).slice(-2);
     const result = `${y}-${m}-${d}`;
     return result;
@@ -159,30 +158,30 @@ export default class TodoList extends Vue {
     this.selectedId = todoId;
   }
 
-  saveTodo(targetTodo: any) {// eslint-disable-line
-    console.log('TODO===>', JSON.stringify(targetTodo));
+  saveTodo(todo: any) {// eslint-disable-line
+    console.log('TODO===>', JSON.stringify(todo));
     if (this.selectedId === '') {
-      this.createTodo(targetTodo);
+      this.createTodo(todo);
     } else {
-      this.updateTodo(targetTodo);
+      this.updateTodo(todo);
     }
     this.loadTodo();
   }
 
-  async createTodo(targetTodo: any) {
-    await this.db.doc().set(targetTodo);
+  async createTodo(todo: any) {
+    await this.db.doc().set(todo);
   }
 
-  async updateTodo(targetTodo: any) {
+  async updateTodo(todo: any) {
     console.log('called update');
     await this.db.doc(this.selectedId)
       .update({
-        title: targetTodo.title,
-        detail: targetTodo.detail,
-        note: targetTodo.note,
-        priority: targetTodo.priority,
-        deadline: targetTodo.deadline,
-        progress: targetTodo.progress,
+        title: todo.title,
+        detail: todo.detail,
+        note: todo.note,
+        priority: todo.priority,
+        deadline: todo.deadline,
+        progress: todo.progress,
       });
   }
   async deleteTodo(todoId: string, evt: any) {
@@ -222,26 +221,13 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  getBeforeDeadlineTodo() {
-    const xxx = this.allTodos.map((dSnapShot) => dSnapShot.data());
-    console.log('AllTodos===>', xxx);
-    const now = new Date();
-    // const judgeLine = this.getDate();
-    const judgeLine = '2020-07-28';
-    console.log('JUDGE LINE===>', judgeLine);
-    const result = xxx.filter((x) => new Date(x.deadline) < new Date(judgeLine));
-    console.log('RESULT===>', result);
-    // const now = new Date();
-    // const beforeday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-    // const deadline = this.targetTodo.deadline;// eslint-disable-line
-    // this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
-    // console.log(this.beforeDeadlineTodo);
-  }
+getDeadLineTodo() {
+  const deadline = new Date();
+  const beforeDeadline = deadline.setDate(deadline.getDate() - 1);
+}
 
   sendMail() {// eslint-disable-line
     const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    console.log(this.beforeDeadlineTodo.userMail, this.beforeDeadlineTodo.title);
     mailer(this.beforeDeadlineTodo)
       .then(() => {
         console.log('sendMail');

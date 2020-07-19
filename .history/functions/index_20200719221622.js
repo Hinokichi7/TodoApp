@@ -38,12 +38,13 @@ exports.sendMail = functions.https.onCall((data, context) => {
     subject: `${data.title}の締切1日前です`,//todoTitle
     text: noticeMail(data)
   };
-  mailTransport.sendMail(userMail, (err, info) => {
+  const mailer = mailTransport.sendMail(userMail, (err, info) => {
     if (err) {
         return console.log(err)
     }
     return console.log('success')
   })
+  return mailer;
 });
 // exports.sendMail = functions.https.onCall(async (data, context) => {
 //   // メール設定userMail

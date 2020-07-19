@@ -149,7 +149,7 @@ export default class TodoList extends Vue {
     const dt = new Date();
     const y = dt.getFullYear();
     const m = `00${dt.getMonth() + 1}`.slice(-2);
-    const d = `00${dt.getDate()}`.slice(-2);
+    const d = `00${dt.getDate() + 1}`.slice(-2);
     // const d = (00' + dt.getDate()).slice(-2);
     const result = `${y}-${m}-${d}`;
     return result;
@@ -223,25 +223,15 @@ export default class TodoList extends Vue {
   }
 
   getBeforeDeadlineTodo() {
-    const xxx = this.allTodos.map((dSnapShot) => dSnapShot.data());
-    console.log('AllTodos===>', xxx);
     const now = new Date();
-    // const judgeLine = this.getDate();
-    const judgeLine = '2020-07-28';
-    console.log('JUDGE LINE===>', judgeLine);
-    const result = xxx.filter((x) => new Date(x.deadline) < new Date(judgeLine));
-    console.log('RESULT===>', result);
-    // const now = new Date();
-    // const beforeday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-    // const deadline = this.targetTodo.deadline;// eslint-disable-line
-    // this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
-    // console.log(this.beforeDeadlineTodo);
+    const beforeday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    const deadline = this.targetTodo.deadline;// eslint-disable-line
+    this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
+    console.log(this.beforeDeadlineTodo);
   }
 
   sendMail() {// eslint-disable-line
     const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    console.log(this.beforeDeadlineTodo.userMail, this.beforeDeadlineTodo.title);
     mailer(this.beforeDeadlineTodo)
       .then(() => {
         console.log('sendMail');

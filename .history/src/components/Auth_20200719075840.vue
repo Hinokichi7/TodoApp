@@ -23,8 +23,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="login">login</v-btn>
-              <v-btn color="primary" @click="signUp">Sign up</v-btn>
+              <v-btn color="primary" @click="signin">login</v-btn>
+              <v-btn color="primary" @click="create">Sign up</v-btn>
             </v-card-actions>
           </v-card>
           <v-container>
@@ -68,7 +68,7 @@ export default class Auth extends Vue {
     handleCodeInApp: true,
   };
 
-  signUp() {
+  create() {
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
       .then(() => {
         // const credential = firebase.auth.EmailAuthProvider.credential(this.email, this.password);
@@ -95,7 +95,7 @@ export default class Auth extends Vue {
       });
   }
 
-  login() {
+  signin() {
     firebase.auth().signInWithEmailAndPassword(this.email, this.password)
       .then(async () => {
         const user = firebase.auth().currentUser;
