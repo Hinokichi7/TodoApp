@@ -3,7 +3,6 @@ const firebase = require("firebase");
 const functions = require('firebase-functions');
 
 const nodemailer = require("nodemailer");
-const { use } = require("vue/types/umd");
 
 const gmailEmail = functions.config().gmail.email;
 
@@ -31,20 +30,20 @@ todoapp-8da1b.firebaseapp.com
 `;
 };
 
-exports.sendMail = functions.https.onCall(async(data, context) => {
+exports.sendMail = functions.https.onCall((data, context) => {
   // メール設定userMail
   let userMail = {
     from: gmailEmail,//hinokichi
-    to: context.auth().email,//userEmail
+    to: data.userMail,//userEmail
     subject: `${data.title}の締切1日前です`,//todoTitle
     text: noticeMail(data)
   };
-  try {
-    await mailTransport.sendMail(userMail);
-   } catch (e) {
-    console.error(`send failed. ${e}`);
-    throw new functions.https.HttpsError('internal', 'send failed');
-   }
+  mailTransport.sendMail(userMail, (err, info) => {
+    if (err) {
+        return console.log(err)
+    }
+    return console.log('success')
+  })
 });
 // exports.sendMail = functions.https.onCall(async (data, context) => {
 //   // メール設定userMail

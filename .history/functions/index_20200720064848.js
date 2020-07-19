@@ -35,7 +35,7 @@ exports.sendMail = functions.https.onCall(async(data, context) => {
   // メール設定userMail
   let userMail = {
     from: gmailEmail,//hinokichi
-    to: context.auth().email,//userEmail
+    to: data.userMail,//userEmail
     subject: `${data.title}の締切1日前です`,//todoTitle
     text: noticeMail(data)
   };
