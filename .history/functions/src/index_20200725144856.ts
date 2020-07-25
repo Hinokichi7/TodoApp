@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;

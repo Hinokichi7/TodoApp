@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
@@ -25,7 +26,7 @@ const gmailPassword = functions.config().gmail.password;
     `;
   };
 
-  exports.sendMail = functions.https.onCall(async (data: any, context: any) => {
+  exports.sendMail = firebase.functions().https.onCall(async (data: any, context: any) => {
     // メール設定userMail
     let userMail = {
       from: gmailEmail,//hinokichi
