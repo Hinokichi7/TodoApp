@@ -67,7 +67,6 @@ import firebase, { firestore, functions } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
-// import axios from 'axios';
 @Component({
   components: {
     TodoForm,
@@ -94,10 +93,10 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-  beforeDeadlineTodo = {
-    userMail: this.currentUser.email,
-    title: 'DeadTODO',
-  }
+  // beforeDeadlineTodo = {
+  //   userMail: this.currentUser.email,
+  //   title: 'DeadTODO',
+  // }
 
   async created() {
     await this.loadTodo();
@@ -239,16 +238,37 @@ export default class TodoList extends Vue {
     // console.log(this.beforeDeadlineTodo);
   }
 
-  sendMail() {// eslint-disable-line
-    const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    mailer(this.beforeDeadlineTodo)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  async sendMail() {// eslint-disable-line
+    const data = {
+      userMail: this.currentUser.email,
+      title: 'DeadTODO',
+    };
+    try {
+      await firebase.functions().httpsCallable('sendMail')(data);
+      console.log('sendMail');
+    } catch (error) {
+        console.log(error);
   }
+    // const mailer = firebase.functions().httpsCallable('sendMail');
+    // console.log('mailer===>', mailer);
+    // mailer(this.beforeDeadlineTodo)
+    //   .then(() => {
+    //     console.log('sendMail');
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }
+  // sendMail() {// eslint-disable-line
+  //   const mailer = firebase.functions().httpsCallable('sendMail');
+  //   console.log('mailer===>', mailer);
+  //   mailer(this.beforeDeadlineTodo)
+  //     .then(() => {
+  //       console.log('sendMail');
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 }
 </script>

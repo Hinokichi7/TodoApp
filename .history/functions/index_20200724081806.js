@@ -1,13 +1,13 @@
 // const firebase = require("firebase");
 const functions = require('firebase-functions');
-// const admin = require('firebase-admin')
-// const cors = require('cors')({origin: true});
+const admin = require('firebase-admin')
+const cors = require('cors')({origin: true});
 const nodemailer = require("nodemailer");
-// const { use } = require("vue/types/umd");
-// const SendmailTransport = require("nodemailer/lib/sendmail-transport");
+const { use } = require("vue/types/umd");
+const SendmailTransport = require("nodemailer/lib/sendmail-transport");
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
-// admin.initializeApp();
+admin.initializeApp();
 
 // 送信に使用するメールサーバーの設定 環境変数 hinokichi
 const mailTransport = nodemailer.createTransport({

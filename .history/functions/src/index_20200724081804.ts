@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
@@ -16,7 +15,7 @@ const gmailPassword = functions.config().gmail.password;
   });
 
 // 管理者用のメールテンプレート→uresMail text
-  const text = (data: any) => {
+  const text = data => {
     return `${data.title}締め切り1日前です。
     TODO：
     ${data.title}
@@ -26,7 +25,7 @@ const gmailPassword = functions.config().gmail.password;
     `;
   };
 
-  exports.sendMail = firebase.functions().https.onCall(async (data, context) => {
+  exports.sendMail = functions.https.onCall(async (data, context) => {
     // メール設定userMail
     let userMail = {
       from: gmailEmail,//hinokichi

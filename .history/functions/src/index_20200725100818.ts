@@ -16,7 +16,7 @@ const gmailPassword = functions.config().gmail.password;
   });
 
 // 管理者用のメールテンプレート→uresMail text
-  const text = (data: any) => {
+  const text =(data: any) => {
     return `${data.title}締め切り1日前です。
     TODO：
     ${data.title}

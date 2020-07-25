@@ -67,7 +67,6 @@ import firebase, { firestore, functions } from 'firebase';
 import { Component, Vue } from 'vue-property-decorator';
 import { ToDo } from '../../classes/todo';
 import TodoForm from './TodoForm.vue';
-// import axios from 'axios';
 @Component({
   components: {
     TodoForm,
