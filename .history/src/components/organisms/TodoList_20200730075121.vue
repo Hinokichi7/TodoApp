@@ -94,8 +94,8 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-  bdTodos: any[] = []
-  MailItem: any = {
+  bdTodos = []
+  MailItem = {
     title: [],
     userMail: '',
   }
@@ -242,8 +242,7 @@ export default class TodoList extends Vue {
   }
 
   getMailItem() {
-    this.getBeforeDeadlineTodos();
-    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
+    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.title);
     // this.MailItem.title = bdTodoTitles.join(',');
     this.MailItem.userMail = this.currentUser.email!;
   }

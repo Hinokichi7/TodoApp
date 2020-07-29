@@ -18,7 +18,7 @@ const gmailPassword = functions.config().gmail.password;
 
 // 管理者用のメールテンプレート→uresMail text
   const text = (data: any) => {
-    return `締切1日前のTODO一覧
+    return `$締切1日前のTODO一覧
     TODO：
     ${data.title}
   
@@ -32,7 +32,7 @@ const gmailPassword = functions.config().gmail.password;
     let userMail = {
       from: gmailEmail,//hinokichi
       to: data.userMail,//userEmail
-      subject: `TODO締切1日前のお知らせ`,//todoTitle
+      subject: `$TODO締切1日前のお知らせ`,//todoTitle
       text: text(data.title)
     };
     try {

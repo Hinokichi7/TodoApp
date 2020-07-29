@@ -243,8 +243,8 @@ export default class TodoList extends Vue {
 
   getMailItem() {
     this.getBeforeDeadlineTodos();
-    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-    // this.MailItem.title = bdTodoTitles.join(',');
+    const bdTodoTitles = this.bdTodos.map((bdTodo) => bdTodo.data().title);
+    this.MailItem.title = bdTodoTitles.join(',');
     this.MailItem.userMail = this.currentUser.email!;
   }
 

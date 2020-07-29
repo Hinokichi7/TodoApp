@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getBeforeDeadlineTodos">getBeforeDeadlineTodos</v-btn>
+        <v-btn @click="getBeforeDeadlineTodo">getBeforeDeadlineTodo</v-btn>
         <v-btn @click="sendMail">sendMail</v-btn>
     </v-col>
   </v-row>
@@ -94,11 +94,11 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-  bdTodos: any[] = []
-  MailItem: any = {
-    title: [],
-    userMail: '',
+  beforeDeadlineTodo = {
+    userMail: this.currentUser.email,
+    title: 'DeadTODO',
   }
+  beforeDeadlintTodos = []
 
   async created() {
     await this.loadTodo();
@@ -224,40 +224,20 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  getNextDate() {// eslint-disable-line
+  getBeforeDate() {// eslint-disable-line
     const dt = new Date();
     const y = dt.getFullYear();
     const m = `00${dt.getMonth() + 1}`.slice(-2);
-    const d = `00${dt.getDate() + 1}`.slice(-2);
+    const d = `00${dt.getDate() - 1}`.slice(-2);
     const result = `${y}-${m}-${d}`;
     return result;
   }
   async getBeforeDeadlineTodos() {
-    const judgeLine = this.getNextDate();
+    const judgeLine = this.getBeforeDate();
     console.log(judgeLine);
     const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-    this.bdTodos = qSnapshot.docs;
-    this.getMailItem();
-    console.log(this.MailItem);
-  }
-
-  getMailItem() {
-    this.getBeforeDeadlineTodos();
-    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-    // this.MailItem.title = bdTodoTitles.join(',');
-    this.MailItem.userMail = this.currentUser.email!;
-  }
-
-  sendMail() {// eslint-disable-line
-    const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    mailer(this.MailItem)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.beforeDeadlineTodos = qSnapshot.docs.map((dSnapShot) => dSnapShot.data());
+    console.log(this.beforeDeadlineTodos);
   }
   // getBeforeDeadlineTodo() {
   //   const xxx = this.allTodos.map((dSnapShot) => dSnapShot.data());
@@ -274,5 +254,17 @@ export default class TodoList extends Vue {
   //   // this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
   //   // console.log(this.beforeDeadlineTodo);
   // }
+
+  sendMail() {// eslint-disable-line
+    const mailer = firebase.functions().httpsCallable('sendMail');
+    console.log('mailer===>', mailer);
+    mailer(this.beforeDeadlineTodo)
+      .then(() => {
+        console.log('sendMail');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 </script>

@@ -1,9 +1,7 @@
-// import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
-// const currentUser = firebase.auth().currentUser!;
 
 // 送信に使用するメールサーバーの設定 環境変数 hinokichi
   const mailTransport = nodemailer.createTransport({
@@ -18,7 +16,7 @@ const gmailPassword = functions.config().gmail.password;
 
 // 管理者用のメールテンプレート→uresMail text
   const text = (data: any) => {
-    return `締切1日前のTODO一覧
+    return `${data.title}締め切り1日前です。
     TODO：
     ${data.title}
   
@@ -32,8 +30,8 @@ const gmailPassword = functions.config().gmail.password;
     let userMail = {
       from: gmailEmail,//hinokichi
       to: data.userMail,//userEmail
-      subject: `TODO締切1日前のお知らせ`,//todoTitle
-      text: text(data.title)
+      subject: `$TODO締切1日前のお知らせ`,//todoTitle
+      text: text(data)
     };
     try {
       await mailTransport.sendMail(userMail);

@@ -1,9 +1,9 @@
-// import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
-// const currentUser = firebase.auth().currentUser!;
+const currentUser = firebase.auth().currentUser!;
 
 // 送信に使用するメールサーバーの設定 環境変数 hinokichi
   const mailTransport = nodemailer.createTransport({
@@ -17,23 +17,23 @@ const gmailPassword = functions.config().gmail.password;
   });
 
 // 管理者用のメールテンプレート→uresMail text
-  const text = (data: any) => {
-    return `締切1日前のTODO一覧
+  const text = (data: any[]) => {
+    return `$締切1日前のTODO一覧
     TODO：
-    ${data.title}
+    ${data}
   
     詳細はこちらから
     todoapp-8da1b.firebaseapp.com
     `;
   };
 
-  exports.sendMail = functions.https.onCall(async (data: any, context: any) => {
+  exports.sendMail = functions.https.onCall(async (data: any[], context: any) => {
     // メール設定userMail
     let userMail = {
       from: gmailEmail,//hinokichi
-      to: data.userMail,//userEmail
-      subject: `TODO締切1日前のお知らせ`,//todoTitle
-      text: text(data.title)
+      to: currentUser.email,//userEmail
+      subject: `$TODO締切1日前のお知らせ`,//todoTitle
+      text: text(data)
     };
     try {
       await mailTransport.sendMail(userMail);

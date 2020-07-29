@@ -94,9 +94,15 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-  bdTodos: any[] = []
-  MailItem: any = {
-    title: [],
+  bdTodos = []
+  bdTodo = {
+    title: '',
+    detail: '',
+    note: '',
+    priority: 1,
+    deadline: this.getDate(),
+    createdAt: new Date().toISOString(),
+    progress: 'new',
     userMail: '',
   }
 
@@ -224,7 +230,7 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  getNextDate() {// eslint-disable-line
+  getBeforeDate() {// eslint-disable-line
     const dt = new Date();
     const y = dt.getFullYear();
     const m = `00${dt.getMonth() + 1}`.slice(-2);
@@ -233,31 +239,11 @@ export default class TodoList extends Vue {
     return result;
   }
   async getBeforeDeadlineTodos() {
-    const judgeLine = this.getNextDate();
+    const judgeLine = this.getBeforeDate();
     console.log(judgeLine);
     const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-    this.bdTodos = qSnapshot.docs;
-    this.getMailItem();
-    console.log(this.MailItem);
-  }
-
-  getMailItem() {
-    this.getBeforeDeadlineTodos();
-    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-    // this.MailItem.title = bdTodoTitles.join(',');
-    this.MailItem.userMail = this.currentUser.email!;
-  }
-
-  sendMail() {// eslint-disable-line
-    const mailer = firebase.functions().httpsCallable('sendMail');
-    console.log('mailer===>', mailer);
-    mailer(this.MailItem)
-      .then(() => {
-        console.log('sendMail');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.bdTodos = qSnapshot.docs.map((dSnapShot) => Object.assign(dSnapShot.data(), { userMail: this.currentUser.email! }));
+    console.log(this.bdTodos);
   }
   // getBeforeDeadlineTodo() {
   //   const xxx = this.allTodos.map((dSnapShot) => dSnapShot.data());
@@ -274,5 +260,17 @@ export default class TodoList extends Vue {
   //   // this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
   //   // console.log(this.beforeDeadlineTodo);
   // }
+
+  sendMail() {// eslint-disable-line
+    const mailer = firebase.functions().httpsCallable('sendMail');
+    console.log('mailer===>', mailer);
+    mailer(this.bdTodo)
+      .then(() => {
+        console.log('sendMail');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 </script>
