@@ -240,11 +240,11 @@ export default class TodoList extends Vue {
     this.allUsers = qSnapshot.docs;
   }
 
-  getBeforeDeadlineTodos() {
+  async getBeforeDeadlineTodos() {
     const judgeLine = this.getNextDate();
     console.log('judeLine', judgeLine);
     const users = this.allUsers.map((user) => user.data());
-    const usersBdTodos = users.map(async (user) => user.collections('todolist').where('deadline', '==', judgeLine).get());
+    const usersBdTodos = users.map(async(user) => await user.collections('todolist').where('deadline', '==', judgeLine).get());
     console.log(usersBdTodos);
     this.bdTodos = usersBdTodos.docs;
     // this.getMailItem();

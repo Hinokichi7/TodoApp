@@ -29,7 +29,7 @@ const MailItem: any = {
   function getBeforeDeadlineTodos() {
     const judgeLine = getNextDate();
     const users = allUsers.map((user) => user.data());
-    const usersBdTodos = users.map(async (user) => user.collections('todolist').where('deadline', '==', judgeLine).get());
+    const usersBdTodos = users.map(async(user) => await user.collections('todolist').where('deadline', '==', judgeLine).get());
     console.log(usersBdTodos);
   }
 // //締切1日前のTODOを取得
