@@ -95,7 +95,7 @@ export default class TodoList extends Vue {
     other: 'black',
   }
 
-  allUsers: any[]= []
+  allUsers: any[] = []
   bdTodos: any[] = []
   MailItem: any = {
     title: [],
@@ -242,30 +242,21 @@ export default class TodoList extends Vue {
 
   async getBeforeDeadlineTodos() {
     const judgeLine = this.getNextDate();
-    console.log('judeLine', judgeLine);
-    const userTodos = this.allUsers.map((user) => user.data().collection('todolist'));
-    console.log(userTodos);
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
-    // const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
+    console.log('judeLine===>', judgeLine);
+    const users = this.allUsers.map((user) => user.data());
+    console.log('users==>', users)
+    const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
     this.bdTodos = qSnapshot.docs;
-    // this.getMailItem();
-    // console.log(this.MailItem);
+    this.getMailItem();
+    console.log(this.MailItem);
   }
-  // async getBeforeDeadlineTodos() {
-  //   const judgeLine = this.getNextDate();
-  //   console.log('judeLine', judgeLine);
-  //   const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-  //   this.bdTodos = qSnapshot.docs;
-  //   // this.getMailItem();
-  //   console.log(this.MailItem);
-  // }
 
-  // getMailItem() {
-  //   this.getBeforeDeadlineTodos();
-  //   this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-  //   // this.MailItem.title = bdTodoTitles.join(',');
-  //   this.MailItem.userMail = this.currentUser.email!;
-  // }
+  getMailItem() {
+    this.getBeforeDeadlineTodos();
+    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
+    // this.MailItem.title = bdTodoTitles.join(',');
+    this.MailItem.userMail = this.currentUser.email!;
+  }
 
   // sendMail() {// eslint-disable-line
   //   const mailer = firebase.functions().httpsCallable('sendMail');

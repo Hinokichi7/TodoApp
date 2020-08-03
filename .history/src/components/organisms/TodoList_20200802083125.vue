@@ -245,7 +245,7 @@ export default class TodoList extends Vue {
     console.log('judeLine', judgeLine);
     const userTodos = this.allUsers.map((user) => user.data().collection('todolist'));
     console.log(userTodos);
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
+    const qSnapshot = userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
     // const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
     this.bdTodos = qSnapshot.docs;
     // this.getMailItem();

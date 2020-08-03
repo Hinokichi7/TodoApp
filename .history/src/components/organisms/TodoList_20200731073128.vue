@@ -57,7 +57,7 @@
           </v-list>
         </v-card>
         <v-btn @click="getBeforeDeadlineTodos">getBeforeDeadlineTodos</v-btn>
-        <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
+        <v-btn @click="sendMail">sendMail</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -94,8 +94,6 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-
-  allUsers: any[]= []
   bdTodos: any[] = []
   MailItem: any = {
     title: [],
@@ -226,37 +224,20 @@ export default class TodoList extends Vue {
     this.loadTodo();
   }
 
-  getNextDate() {// eslint-disable-line
-    const dt = new Date();
-    const y = dt.getFullYear();
-    const m = `00${dt.getMonth() + 1}`.slice(-2);
-    const d = `00${dt.getDate() + 1}`.slice(-2);
-    const result = `${y}-${m}-${d}`;
-    return result;
-  }
-
-  async getAllUsers() {// eslint-disable-line
-    const qSnapshot = await firebase.firestore().collection('users').get();
-    this.allUsers = qSnapshot.docs;
-  }
-
-  async getBeforeDeadlineTodos() {
-    const judgeLine = this.getNextDate();
-    console.log('judeLine', judgeLine);
-    const userTodos = this.allUsers.map((user) => user.data().collection('todolist'));
-    console.log(userTodos);
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
-    // const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-    this.bdTodos = qSnapshot.docs;
-    // this.getMailItem();
-    // console.log(this.MailItem);
-  }
+  // getNextDate() {// eslint-disable-line
+  //   const dt = new Date();
+  //   const y = dt.getFullYear();
+  //   const m = `00${dt.getMonth() + 1}`.slice(-2);
+  //   const d = `00${dt.getDate() + 1}`.slice(-2);
+  //   const result = `${y}-${m}-${d}`;
+  //   return result;
+  // }
   // async getBeforeDeadlineTodos() {
   //   const judgeLine = this.getNextDate();
-  //   console.log('judeLine', judgeLine);
+  //   console.log(judgeLine);
   //   const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
   //   this.bdTodos = qSnapshot.docs;
-  //   // this.getMailItem();
+  //   this.getMailItem();
   //   console.log(this.MailItem);
   // }
 

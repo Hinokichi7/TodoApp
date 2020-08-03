@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getBeforeDeadlineTodos">getBeforeDeadlineTodos</v-btn>
+        <v-btn @click="getAllUsers">getBeforeDeadlineTodos</v-btn>
         <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
@@ -238,6 +238,7 @@ export default class TodoList extends Vue {
   async getAllUsers() {// eslint-disable-line
     const qSnapshot = await firebase.firestore().collection('users').get();
     this.allUsers = qSnapshot.docs;
+    console.log(this.allUsers);
   }
 
   async getBeforeDeadlineTodos() {
@@ -245,7 +246,7 @@ export default class TodoList extends Vue {
     console.log('judeLine', judgeLine);
     const userTodos = this.allUsers.map((user) => user.data().collection('todolist'));
     console.log(userTodos);
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
+    const qSnapshot = userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
     // const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
     this.bdTodos = qSnapshot.docs;
     // this.getMailItem();

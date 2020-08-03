@@ -32,7 +32,7 @@ const MailItem: any = {
   async function getBeforeDeadlineTodos() {
     const judgeLine = getNextDate();
     const userTodos = allUsers.map((user) => user.data().collections('todolist'));
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
+    const qSnapshot = userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
     bdTodos = qSnapshot.docs;
   }
 // //締切1日前のTODOを取得

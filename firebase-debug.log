@@ -1,0 +1,46 @@
+[debug] [2020-07-31T22:45:24.255Z] ----------------------------------------------------------------------
+[debug] [2020-07-31T22:45:24.257Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js auth:import users.json --hash-algo=scrypt --hash-key=scrypt --rounds=8 --mem-cost=14
+[debug] [2020-07-31T22:45:24.257Z] CLI Version:   8.6.0
+[debug] [2020-07-31T22:45:24.257Z] Platform:      win32
+[debug] [2020-07-31T22:45:24.258Z] Node Version:  v12.16.1
+[debug] [2020-07-31T22:45:24.258Z] Time:          Sat Aug 01 2020 07:45:24 GMT+0900 (GMT+09:00)
+[debug] [2020-07-31T22:45:24.259Z] ----------------------------------------------------------------------
+[debug] [2020-07-31T22:45:24.259Z] 
+[debug] [2020-07-31T22:45:24.264Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-07-31T22:45:24.265Z] > authorizing via signed-in user
+[debug] [2020-07-31T22:45:24.266Z] [iam] checking project todoapp-8da1b for permissions ["firebase.projects.get","firebaseauth.users.create","firebaseauth.users.update"]
+[debug] [2020-07-31T22:45:24.269Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/todoapp-8da1b:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebaseauth.users.create","firebaseauth.users.update"]}
+[debug] [2020-07-31T22:45:25.019Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 31 Jul 2020 22:45:24 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=611","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-31T22:45:25.131Z] Error: ENOENT: no such file or directory, stat 'users.json'
+    at Object.statSync (fs.js:932:3)
+    at Command.actionFn (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\auth-import.js:41:20)
+    at Command.<anonymous> (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:162:25)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2020-07-31T22:45:52.521Z] ----------------------------------------------------------------------
+[debug] [2020-07-31T22:45:52.522Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js auth:import ./users.json --hash-algo=HMAC_SHA256 --hash-key=hogehoge
+[debug] [2020-07-31T22:45:52.523Z] CLI Version:   8.6.0
+[debug] [2020-07-31T22:45:52.523Z] Platform:      win32
+[debug] [2020-07-31T22:45:52.523Z] Node Version:  v12.16.1
+[debug] [2020-07-31T22:45:52.524Z] Time:          Sat Aug 01 2020 07:45:52 GMT+0900 (GMT+09:00)
+[debug] [2020-07-31T22:45:52.524Z] ----------------------------------------------------------------------
+[debug] [2020-07-31T22:45:52.524Z] 
+[debug] [2020-07-31T22:45:52.530Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-07-31T22:45:52.530Z] > authorizing via signed-in user
+[debug] [2020-07-31T22:45:52.531Z] [iam] checking project todoapp-8da1b for permissions ["firebase.projects.get","firebaseauth.users.create","firebaseauth.users.update"]
+[debug] [2020-07-31T22:45:52.534Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/todoapp-8da1b:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebaseauth.users.create","firebaseauth.users.update"]}
+[debug] [2020-07-31T22:45:53.301Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 31 Jul 2020 22:45:52 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=672","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-31T22:45:53.413Z] Error: ENOENT: no such file or directory, stat './users.json'
+    at Object.statSync (fs.js:932:3)
+    at Command.actionFn (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\auth-import.js:41:20)
+    at Command.<anonymous> (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:162:25)
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:5:58)
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -7,7 +7,7 @@ const gmailPassword = functions.config().gmail.password;
 const db = firebase.firestore().collection('users')
 // const db = firebase.firestore().collection('users')
 //   .doc().collection('todolist');
-let allUsers: any[] = []
+let users: any[] = []
 let bdTodos: any[] = []
 const MailItem: any = {
   title: [],
@@ -24,16 +24,14 @@ const MailItem: any = {
     return result;
   }
 
-  async function getUsers() {
+  async function getUserTodos() {
     const qSnapshot = await db.get();
-    allUsers = qSnapshot.docs;
+    const allUsers = qSnapshot.docs;
+    users = allUsers.map((user) => user.data());
   }
 
   async function getBeforeDeadlineTodos() {
     const judgeLine = getNextDate();
-    const userTodos = allUsers.map((user) => user.data().collections('todolist'));
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
-    bdTodos = qSnapshot.docs;
   }
 // //締切1日前のTODOを取得
 //   async function getBeforeDeadlineTodos() {

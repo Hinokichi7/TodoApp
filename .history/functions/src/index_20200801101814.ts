@@ -5,9 +5,8 @@ const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
 // const currentUser = firebase.auth().currentUser!;
 const db = firebase.firestore().collection('users')
-// const db = firebase.firestore().collection('users')
-//   .doc().collection('todolist');
-let allUsers: any[] = []
+  .doc().collection('todolist');
+
 let bdTodos: any[] = []
 const MailItem: any = {
   title: [],
@@ -23,27 +22,15 @@ const MailItem: any = {
     const result = `${y}-${m}-${d}`;
     return result;
   }
-
-  async function getUsers() {
-    const qSnapshot = await db.get();
-    allUsers = qSnapshot.docs;
-  }
-
+//締切1日前のTODOを取得
   async function getBeforeDeadlineTodos() {
     const judgeLine = getNextDate();
-    const userTodos = allUsers.map((user) => user.data().collections('todolist'));
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
+    console.log(judgeLine);
+    const qSnapshot = await db.where('deadline', '==', judgeLine).get();
     bdTodos = qSnapshot.docs;
+    getMailItem();
+    console.log(MailItem);
   }
-// //締切1日前のTODOを取得
-//   async function getBeforeDeadlineTodos() {
-//     const judgeLine = getNextDate();
-//     console.log(judgeLine);
-//     const qSnapshot = await db.where('deadline', '==', judgeLine).get();
-//     bdTodos = qSnapshot.docs;
-//     getMailItem();
-//     console.log(MailItem);
-//   }
   function getMailItem() {
     getBeforeDeadlineTodos();
     MailItem.title = bdTodos.map((bdTodo) => bdTodo.data().title);

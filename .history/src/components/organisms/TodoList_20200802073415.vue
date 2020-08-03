@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getBeforeDeadlineTodos">getBeforeDeadlineTodos</v-btn>
+        <v-btn @click="getUserTodos">getBeforeDeadlineTodos</v-btn>
         <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
@@ -94,8 +94,6 @@ export default class TodoList extends Vue {
     lv3: '#03A9F4',
     other: 'black',
   }
-
-  allUsers: any[]= []
   bdTodos: any[] = []
   MailItem: any = {
     title: [],
@@ -235,37 +233,27 @@ export default class TodoList extends Vue {
     return result;
   }
 
-  async getAllUsers() {// eslint-disable-line
+  async getUserTodos() {// eslint-disable-line
     const qSnapshot = await firebase.firestore().collection('users').get();
-    this.allUsers = qSnapshot.docs;
+    const allUsers = qSnapshot.docs;
+    const users = allUsers.map((user) => user.data());
+    console.log(users);
   }
-
   async getBeforeDeadlineTodos() {
     const judgeLine = this.getNextDate();
-    console.log('judeLine', judgeLine);
-    const userTodos = this.allUsers.map((user) => user.data().collection('todolist'));
-    console.log(userTodos);
-    const qSnapshot = await userTodos.map((userTodo) => userTodo.where('deadline', '==', judgeLine).get());
-    // const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
+    console.log(judgeLine);
+    const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
     this.bdTodos = qSnapshot.docs;
-    // this.getMailItem();
-    // console.log(this.MailItem);
+    this.getMailItem();
+    console.log(this.MailItem);
   }
-  // async getBeforeDeadlineTodos() {
-  //   const judgeLine = this.getNextDate();
-  //   console.log('judeLine', judgeLine);
-  //   const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-  //   this.bdTodos = qSnapshot.docs;
-  //   // this.getMailItem();
-  //   console.log(this.MailItem);
-  // }
 
-  // getMailItem() {
-  //   this.getBeforeDeadlineTodos();
-  //   this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-  //   // this.MailItem.title = bdTodoTitles.join(',');
-  //   this.MailItem.userMail = this.currentUser.email!;
-  // }
+  getMailItem() {
+    this.getBeforeDeadlineTodos();
+    this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
+    // this.MailItem.title = bdTodoTitles.join(',');
+    this.MailItem.userMail = this.currentUser.email!;
+  }
 
   // sendMail() {// eslint-disable-line
   //   const mailer = firebase.functions().httpsCallable('sendMail');
