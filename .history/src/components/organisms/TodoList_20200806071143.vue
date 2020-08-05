@@ -249,20 +249,19 @@ export default class TodoList extends Vue {
       console.log('ds===>', ds.data());
     });
 
+    // const users = this.allUsers.map((user) => user.data());
+    // console.log(users);
     for await (const user of this.allUsers) {// eslint-disable-line
       const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
       const bdTodos = qSnapshot.docs;
+      console.log('bdTodos',bdTodos);
       // todosループ
-      // 1todoのタイトルを抽出して、配列に入れる
       const bdtodoTitles = bdTodos.map((bdTodo) => bdTodo.data().title);
-      console.log('bdTodosTitles', bdtodoTitles);
-      // userMailの取得
-      const userMail = user.data();
-      console.log('userMail', userMail);
+      // 1todoのタイトルを抽出して、配列に入れる
     }
     // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
-    // console.log(this.MailItem);
+    console.log(this.MailItem);
   }
   // async getBeforeDeadlineTodos() {
   //   const judgeLine = this.getNextDate();

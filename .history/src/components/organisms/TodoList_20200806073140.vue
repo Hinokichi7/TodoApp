@@ -256,13 +256,13 @@ export default class TodoList extends Vue {
       // 1todoのタイトルを抽出して、配列に入れる
       const bdtodoTitles = bdTodos.map((bdTodo) => bdTodo.data().title);
       console.log('bdTodosTitles', bdtodoTitles);
-      // userMailの取得
+      //　userMailの取得
       const userMail = user.data();
       console.log('userMail', userMail);
     }
     // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
-    // console.log(this.MailItem);
+    console.log(this.MailItem);
   }
   // async getBeforeDeadlineTodos() {
   //   const judgeLine = this.getNextDate();

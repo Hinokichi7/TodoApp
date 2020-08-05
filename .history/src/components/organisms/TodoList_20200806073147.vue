@@ -262,7 +262,7 @@ export default class TodoList extends Vue {
     }
     // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
-    // console.log(this.MailItem);
+    console.log(this.MailItem);
   }
   // async getBeforeDeadlineTodos() {
   //   const judgeLine = this.getNextDate();
