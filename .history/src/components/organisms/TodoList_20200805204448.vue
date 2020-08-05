@@ -245,20 +245,15 @@ export default class TodoList extends Vue {
     await this.getAllUsers();
     const judgeLine = this.getNextDate();
     console.log('judeLine', judgeLine);
+    // const xxx = await firebase.firestore().collection('users').get();
     this.allUsers.forEach((ds) => {
       console.log('ds===>', ds.data());
     });
-
     // const users = this.allUsers.map((user) => user.data());
     // console.log(users);
-    for (let user in this.allUsers) {
-      const todos = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
-      // todosループ
-      // 1todoのタイトルを抽出して、配列に入れる
-    }
-    // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
+    // this.MailItem.title = users.map((user) => user.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
-    console.log(this.MailItem);
+    // console.log(this.MailItem);
   }
   // async getBeforeDeadlineTodos() {
   //   const judgeLine = this.getNextDate();

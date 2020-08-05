@@ -254,7 +254,6 @@ export default class TodoList extends Vue {
     for (let user in this.allUsers) {
       const todos = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
       // todosループ
-      // 1todoのタイトルを抽出して、配列に入れる
     }
     // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
