@@ -254,7 +254,7 @@ export default class TodoList extends Vue {
       const bdTodos = qSnapshot.docs;
       // todosループ
       // 1todoのタイトルを抽出して、配列に入れる
-      const bdtodoTitles = bdTodos.map((bdTodo: any) => bdTodo.data().title);
+      const bdtodoTitles = bdTodos.map((bdTodo) => bdTodo.data().title);
       console.log('bdTodosTitles', bdtodoTitles);
       // userMailの取得→フィールドしか取得できない？
       const userMail = await user.data();
@@ -290,6 +290,21 @@ export default class TodoList extends Vue {
   //     .catch((err) => {
   //       console.log(err);
   //     });
+  // }
+  // getBeforeDeadlineTodo() {
+  //   const xxx = this.allTodos.map((dSnapShot) => dSnapShot.data());
+  //   console.log('AllTodos===>', xxx);
+  //   const now = new Date();
+  //   // const judgeLine = this.getDate();
+  //   const judgeLine = '2020-07-28';
+  //   console.log('JUDGE LINE===>', judgeLine);
+  //   const result = xxx.filter((x) => new Date(x.deadline) < new Date(judgeLine));
+  //   console.log('RESULT===>', result);
+  //   // const now = new Date();
+  //   // const beforeday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  //   // const deadline = this.targetTodo.deadline;// eslint-disable-line
+  //   // this.beforeDeadlineTodo = this.todos.find((beforeDeadlineTodo) => deadline === beforeday);
+  //   // console.log(this.beforeDeadlineTodo);
   // }
 }
 </script>

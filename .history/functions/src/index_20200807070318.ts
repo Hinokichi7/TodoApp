@@ -35,11 +35,19 @@ const MailItem: any = {
       bdTodos = qSnapshot.docs;
     }
   }
-
-  async function getMailItem() {
-    await getBdTodos();
+// //締切1日前のTODOを取得
+//   async function getBeforeDeadlineTodos() {
+//     const judgeLine = getNextDate();
+//     console.log(judgeLine);
+//     const qSnapshot = await db.where('deadline', '==', judgeLine).get();
+//     bdTodos = qSnapshot.docs;
+//     getMailItem();
+//     console.log(MailItem);
+//   }
+  function getMailItem() {
+    getBdTodos();
     MailItem.title = bdTodos.map((bdTodo: any) => bdTodo.data().title);
-    MailItem.userMail = 'faeriepunks7610@gmail.com';//test
+    MailItem.userMail = 'faeriepunks7610@gmail.com';
   }
 
   // 送信に使用するメールサーバーの設定 環境変数 hinokichi
@@ -48,33 +56,32 @@ const MailItem: any = {
     secure: false,
     port: 25,
     auth: {
-      user: gmailEmail,//環境変数
-      pass: gmailPassword//環境変数
+      user: gmailEmail,
+      pass: gmailPassword
     }
   });
 
   exports.sendMail = functions.pubsub.schedule('every 1 minutes')
     .timeZone('Asia/Tokyo')
     .onRun(async (context) => {
-      await getMailItem();
-      // メール設定userMail
-      let userMail = {
-        from: gmailEmail,//環境変数
-        to: MailItem.userMail,//userEmail
-        subject: `TODO締切1日前のお知らせ`,//todoTitle
-        text: `締切1日前のTODOリスト
-        title:
-        ${MailItem.title}
-        詳細はこちらから
-        todoapp-8da1b.firebaseapp.com`
-      };
-      try {
-        await mailTransport.sendMail(userMail);
-      } catch (e) {
-        console.error(`send failed. ${e}`);
-        throw new functions.https.HttpsError('internal', 'send failed');
-      }
-      });
+    // メール設定userMail
+    let userMail = {
+      from: gmailEmail,//hinokichi
+      to: MailItem.userMail,//userEmail
+      subject: `TODO締切1日前のお知らせ`,//todoTitle
+      text: `締切1日前のTODOリスト
+      title:
+      ${MailItem.title}
+      詳細はこちらから
+      todoapp-8da1b.firebaseapp.com`
+    };
+    try {
+      await mailTransport.sendMail(userMail);
+     } catch (e) {
+      console.error(`send failed. ${e}`);
+      throw new functions.https.HttpsError('internal', 'send failed');
+     }
+    });
   // exports.sendMail = functions.https.onCall(async (data: any, context: any) => {
   //   // メール設定userMail
   //   let userMail = {

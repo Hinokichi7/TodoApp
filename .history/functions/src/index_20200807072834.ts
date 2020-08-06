@@ -48,8 +48,8 @@ const MailItem: any = {
     secure: false,
     port: 25,
     auth: {
-      user: gmailEmail,//環境変数
-      pass: gmailPassword//環境変数
+      user: gmailEmail,
+      pass: gmailPassword
     }
   });
 
@@ -59,7 +59,7 @@ const MailItem: any = {
       await getMailItem();
       // メール設定userMail
       let userMail = {
-        from: gmailEmail,//環境変数
+        from: gmailEmail,//hinokichi
         to: MailItem.userMail,//userEmail
         subject: `TODO締切1日前のお知らせ`,//todoTitle
         text: `締切1日前のTODOリスト

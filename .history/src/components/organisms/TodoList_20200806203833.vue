@@ -254,7 +254,7 @@ export default class TodoList extends Vue {
       const bdTodos = qSnapshot.docs;
       // todosループ
       // 1todoのタイトルを抽出して、配列に入れる
-      const bdtodoTitles = bdTodos.map((bdTodo: any) => bdTodo.data().title);
+      const bdtodoTitles = bdTodos.map((bdTodo) => bdTodo.data().title);
       console.log('bdTodosTitles', bdtodoTitles);
       // userMailの取得→フィールドしか取得できない？
       const userMail = await user.data();
