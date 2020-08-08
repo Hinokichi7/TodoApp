@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="getbdTodos">getBeforeDeadlineTodos</v-btn>
+        <!-- <v-btn @click="getbdTodos">getBeforeDeadlineTodos</v-btn> -->
         <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
@@ -237,7 +237,6 @@ export default class TodoList extends Vue {
 
   async getAllUsers() {// eslint-disable-line
     const qSnapshot = await firebase.firestore().collection('users').get();
-    console.log('Q snap shot ===>', qSnapshot);
     this.allUsers = qSnapshot.docs;
   }
 
@@ -245,9 +244,6 @@ export default class TodoList extends Vue {
     await this.getAllUsers();
     const judgeLine = this.getNextDate();
     console.log('judeLine', judgeLine);
-    this.allUsers.forEach((ds) => {
-      console.log('ds===>', ds.data());
-    });
 
     for await (const user of this.allUsers) {// eslint-disable-line
       const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
@@ -256,22 +252,14 @@ export default class TodoList extends Vue {
       // 1todoのタイトルを抽出して、配列に入れる
       const bdtodoTitles = bdTodos.map((bdTodo: any) => bdTodo.data().title);
       console.log('bdTodosTitles', bdtodoTitles);
-      // userMailの取得→フィールドしか取得できない？
-      const userMail = await user.data();
+      // userMailの取得
+      const userMail = user.id;
       console.log('userMail', userMail);
     }
     // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
     // this.getMailItem();
     // console.log(this.MailItem);
   }
-  // async getBeforeDeadlineTodos() {
-  //   const judgeLine = this.getNextDate();
-  //   console.log('judeLine', judgeLine);
-  //   const qSnapshot = await this.db.where('deadline', '==', judgeLine).get();
-  //   this.bdTodos = qSnapshot.docs;
-  //   // this.getMailItem();
-  //   console.log(this.MailItem);
-  // }
 
   // getMailItem() {
   //   this.getBeforeDeadlineTodos();

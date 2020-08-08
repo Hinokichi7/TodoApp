@@ -1,11 +1,19 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import * as functions from 'firebase-functions';
 const nodemailer = require("nodemailer");
 const gmailEmail = functions.config().gmail.email;
 const gmailPassword = functions.config().gmail.password;
-// const currentUser = firebase.auth().currentUser!;
-let allUsers: any[] = []
-let bdTodos: any[] = []
+// 送信に使用するメールサーバーの設定
+const mailTransport = nodemailer.createTransport({
+  service: "gmail",
+  secure: false,
+  port: 25,
+  auth: {
+    user: gmailEmail,//環境変数
+    pass: gmailPassword//環境変数
+  }
+});
+
 const MailItem: any = {
   title: [],
   userMail: '',
@@ -21,47 +29,34 @@ const MailItem: any = {
     return result;
   }
 
-  async function getAllUsers() {
-    const qSnapshot = await firebase.firestore().collection('users').get();
-    allUsers = qSnapshot.docs;
-  }
-
-  async function getBdTodos() {
-    await getAllUsers();
-    const judgeLine = getNextDate();
-
-    for await (const user of allUsers) {
-      const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
-      bdTodos = qSnapshot.docs;
-    }
-  }
 
   async function getMailItem() {
-    await getBdTodos();
-    MailItem.title = bdTodos.map((bdTodo: any) => bdTodo.data().title);
-    MailItem.userMail = 'faeriepunks7610@gmail.com';//test
+    //全ユーザーのデータ取得
+    const qSnapshot = await firebase.firestore().collection('users').get();
+    const allUsers = qSnapshot.docs;
+
+    const judgeLine = getNextDate();
+    //1ユーザーごとにループ
+    for await (const user of allUsers) {
+      //bdTodosを取得
+      const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
+      const bdTodos = qSnapshot.docs;
+      //MailItemを取得
+      MailItem.title = bdTodos.map((bdTodo: any) => bdTodo.data().title);
+      MailItem.userMail = user.id;
+    }
   }
 
-  // 送信に使用するメールサーバーの設定 環境変数 hinokichi
-  const mailTransport = nodemailer.createTransport({
-    service: "gmail",
-    secure: false,
-    port: 25,
-    auth: {
-      user: gmailEmail,//環境変数
-      pass: gmailPassword//環境変数
-    }
-  });
-
+  //schedulerでメール送信
   exports.sendMail = functions.pubsub.schedule('every 1 minutes')
     .timeZone('Asia/Tokyo')
     .onRun(async (context) => {
       await getMailItem();
       // メール設定userMail
-      let userMail = {
+      const userMail = {
         from: gmailEmail,//環境変数
-        to: MailItem.userMail,//userEmail
-        subject: `TODO締切1日前のお知らせ`,//todoTitle
+        to: MailItem.userMail,
+        subject: `TODO締切1日前のお知らせ`,
         text: `締切1日前のTODOリスト
         title:
         ${MailItem.title}
@@ -70,11 +65,11 @@ const MailItem: any = {
       };
       try {
         await mailTransport.sendMail(userMail);
+        console.log('send successful')
       } catch (e) {
-        console.error(`send failed. ${e}`);
-        throw new functions.https.HttpsError('internal', 'send failed');
+        console.log('Erroe', e);
       }
-      });
+    });
   // exports.sendMail = functions.https.onCall(async (data: any, context: any) => {
   //   // メール設定userMail
   //   let userMail = {
