@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <!-- <v-btn @click="getbdTodos">getBeforeDeadlineTodos</v-btn> -->
+        <v-btn @click="sendMail">getBeforeDeadlineTodos</v-btn>
         <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
@@ -96,11 +96,7 @@ export default class TodoList extends Vue {
   }
 
   allUsers: any[]= []
-  // bdTodos: any[] = []
-  MailItem: any = {
-    title: [],
-    userMail: '',
-  }
+
 
   async created() {
     await this.loadTodo();
@@ -240,44 +236,34 @@ export default class TodoList extends Vue {
     this.allUsers = qSnapshot.docs;
   }
 
-  async getbdTodos() {// eslint-disable-line
+  async sendMail() {// eslint-disable-line
+    const judgeline = this.getNextDate();
     await this.getAllUsers();
-    const judgeLine = this.getNextDate();
-    console.log('judeLine', judgeLine);
+    console.log('judeLine', judgeline);
 
     for await (const user of this.allUsers) {// eslint-disable-line
-      const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeLine).get();
+      const qSnapshot = await user.ref.collection('todolist').where('deadline', '==', judgeline).get();
       const bdTodos = qSnapshot.docs;
-      // todosループ
-      // 1todoのタイトルを抽出して、配列に入れる
-      const bdtodoTitles = bdTodos.map((bdTodo: any) => bdTodo.data().title);
-      console.log('bdTodosTitles', bdtodoTitles);
-      // userMailの取得
-      const userMail = user.id;
-      console.log('userMail', userMail);
+      const mailItem = {
+        title: [],
+        userMail: user.id,
+      };
+      mailItem.title = bdTodos.map((bdTodo: any) => bdTodo.data().title);
+      console.log('bdTodosTitles', mailItem.title);
+      console.log('userMail', mailItem.userMail);
+
+      if (mailItem.title !== []) {
+        const mailer = firebase.functions().httpsCallable('sendMail');
+        mailer(mailItem)
+          .then(() => {
+            console.log('sendMail');
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     }
-    // this.MailItem.title = this.allUsers.for await((user of allUsers) => user.ref.collection('todolist').where('deadline', '==', judgeLine).get().docs.title);
-    // this.getMailItem();
-    // console.log(this.MailItem);
   }
 
-  // getMailItem() {
-  //   this.getBeforeDeadlineTodos();
-  //   this.MailItem.title = this.bdTodos.map((bdTodo) => bdTodo.data().title);
-  //   // this.MailItem.title = bdTodoTitles.join(',');
-  //   this.MailItem.userMail = this.currentUser.email!;
-  // }
-
-  // sendMail() {// eslint-disable-line
-  //   const mailer = firebase.functions().httpsCallable('sendMail');
-  //   console.log('mailer===>', mailer);
-  //   mailer(this.MailItem)
-  //     .then(() => {
-  //       console.log('sendMail');
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
 }
 </script>

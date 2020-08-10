@@ -1,0 +1,54 @@
+[debug] [2020-08-09T21:48:17.647Z] ----------------------------------------------------------------------
+[debug] [2020-08-09T21:48:17.649Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\user\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2020-08-09T21:48:17.650Z] CLI Version:   8.6.0
+[debug] [2020-08-09T21:48:17.650Z] Platform:      win32
+[debug] [2020-08-09T21:48:17.650Z] Node Version:  v12.16.1
+[debug] [2020-08-09T21:48:17.651Z] Time:          Mon Aug 10 2020 06:48:17 GMT+0900 (GMT+09:00)
+[debug] [2020-08-09T21:48:17.651Z] ----------------------------------------------------------------------
+[debug] [2020-08-09T21:48:17.651Z] 
+[debug] [2020-08-09T21:48:17.659Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-08-09T21:48:17.660Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\user\Documents\GitHub\TodoApp2
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  .firebaserc already has a default project, using todoapp-8da1b. 
+[debug] [2020-08-09T21:48:25.918Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/todoapp-8da1b  
+ 
+[debug] [2020-08-09T21:48:26.576Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 09 Aug 2020 21:48:26 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+=== Functions Setup
+[info] 
+[info] A functions directory will be created in your project with a Node.js
+[info] package pre-configured. Functions can be deployed with firebase deploy.
+[info] 
+[debug] [2020-08-09T21:48:26.588Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-08-09T21:48:26.589Z] > authorizing via signed-in user
+[debug] [2020-08-09T21:48:26.589Z] [iam] checking project todoapp-8da1b for permissions ["firebase.projects.get"]
+[debug] [2020-08-09T21:48:26.590Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/todoapp-8da1b:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-08-09T21:48:27.261Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 09 Aug 2020 21:48:27 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=605","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-09T21:48:27.264Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/todoapp-8da1b/services/cloudfunctions.googleapis.com:enable  
+ 
+[debug] [2020-08-09T21:48:27.265Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/todoapp-8da1b/services/runtimeconfig.googleapis.com:enable  
+ 
+[debug] [2020-08-09T21:48:28.289Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 09 Aug 2020 21:48:28 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-08-09T21:48:28.328Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 09 Aug 2020 21:48:28 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
