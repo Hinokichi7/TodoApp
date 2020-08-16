@@ -56,7 +56,7 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-btn @click="sendMail">getBeforeDeadlineTodos</v-btn>
+        <!-- <v-btn @click="sendMail">getBeforeDeadlineTodos</v-btn> -->
         <!-- <v-btn @click="sendMail">sendMail</v-btn> -->
     </v-col>
   </v-row>
