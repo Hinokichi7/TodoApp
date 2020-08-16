@@ -264,6 +264,6 @@ export default class TodoList extends Vue {
       }
     }
   }
-
 }
+
 </script>
